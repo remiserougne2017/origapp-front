@@ -3,11 +3,11 @@ import { Icon } from 'react-native-elements';
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
-import Login from "./componentsNav/loginNav"
 import Parameters from "./componentsNav/parametersNav"
 import Library from "./componentsNav/libraryNav"
 import Home from "./componentsNav/homeNav"
 import BookContent from './componentsNav/book-content'
+import SignUp from "./componentsNav/SignUp"
 
 // comment Vincent : lignes pour REDUX
   // import MapLoc from './components/map';
@@ -81,7 +81,7 @@ var BottomNavigator = createBottomTabNavigator(
  
 // comment Vincent : stack navigator global
   var StackNavigator = createStackNavigator({
-    Login: Login,
+    SignUp: SignUp,
     Bottom: BottomNavigator,
   }, {
     headerMode: 'none',
