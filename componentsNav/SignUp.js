@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 //import {TextField, FilledTextField, OutlinedTextField} from 'react-native-material-textfield'; // Module pour gérer les inputs
 //import {Button, Input, Text} from 'react-native-elements';
 
@@ -18,14 +18,22 @@ export default function SignUp(props) {
 
     } else {
       console.log('mdp ok')
-      const data = await fetch('/sign-up', {
+      const data = await fetch('http://192.168.0.11:3000/users/sign-up', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: `firstName=${signUpFirstName}&email=${signUpEmail}&password=${signUpPassword}`
       })
-  
+      console.log('envoyé')
       const response = await data.json()
-      console.log(response) 
+      console.log(response)
+
+      /* if(response.result == true){
+        props.addToken(response.token)
+      } else {
+        console.log('pas de token')
+      } */
+
+      props.navigation.navigate('homeNav')
     }
   }
 
@@ -35,7 +43,8 @@ export default function SignUp(props) {
   console.log(signUpPasswordMatch)
   
     return(
-       <ImageBackground source={require('../assets/origami.png')} style={styles.container}>
+      <ImageBackground source={require('../assets/origami.png')} style={styles.container}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
           <View>
             <View style={{ flexDirection:"row", marginBottom:50}}>
               <Image
@@ -81,11 +90,12 @@ export default function SignUp(props) {
             <Button
              title='Inscription'
              color='#FF473A'
-             onPress={() => clickSignUp()}
+             onPress={() => clickSignUp() }
             />
-           
-            </View> 
-        </ImageBackground>
+            
+          </View> 
+        </KeyboardAvoidingView>
+      </ImageBackground>
     )
 
 }
@@ -98,3 +108,16 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
   });
+
+ /*  function mapDispatchToProps(dispatch){
+    return {
+      addToken: function(token){
+        dispatch({type: 'addToken', token: token})
+      }
+    }
+  }
+  
+  export default connect(
+    null,
+    mapDispatchToProps
+  )(SignUp) */

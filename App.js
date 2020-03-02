@@ -6,7 +6,9 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Parameters from "./componentsNav/parametersNav"
 import Library from "./componentsNav/libraryNav"
 import Home from "./componentsNav/homeNav";
-import SignUp from "./componentsNav/SignUp"
+import SignUp from "./componentsNav/SignUp";
+import SignIn from "./componentsNav/SignIn";
+import newPassword from "./componentsNav/newPassword";
 
 // comment Vincent : lignes pour REDUX
   // import MapLoc from './components/map';
@@ -80,6 +82,9 @@ var BottomNavigator = createBottomTabNavigator(
 // comment Vincent : stack navigator global
   var StackNavigator = createStackNavigator({
     SignUp: SignUp,
+    SignIn: SignIn,
+    newPassword: newPassword,
+    homeNav: Home,
     Bottom: BottomNavigator,
   }, {
     headerMode: 'none',
