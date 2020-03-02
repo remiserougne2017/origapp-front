@@ -7,6 +7,7 @@ import Login from "./componentsNav/loginNav"
 import Parameters from "./componentsNav/parametersNav"
 import Library from "./componentsNav/libraryNav"
 import Home from "./componentsNav/homeNav"
+import BookContent from './componentsNav/book-content'
 
 // comment Vincent : lignes pour REDUX
   // import MapLoc from './components/map';
@@ -33,6 +34,7 @@ var StackNavigatorLibrary = createStackNavigator(
 var StackNavigatorHome = createStackNavigator(
   {
     Home:Home,
+    BookContent:BookContent,
 }, {headerMode: 'none',});
 
  var StackNavigatorParameters = createStackNavigator(
