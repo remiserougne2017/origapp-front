@@ -6,7 +6,7 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Login from "./componentsNav/loginNav"
 import Parameters from "./componentsNav/parametersNav"
 import Library from "./componentsNav/libraryNav"
-import Home from "./componentsNav/homeNav"
+import Home from "./componentsNav/Home"
 
 // comment Vincent : lignes pour REDUX
   // import MapLoc from './components/map';
