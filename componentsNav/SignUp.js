@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 //import {TextField, FilledTextField, OutlinedTextField} from 'react-native-material-textfield'; // Module pour gérer les inputs
-//import {Button, Input, Text} from 'react-native-elements';
+import {connect} from 'react-redux';
 
-export default function SignUp(props) {
+function SignUp(props) {
   
   const [signUpFirstName, setSignUpFirstName] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
@@ -27,11 +27,11 @@ export default function SignUp(props) {
       const response = await data.json()
       console.log(response)
 
-      /* if(response.result == true){
+      if(response.result == true){
         props.addToken(response.token)
       } else {
         console.log('pas de token')
-      } */
+      }
 
       props.navigation.navigate('homeNav')
     }
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     },
   });
 
- /*  function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch){
     return {
       addToken: function(token){
         dispatch({type: 'addToken', token: token})
@@ -120,4 +120,4 @@ const styles = StyleSheet.create({
   export default connect(
     null,
     mapDispatchToProps
-  )(SignUp) */
+  )(SignUp)
