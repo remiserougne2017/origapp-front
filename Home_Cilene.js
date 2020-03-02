@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import SignUp from './components/SignUp'
+import SignUp from './componentsCilene/SignUp'
 
 export default function App() {
   return (
