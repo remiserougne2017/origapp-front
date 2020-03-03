@@ -8,14 +8,14 @@ const Book = (props) => {
 // implemented without image with header
 return (
     // <View style={{flex:1,flexDirection:"row"}}>
-        <View style={{width:"50%"}}>
-            <Card containerStyle={{width:"100%", backgroundColor:"white", padding :0, marginLeft:5, marginRight:0}}>
-            <Image
-                style={{width:"100%",height:250}}
-                resizeMode="cover"
-                source={{ uri: props.url }}
-               
-            />
+    // <View style={{width:"40%", alignContent:"stretch", flexWrap:"wrap"}}>
+            <Card containerStyle={{width:"45%",padding:2,backgroundColor:"white", marginLeft:"1%", marginRight:"1%"}}>
+                <Image
+                    style={{width:"100%",height:250}}
+                    resizeMode="cover"
+                    source={{ uri: props.url }}
+                
+                />
              <Icon containerStyle={{position: "absolute",
                                     right: -10,
                                     top: -15}}
@@ -34,7 +34,7 @@ return (
                     />
             </View>
             </Card>
-        </View>      
+        // </View>
       );
 };
 

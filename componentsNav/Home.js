@@ -13,16 +13,16 @@ export default function Home(props) {
                                             author:"Eloise B."},{title: "Novo", url:"https://upload.wikimedia.org/wikipedia/commons/1/1f/Stories_for_summer_days_and_winter_nights.jpg",
                                             author:"Eloise B."}]);
 
-  // useEffect(()=>{
-  //   const catalogue = async()=>{
-  //     console.log("WELCOME HOME")
-  //     var responseFetch = await fetch('http://10.2.5.203:3000/homePage')
-  //     var bookList = await responseFetch.json();
-  //     console.log("Hello init catalogiue",bookList)
-  //     setCataList(bookList)
-  //   };
-  //   catalogue();
-  // },[])
+  useEffect(()=>{
+    const catalogue = async()=>{
+      console.log("WELCOME HOME")
+      var responseFetch = await fetch('http://10.2.5.203:3000/home/homePage')
+      var bookList = await responseFetch.json();
+      console.log("Hello init catalogiue",bookList)
+      setCataList(bookList)
+    };
+    catalogue();
+  },[])
 
   //RS creation du tableau de books pour afficher le catalogue
   var Book = cataList.map((e,i)=>{
@@ -35,16 +35,16 @@ export default function Home(props) {
   return (
     
      <View style={{ flex: 1, width:"100%"}}>
-       <View style={{ flexDirection:"row"}}>
+       <View style={{ flexDirection:"row", marginTop:25}}>
        <Image
           style={{width: 40, height: 40, margin:5}}
-          source={require('../assets/logo.svg')}
+          source={require('../assets/logoOrigapp.png')}
         />  
         <Text style={{ marginTop:15,marginLeft:5, fontSize:15, fontWeight:"500"}}>OrigApp</Text>
        </View>
         <View style={{ flexDirection:"row",justifyContent:"center", alignItems:'center', marginTop:10}}>
           <SearchBar 
-          containerStyle={{width:'80%', borderRadius:20, backgroundColor:'none'}}
+          containerStyle={{width:'80%', borderRadius:20, backgroundColor:'transparent'}}
           inputContainerStyle={{backgroundColor:"none"}}
           lightTheme="true"
           placeholder="Recherche..."
@@ -70,24 +70,18 @@ export default function Home(props) {
         <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
           <Text style={{color:"#F9603E"}}>Catalogue</Text>
         </View>   
-        <View style={{flex:1, padding:10}}>
-        <ScrollView contentContainerStyle={{height:100, padding: 10, width:'100%'}}>
-            <View style={{width:"100%"}}>
-                {Book}
+      <ScrollView contentContainerStyle={{padding: 5}}>
+          <View style={{
+              flex: 1,
+              flexDirection:"row",
+              justifyContent:"space-around",
+              flexWrap: 'wrap',
+              margin:"auto"  
+            }}>
+            {Book}
           </View>
-        </ScrollView>
-        </View>
-      </View>
-          
+          </ScrollView>
+    </View>    
 
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
