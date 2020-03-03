@@ -3,14 +3,15 @@ import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image} f
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
-
+import OverlayContent from "../componentsNav/overlay-book"
 
 function BookContent(props) { 
 
-    // comment Vincent : variables récupérées du store 
+
+//VARIABLES
+    // comment Vincent : variables récupérées du store à remplacer par valeurs dynamiques 
     var idBook = "5e5d4ccee909bf379423f491"
-    var token = 'dTsvaJw2PQiOtTWxykt5KcWco87eeSp6'
-   //var token = props.token
+    var token = 'dTsvaJw2PQiOtTWxykt5KcWco87eeSp6' //var token = props.token
 
     // variable en dur le temps de récuperer les data from fetch
     const publisher = {publisher: "Les Editions du Sabot Rouge"}
@@ -31,8 +32,9 @@ function BookContent(props) {
         }
     ]
 
-    // Load book from DB
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
+
+// LOAD BOOK FROM DB
 
     useEffect( ()=> {
         async function openBook() {
@@ -52,26 +54,26 @@ function BookContent(props) {
       },[])
 
 
-            // Construction d'un tableau splité pour génèrer les card par page 
-            var organisedContent = []
-            let arrayPage = []
-            for(let i=0;i<arrayDataBook.contents.length;i++){
-                if(arrayPage.indexOf(arrayDataBook.contents[i].pageNum)==-1)
-                { 
-                    arrayPage.push(arrayDataBook.contents[i].pageNum);
-                }
-            }
-            for(let j=0;j<arrayPage.length;j++){
-                let newArray = arrayDataBook.contents.filter(obj => obj.pageNum == arrayPage[j]);
-                let containerArray = {
-                    pageNumber: arrayPage[j],
-                    allContents:newArray
-                }
-                organisedContent.push(containerArray)
-            }
+// Construction d'un tableau splité pour génèrer les card par page 
+    var organisedContent = []
+    let arrayPage = []
+    for(let i=0;i<arrayDataBook.contents.length;i++){
+        if(arrayPage.indexOf(arrayDataBook.contents[i].pageNum)==-1)
+        { 
+            arrayPage.push(arrayDataBook.contents[i].pageNum);
+        }
+    }
+    for(let j=0;j<arrayPage.length;j++){
+        let newArray = arrayDataBook.contents.filter(obj => obj.pageNum == arrayPage[j]);
+        let containerArray = {
+            pageNumber: arrayPage[j],
+            allContents:newArray
+        }
+        organisedContent.push(containerArray)
+    }
 
 
-    // CARD CONTENT CREATION  
+// CARD CONTENT CREATION  
 let cardDisplay = organisedContent.map((obj,i) => {
     let color; let colorFont;
     if(i%4==0) {color= '#F9603E';colorFont="white"} else if (i%3==0) {color= '#F4F4F4';colorFont="black"} else {color= '#F29782',colorFont="black"}
@@ -88,14 +90,14 @@ let cardDisplay = organisedContent.map((obj,i) => {
     })
 
     return (
-                <View style = {{backgroundColor:color, margin:10,borderRadius:5,padding:5, width:'40%', justifyContent:'center'}}>
-                    <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12,fontSize:9}} >page {obj.pageNumber}</Text>}
-                        badgeStyle={{backgroundColor:"#252525"}}
-                    />
-                <View style = {{justifyContent: 'center'}}>
-                    {titleList}
-                </View>
-                </View>)})
+    <View style = {{backgroundColor:color, margin:10,borderRadius:5,padding:5, width:'40%', justifyContent:'center'}}>
+        <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12,fontSize:9}} >page {obj.pageNumber}</Text>}
+            badgeStyle={{backgroundColor:"#252525"}}
+        />
+    <View style = {{justifyContent: 'center'}}>
+        {titleList}
+    </View>
+    </View>)})
 
 
 
@@ -131,11 +133,13 @@ let cardDisplay = organisedContent.map((obj,i) => {
                 </View>
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
                     <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les contenus à découvrir</Text>
+                    <OverlayContent/>
                     <View style = {{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection:'row',flexWrap:'wrap'}}>
 
                                 {cardDisplay}
 
                     </View>
+
                 </View>
                 <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
                     <Divider 
@@ -155,6 +159,7 @@ let cardDisplay = organisedContent.map((obj,i) => {
   }
 
 
+// GET USER TOKEN
   function mapStateToProps(state) {
     return { 
       token: state.token,
