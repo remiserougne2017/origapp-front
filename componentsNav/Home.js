@@ -13,16 +13,20 @@ export default function Home(props) {
                                             author:"Eloise B."},{title: "Novo", url:"https://upload.wikimedia.org/wikipedia/commons/1/1f/Stories_for_summer_days_and_winter_nights.jpg",
                                             author:"Eloise B."}]);
 
-  // useEffect(()=>{
-  //   const catalogue = async()=>{
-  //     console.log("WELCOME HOME")
-  //     var responseFetch = await fetch('http://10.2.5.203:3000/homePage')
-  //     var bookList = await responseFetch.json();
-  //     console.log("Hello init catalogiue",bookList)
-  //     setCataList(bookList)
-  //   };
-  //   catalogue();
-  // },[])
+   useEffect(()=>{
+     const rechercheText = async()=>{
+       console.log("recherche en cours",textSearch)
+       var responseFetch = await fetch('http://10.2.3.37:3000/home/searchtext',{
+        method: 'POST',
+       headers: {'Content-Type':'application/x-www-form-urlencoded'},    
+       body: `textSearch=aventure`})
+       console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
+       var resultatsearch = await responseFetch.json();
+      console.log("ok pr le search")
+      
+    };
+   rechercheText();
+   },[textSearch])
 
   //RS creation du tableau de books pour afficher le catalogue
   var Book = cataList.map((e,i)=>{
