@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@react-native-community/masked-view": "^0.1.7",
-    "bootstrap": "^4.4.1",
     "expo": "~36.0.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
@@ -25,8 +24,8 @@
     "react-navigation": "^4.2.2",
     "react-navigation-stack": "^2.2.2",
     "react-navigation-tabs": "^2.8.2",
-    "reactstrap": "^8.4.1",
     "react-redux": "^7.2.0",
+    "reactstrap": "^8.4.1",
     "redux": "^4.0.5"
   },
   "devDependencies": {
