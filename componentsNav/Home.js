@@ -10,6 +10,20 @@ function Home(props) {
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
 
+   useEffect(()=>{
+     const rechercheText = async()=>{
+       console.log("recherche en cours",textSearch)
+       var responseFetch = await fetch('http://10.2.3.37:3000/home/searchtext',{
+        method: 'POST',
+       headers: {'Content-Type':'application/x-www-form-urlencoded'},    
+       body: `textSearch=aventure`})
+       console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
+       var resultatsearch = await responseFetch.json();
+      console.log("ok pr le search")
+      
+    };
+   rechercheText();
+   },[textSearch])
   useEffect(()=>{
     const catalogue = async() =>{
       console.log("WELCOME HOME")
