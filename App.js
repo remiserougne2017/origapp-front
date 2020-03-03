@@ -87,7 +87,7 @@ var BottomNavigator = createBottomTabNavigator(
     SignUp: SignUp,
     SignIn: SignIn,
     newPassword: newPassword,
-    homeNav: Home,
+    Home: Home,
     Bottom: BottomNavigator,
   }, {
     headerMode: 'none',

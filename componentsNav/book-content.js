@@ -2,7 +2,7 @@ import React, {useState,useEffect} from 'react';
 import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image} from 'react-native';
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'reactstrap';
 
 
