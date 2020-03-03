@@ -2,7 +2,7 @@ import React, {useState,useEffect} from 'react';
 import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image} from 'react-native';
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import { Container, Row, Col } from 'reactstrap';
 
 
@@ -129,7 +129,7 @@ let cardDisplay = organisedContent.map((obj,i) => {
 
     return (
             <Col xs='6'>
-                <View style = {{backgroundColor:color, marginBottom:10,borderRadius:5,padding:5, shadowOffset:{  width: 5,  height: 5,  },shadowColor: 'grey',shadowOpacity: 0.3,}}>
+                <View style = {{backgroundColor:color, marginBottom:10,borderRadius:5,padding:5 /*, shadowOffset:{  width: 5,  height: 5,  },shadowColor: 'grey',shadowOpacity: 0.3*/}}>
                     <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12,fontSize:9}} >page {obj.pageNumber}</Text>}
                         badgeStyle={{backgroundColor:"#252525",opacity:"50%",border: "none"}}
                     />

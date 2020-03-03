@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet,ScrollView, Text, View,Image } from 'react-native';
 import { SearchBar, Badge,Divider  } from 'react-native-elements';
-import { Container, Row } from 'reactstrap';
+// import { Container, Row } from 'reactstrap';
 import Books from './Books'
 import { set } from 'react-native-reanimated';
 
@@ -25,7 +25,7 @@ export default function Home(props) {
   // },[])
 
   //RS creation du tableau de books pour afficher le catalogue
-  var book = cataList.map((e,i)=>{
+  var Book = cataList.map((e,i)=>{
    return(
     <Books key={i} title={e.title} url={e.url} author={e.author} illustrator={e.illustrator} />
    ) 
@@ -45,7 +45,7 @@ export default function Home(props) {
         <View style={{ flexDirection:"row",justifyContent:"center", alignItems:'center', marginTop:10}}>
           <SearchBar 
           containerStyle={{width:'80%', borderRadius:20, backgroundColor:'none'}}
-          inputContainerStyle={{backgroundColor:""}}
+          inputContainerStyle={{backgroundColor:"none"}}
           lightTheme="true"
           placeholder="Recherche..."
           onChangeText={(value)=> setTextSearch(value)}
@@ -56,29 +56,25 @@ export default function Home(props) {
           source={require('../assets/qr-scan.png')}
         />
         </View>
-          <Row style={{margin:10}}>
+          <View style={{margin:10}}>
             <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12}}>Jeunesse</Text>}
               badgeStyle={{backgroundColor:"grey"}}
             />
-          </Row>
-      
-
+          </View>
         <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
-          <Divider style={{ backgroundColor: '#F9603E', width:"60%", opacity:"50%", marginTop:15}} />
+          <Divider style={{ backgroundColor: '#F9603E', width:"60%", /*opacity:"50%"*/ marginTop:15}} />
         </View>
-        <View style={{ flexDirection:"row",justifyContent:"left", alignItems:'center', marginTop:10, marginLeft:18}}>
+        <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
           <Text style={{color:"#F9603E"}}>Les mieux notés</Text>
         </View>
-        <View style={{ flexDirection:"row",justifyContent:"left", alignItems:'center', marginTop:10, marginLeft:18}}>
+        <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
           <Text style={{color:"#F9603E"}}>Catalogue</Text>
         </View>   
         <View style={{flex:1, padding:10}}>
         <ScrollView contentContainerStyle={{height:100, padding: 10, width:'100%'}}>
-            <Container style={{width:"100%"}}>
-              <Row>
-                {book}
-              </Row>
-          </Container>
+            <View style={{width:"100%"}}>
+                {Book}
+          </View>
         </ScrollView>
         </View>
       </View>
