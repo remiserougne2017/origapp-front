@@ -2,7 +2,7 @@ export default function(storeLibrairy =[], action){
     console.log('reducer Librairy',action)
     if(action.type == 'manageLibrairy' && action.bool==true){
         var index = storeLibrairy.findIndex(e=>e==action.id)
-        if(index!=-1){
+        if(index==-1){
             var newLibrairy = [...storeLibrairy, action.id ]
             return newLibrairy
         }else{

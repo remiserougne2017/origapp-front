@@ -15,23 +15,22 @@ function Home(props) {
       console.log("WELCOME HOME")
       var responseFetch = await fetch('http://192.168.43.90:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6')
       var bookList = await responseFetch.json();
-      console.log("Hello init catalogiue",bookList)
       setCataList(bookList.livreMin)
-      
       
     };
     catalogue();
+    librairyToStore();
   },[])
 
   //pour charger le store Redux avec la biblio du user
-  useEffect(()=>{
-    var newCataList = cataList.map(e=>{
-      if(e.inLibrairy){
-        props.manageLibrairy(e.id,true)
-      }
-    })
-  },[cataList])
- 
+ const librairyToStore= ()=>{
+  var newCataList = cataList.map(e=>{
+    if(e.inLibrairy){
+      props.manageLibrairy(e.id,true)
+    }
+  })
+ }
+     
   console.log("STore librairy",props.storeLibrairy)
   //RS creation du tableau de books pour afficher le catalogue
   var Book = cataList.map((e,i)=>{
