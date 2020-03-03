@@ -121,23 +121,23 @@ let cardDisplay = organisedContent.map((obj,i) => {
                 <Text style={{marginBottom: 10, color:colorFont}}>
                 {e.contentTitle}
                 </Text>
-                <Divider style={{ backgroundColor: '#252525', width:"60%", opacity:"50%", marginTop:15}} />
+                <Divider style={{ backgroundColor: '#252525', width:"60%", marginTop:15}} />
             </View>
             
         )
     })
 
     return (
-            <Col xs='6'>
+            // <Col xs='6'>
                 <View style = {{backgroundColor:color, marginBottom:10,borderRadius:5,padding:5 /*, shadowOffset:{  width: 5,  height: 5,  },shadowColor: 'grey',shadowOpacity: 0.3*/}}>
                     <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12,fontSize:9}} >page {obj.pageNumber}</Text>}
-                        badgeStyle={{backgroundColor:"#252525",opacity:"50%",border: "none"}}
+                        badgeStyle={{backgroundColor:"#252525",border: "none"}}
                     />
                 <View style = {{justifyContent: 'center'}}>
                     {titleList}
                 </View>
                 </View>
-            </Col>
+            // {/* </Col> */}
 )})
 
 // style variable 
@@ -153,7 +153,7 @@ let cardDisplay = organisedContent.map((obj,i) => {
 
     return (
     <ScrollView>
-        <ImageBackground>        
+        {/* <ImageBackground>         */}
                 <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',marginLeft:20, marginRight:20}}>
                     <Icon 
                         name= "staro" type='antdesign'  size= {40}
@@ -175,22 +175,24 @@ let cardDisplay = organisedContent.map((obj,i) => {
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
                     <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les contenus à découvrir</Text>
                     <View style = {{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                        <Container>
-                            <Row>
+                        {/* <Container>
+                            <Row> */}
                                 {cardDisplay}
-                            </Row>
-                        </Container>
+                            {/* </Row>
+                        </Container> */}
                     </View>
                 </View>
                 <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
-                    <Divider style={{ backgroundColor: '#F9603E', width:"60%", opacity:"50%", marginTop:15}} />
+                    <Divider 
+                    style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15}} 
+                    />
                 </View>
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
                     <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les avis et commentaires</Text>
   
                 </View>
 
-        </ImageBackground>
+        {/* </ImageBackground> */}
     </ScrollView>
 
     );
