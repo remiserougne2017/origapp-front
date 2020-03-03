@@ -100,6 +100,11 @@ function SignUp(props) {
              color='#FF473A'
              onPress={() => props.navigation.navigate('Home')}
             />
+                <Button
+             title='nav bookcontnt'
+             color='#FF473A'
+             onPress={() => props.navigation.navigate('BookContent')}
+            />
            
            </View> 
         </KeyboardAvoidingView> 
