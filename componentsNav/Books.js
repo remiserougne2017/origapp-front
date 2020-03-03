@@ -2,23 +2,25 @@ import React,{useState} from 'react';
 import { View, Text, Image } from 'react-native'
 import { Card,Rating,CheckBox  } from 'react-native-elements'
 import {connect} from 'react-redux';
+import {showMessage, hideMessage } from "react-native-flash-message";
+
 const Book = (props) => {
 
     //booleen pour la checkBox d'ajout à la bibli
 const [isCheck, setIsCheck] = useState(props.inLibrairy)
 
-console.log("check?",isCheck, props.storeLibrairy)
-
 //Function appel route addLibrairy
 const addLibrairy = async (id,bool) => {
-    console.log("function addLibr, isCheck?",bool, id)
-
-    var responseFetch = await fetch(`http://192.168.43.90:3000/home/addLibrairy/${id}/${bool}`)
-    var resp = await responseFetch.json();
-    console.log("retour addLibrairy",resp)
-
-    setIsCheck(!bool)
+    setIsCheck(bool)
     props.manageLibrairy(id,bool)
+    var responseFetch = await fetch(`http://192.168.1.28:3000/home/addLibrairy/${id}/${bool}/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+    var resp = await responseFetch.json();
+    showMessage({
+        message: resp.mess,
+        type: resp.type,
+        icon:"auto",
+        backgroundColor:"#8FB2C9"
+      });
 }
 
 return (
@@ -29,8 +31,8 @@ return (
                     source={{ uri: props.image }}
                 />
                 <CheckBox 
-                    onPress={() =>{addLibrairy(props.id,!isCheck);console.log("onPRess")}}
-                    checked={props.inLibrairy}
+                    onPress={() =>{addLibrairy(props.id,!isCheck)}}
+                    checked={isCheck}
                     checkedColor="#F9603E"
                     containerStyle={{position: "absolute",
                                     right: -30,
@@ -59,8 +61,11 @@ function mapDispatchToProps(dispatch){
         bool:bool})
       } 
     }
-  }
-
-  
+  };
+function mapStateToProps(state) {
+    return { storeLibrairy: state.storeLibrairy,
+            token: state.token
+     }
+  }  
   
   export default connect(null,mapDispatchToProps)(Book)

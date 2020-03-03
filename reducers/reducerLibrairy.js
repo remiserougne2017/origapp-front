@@ -1,4 +1,4 @@
-export default function(storeLibrairy =[], action){
+export default function(storeLibrairy =["id123"], action){
     console.log('reducer Librairy',action)
     if(action.type == 'manageLibrairy' && action.bool==true){
         var index = storeLibrairy.findIndex(e=>e==action.id)
