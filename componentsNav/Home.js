@@ -4,30 +4,39 @@ import { SearchBar, Badge,Divider  } from 'react-native-elements';
 // import { Container, Row } from 'reactstrap';
 import Books from './Books'
 import { set } from 'react-native-reanimated';
+import {connect} from 'react-redux';
 
-export default function Home(props) {
+function Home(props) {
   const [textSearch, setTextSearch] = useState("");
-  const [cataList,setCataList]=useState([{title: "Novo", url:"https://upload.wikimedia.org/wikipedia/commons/1/1f/Stories_for_summer_days_and_winter_nights.jpg",
-                                            author:"Eloise B."},{title: "Novo", url:"https://upload.wikimedia.org/wikipedia/commons/1/1f/Stories_for_summer_days_and_winter_nights.jpg",
-                                            author:"Eloise B."},{title: "Novo", url:"https://upload.wikimedia.org/wikipedia/commons/1/1f/Stories_for_summer_days_and_winter_nights.jpg",
-                                            author:"Eloise B."},{title: "Novo", url:"https://upload.wikimedia.org/wikipedia/commons/1/1f/Stories_for_summer_days_and_winter_nights.jpg",
-                                            author:"Eloise B."}]);
+  const [cataList,setCataList]=useState([]);
 
-  // useEffect(()=>{
-  //   const catalogue = async()=>{
-  //     console.log("WELCOME HOME")
-  //     var responseFetch = await fetch('http://10.2.5.203:3000/homePage')
-  //     var bookList = await responseFetch.json();
-  //     console.log("Hello init catalogiue",bookList)
-  //     setCataList(bookList)
-  //   };
-  //   catalogue();
-  // },[])
+  useEffect(()=>{
+    const catalogue = async() =>{
+      console.log("WELCOME HOME")
+      var responseFetch = await fetch('http://192.168.43.90:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6')
+      var bookList = await responseFetch.json();
+      setCataList(bookList.livreMin)
+      
+    };
+    catalogue();
+    librairyToStore();
+  },[])
 
+  //pour charger le store Redux avec la biblio du user
+ const librairyToStore= ()=>{
+  var newCataList = cataList.map(e=>{
+    if(e.inLibrairy){
+      props.manageLibrairy(e.id,true)
+    }
+  })
+ }
+     
+  console.log("STore librairy",props.storeLibrairy)
   //RS creation du tableau de books pour afficher le catalogue
   var Book = cataList.map((e,i)=>{
+    
    return(
-    <Books key={i} title={e.title} url={e.url} author={e.author} illustrator={e.illustrator} />
+    <Books id={e.id} key={i} inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
    ) 
 
   })
@@ -35,10 +44,10 @@ export default function Home(props) {
   return (
     
      <View style={{ flex: 1, width:"100%"}}>
-       <View style={{ flexDirection:"row"}}>
+       <View style={{ flexDirection:"row", marginTop:25}}>
        <Image
           style={{width: 40, height: 40, margin:5}}
-          source={require('../assets/logo.svg')}
+          source={require('../assets/logoOrigapp.png')}
         />  
         <Text style={{ marginTop:15,marginLeft:5, fontSize:15, fontWeight:"500"}}>OrigApp</Text>
        </View>
@@ -70,24 +79,32 @@ export default function Home(props) {
         <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
           <Text style={{color:"#F9603E"}}>Catalogue</Text>
         </View>   
-        <View style={{flex:1, padding:10}}>
-        <ScrollView contentContainerStyle={{height:100, padding: 10, width:'100%'}}>
-            <View style={{width:"100%"}}>
-                {Book}
+      <ScrollView contentContainerStyle={{padding: 5}}>
+          <View style={{
+              flex: 1,
+              flexDirection:"row",
+              justifyContent:"space-around",
+              flexWrap: 'wrap',
+              margin:"auto"  
+            }}>
+            {Book}
           </View>
-        </ScrollView>
-        </View>
-      </View>
-          
-
+          </ScrollView>
+    </View>    
   );
 }
+function mapDispatchToProps(dispatch){
+  return {
+    manageLibrairy: function(id,bool){
+      dispatch({type: 'manageLibrairy',
+      id: id,
+      bool:bool})
+    } 
+  }
+}
+function mapStateToProps(state) {
+  return { storeLibrairy: state.storeLibrairy,
+   }
+}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default connect(mapStateToProps,mapDispatchToProps)(Home)
