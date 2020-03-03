@@ -2,78 +2,18 @@ import React, {useState,useEffect} from 'react';
 import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image} from 'react-native';
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
-// import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col } from 'reactstrap';
+import {connect} from 'react-redux';
 
 
 function BookContent(props) { 
 
-    const dataBook = {
-        idBook : "_idLivre",
-        title : "L'Ara de Rosa",
-        author : "Pierre-Yves Cezard",
-        description : 'Premier opus des aventures des animaux de Rosa Bonheur, grand peintre animalier du 19ème siècle.Une bd pour les enfants (à partir de 6 ans)',
-        coverImage: 'https://images-na.ssl-images-amazon.com/images/I/71ZHiL8SNBL.jpg',
-        tag : ['jeunesse', 'animaux'],
-        status: 'published',
-        rating: 3,
-        votes: 30,
-        view: 120,
-        contents : [
-        {
-            idContent: 'idContent',
-            contentTitle: 'Titre du contenu 1',
-            pageNumber: 3,
-            contentStatus: 'published'
-        },
-        {
-            idContent: 'idContent',
-            contentTitle: 'Titre du contenu 2 de la page 3',
-            pageNumber: 3,
-            contentStatus: 'published'
-        },
-        {
-            idContent: 'idContent',
-            contentTitle: 'Titre du contenu 3 de la page 3',
-            pageNumber: 3,
-            contentStatus: 'published'
-        },
-        {
-            idContent: 'idContent',
-            contentTitle: 'Titre du contenu 2, premier contenu de la page 7',
-            pageNumber: 7,
-            contentStatus: 'published'
-        },
-        {
-            idContent: 'idContent',
-            contentTitle: 'Titre du contenu 3 de la page 10',
-            pageNumber: 10,
-            contentStatus: 'published'
-        },
-        {
-            idContent: 'idContent',
-            contentTitle: 'Titre du deuxieme contenu de la pge 7',
-            pageNumber: 7,
-            contentStatus: 'published'
-        }
-        ,
-        {
-            idContent: 'idContent',
-            contentTitle: 'Titre du contenu 3 de la page 10',
-            pageNumber: 12,
-            contentStatus: 'published'
-        },
-        {
-            idContent: 'idContent',
-            contentTitle: 'Titre du deuxieme contenu de la pge 7',
-            pageNumber: 15,
-            contentStatus: 'published'
-        }
-    ]
-    }
+    // comment Vincent : variables récupérées du store 
+    var idBook = "5e5d4ccee909bf379423f491"
+    var token = 'dTsvaJw2PQiOtTWxykt5KcWco87eeSp6'
+   //var token = props.token
 
+    // variable en dur le temps de récuperer les data from fetch
     const publisher = {publisher: "Les Editions du Sabot Rouge"}
-
     const dataComments = [
         {
             book: "Le Ara de Rosa",
@@ -91,56 +31,71 @@ function BookContent(props) {
         }
     ]
 
-// Construction d'un tableau pour génèrer les card par page 
-    let arrayPage = []
-    for(let i=0;i<dataBook.contents.length;i++){
-        if(arrayPage.indexOf(dataBook.contents[i].pageNumber)==-1)
-        { 
-            arrayPage.push(dataBook.contents[i].pageNumber);
-        }
-    }
-    let organisedContent = []
-    for(let j=0;j<arrayPage.length;j++){
-        let newArray = dataBook.contents.filter(obj => obj.pageNumber == arrayPage[j]);
-        let containerArray = {
-            pageNumber: arrayPage[j],
-            allContents:newArray
-        }
-        organisedContent.push(containerArray)
-    }
+    // Load book from DB
+    const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
+
+    useEffect( ()=> {
+        async function openBook() {
+            console.log("hello fetch")
+            var bookData = await fetch(`http://10.2.5.178:3000/books/open-book`, { 
+                    method: 'POST',
+                    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+                    body: `idBook=${idBook}&token=${token}`
+                  }
+            );
+            var bookDataJson = await bookData.json();
+            // console.log(bookDataJson);
+            setArrayDataBook(bookDataJson.dataBook);
+      }
+
+        openBook();
+      },[])
 
 
-// Card Creation  
-let arrayColor = ['#F29782','#F4F4F4','#F9603E']
+            // Construction d'un tableau splité pour génèrer les card par page 
+            var organisedContent = []
+            let arrayPage = []
+            for(let i=0;i<arrayDataBook.contents.length;i++){
+                if(arrayPage.indexOf(arrayDataBook.contents[i].pageNum)==-1)
+                { 
+                    arrayPage.push(arrayDataBook.contents[i].pageNum);
+                }
+            }
+            for(let j=0;j<arrayPage.length;j++){
+                let newArray = arrayDataBook.contents.filter(obj => obj.pageNum == arrayPage[j]);
+                let containerArray = {
+                    pageNumber: arrayPage[j],
+                    allContents:newArray
+                }
+                organisedContent.push(containerArray)
+            }
+
+
+    // CARD CONTENT CREATION  
 let cardDisplay = organisedContent.map((obj,i) => {
     let color; let colorFont;
     if(i%4==0) {color= '#F9603E';colorFont="white"} else if (i%3==0) {color= '#F4F4F4';colorFont="black"} else {color= '#F29782',colorFont="black"}
     let titleList = obj.allContents.map((e,j)=>{
         return (
-            <View >
-                <Text style={{marginBottom: 10, color:colorFont}}>
-                {e.contentTitle}
+            <View style = {{alignItems:"center"}}>
+                <Text style={{marginBottom: 10, color:colorFont, textAlign:'center'}}>
+                {e.title}
                 </Text>
-                <Divider style={{ backgroundColor: '#252525', width:"60%", marginTop:15}} />
+                <Divider style={{ backgroundColor: '#252525', width:"60%", marginTop:10, justifyContent:"center"}} />
             </View>
-            
+     
         )
     })
 
     return (
-            // <Col xs='6'>
-                <View style = {{backgroundColor:color, marginBottom:10,borderRadius:5,padding:5 /*, shadowOffset:{  width: 5,  height: 5,  },shadowColor: 'grey',shadowOpacity: 0.3*/}}>
+                <View style = {{backgroundColor:color, margin:10,borderRadius:5,padding:5, width:'40%', justifyContent:'center'}}>
                     <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12,fontSize:9}} >page {obj.pageNumber}</Text>}
-                        badgeStyle={{backgroundColor:"#252525",border: "none"}}
+                        badgeStyle={{backgroundColor:"#252525"}}
                     />
                 <View style = {{justifyContent: 'center'}}>
                     {titleList}
                 </View>
-                </View>
-            // {/* </Col> */}
-)})
-
-// style variable 
+                </View>)})
 
 
 
@@ -153,33 +108,33 @@ let cardDisplay = organisedContent.map((obj,i) => {
 
     return (
     <ScrollView>
-        {/* <ImageBackground>         */}
+        <ImageBackground source = {require('../assets/origami.png')} style = {{ width:'100%'}}>        
                 <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',marginLeft:20, marginRight:20}}>
-                    <Icon 
-                        name= "staro" type='antdesign'  size= {40}
-                        onPress={() => console.log("star this book")}
-                    />
-                    <View >
+
+                    <View style = {{marginTop:60}}>
                         <Image 
                             style={{width: 250, height: 300, marginTop:20}}
-                            source= {dataBook.coverImage}
+                            source= {{ uri: arrayDataBook.coverImage }}
                         />
-                        <Text>{dataBook.author}</Text>
+                        <Icon 
+                                iconStyle={{position:'absolute',top:-320,right:-20}}
+                                name= "staro" type='antdesign'  size= {40}
+                                onPress={() => console.log("star this book")}
+                            />
+                        <Text>{arrayDataBook.author}</Text>
                         <Text>{publisher.publisher}</Text>                        
                     </View>
-                    <View>
-                        <Text style={{fontSize:30,marginTop:20,marginBottom:10}}>{dataBook.title}</Text>
-                        <Text >{dataBook.description}</Text>
+                    <View style = {{alignItems:"center"}}>
+                        <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>{arrayDataBook.title}</Text>
+                        <Text >{arrayDataBook.description}</Text>
                     </View>
                 </View>
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
                     <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les contenus à découvrir</Text>
-                    <View style = {{ flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-                        {/* <Container>
-                            <Row> */}
+                    <View style = {{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection:'row',flexWrap:'wrap'}}>
+
                                 {cardDisplay}
-                            {/* </Row>
-                        </Container> */}
+
                     </View>
                 </View>
                 <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
@@ -187,20 +142,27 @@ let cardDisplay = organisedContent.map((obj,i) => {
                     style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15}} 
                     />
                 </View>
+                </ImageBackground>
+
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
                     <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les avis et commentaires</Text>
   
                 </View>
 
-        {/* </ImageBackground> */}
     </ScrollView>
 
     );
   }
 
 
+  function mapStateToProps(state) {
+    return { 
+      token: state.token,
+    }
+  }
+
   
-
-
-
-  export default BookContent;
+  export default connect(
+    mapStateToProps, 
+    null
+  )(BookContent);
