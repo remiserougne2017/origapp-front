@@ -93,8 +93,17 @@ function SignUp(props) {
              onPress={() => clickSignUp() }
             />
             
-          </View> 
-        </KeyboardAvoidingView>
+          
+      
+                
+                <Button
+             title='nav HomePage'
+             color='#FF473A'
+             onPress={() => navigation.navigate('Home')}
+            />
+           
+           </View> 
+        </KeyboardAvoidingView> 
       </ImageBackground>
     )
 
