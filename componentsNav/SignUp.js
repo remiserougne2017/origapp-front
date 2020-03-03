@@ -99,7 +99,7 @@ function SignUp(props) {
                 <Button
              title='nav HomePage'
              color='#FF473A'
-             onPress={() => navigation.navigate('Home')}
+             onPress={() => props.navigation.navigate('Home')}
             />
            
            </View> 

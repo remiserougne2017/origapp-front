@@ -5,16 +5,11 @@ import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Parameters from "./componentsNav/parametersNav"
 import Library from "./componentsNav/libraryNav"
-<<<<<<< HEAD
 import Home from "./componentsNav/Home"
 import BookContent from './componentsNav/book-content'
-import SignUp from "./componentsNav/SignUp"
-=======
-import Home from "./componentsNav/homeNav";
 import SignUp from "./componentsNav/SignUp";
 import SignIn from "./componentsNav/SignIn";
 import newPassword from "./componentsNav/newPassword";
->>>>>>> SignUp_Redux
 
 // comment Vincent : lignes pour REDUX
   // import MapLoc from './components/map';
