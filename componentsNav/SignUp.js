@@ -18,7 +18,7 @@ function SignUp(props) {
 
     } else {
       console.log('mdp ok')
-      const data = await fetch('http://192.168.0.11:3000/users/sign-up', {
+      const data = await fetch('http://10.2.5.202:3000/users/sign-up', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: `firstName=${signUpFirstName}&email=${signUpEmail}&password=${signUpPassword}`
@@ -29,11 +29,10 @@ function SignUp(props) {
 
       if(response.result == true){
         props.addToken(response.token)
+        props.navigation.navigate('Home')
       } else {
         console.log('pas de token')
       }
-
-      props.navigation.navigate('homeNav')
     }
   }
 

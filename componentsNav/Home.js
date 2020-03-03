@@ -44,9 +44,15 @@ export default function Home(props) {
        </View>
         <View style={{ flexDirection:"row",justifyContent:"center", alignItems:'center', marginTop:10}}>
           <SearchBar 
+<<<<<<< HEAD
           containerStyle={{width:'80%', borderRadius:20, backgroundColor:'transparent'}}
           inputContainerStyle={{backgroundColor:"none"}}
           lightTheme="true"
+=======
+          containerStyle={{width:'80%', borderRadius:20}}
+         // inputContainerStyle={{backgroundColor:"none"}}
+          lightTheme
+>>>>>>> 8a4bba4a6a8d7151b2e9bb2d62e3370f5d65b8eb
           placeholder="Recherche..."
           onChangeText={(value)=> setTextSearch(value)}
           value={textSearch}
