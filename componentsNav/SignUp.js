@@ -3,7 +3,7 @@ import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpa
 //import {TextField, FilledTextField, OutlinedTextField} from 'react-native-material-textfield'; // Module pour gérer les inputs
 //import {Button, Input, Text} from 'react-native-elements';
 
-export default function SignUp(props) {
+export default function SignUp({navigation}) {
   
   const [signUpFirstName, setSignUpFirstName] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
@@ -82,6 +82,12 @@ export default function SignUp(props) {
              title='Inscription'
              color='#FF473A'
              onPress={() => clickSignUp()}
+            />
+                
+                <Button
+             title='nav HomePage'
+             color='#FF473A'
+             onPress={() => navigation.navigate('Home')}
             />
            
             </View> 
