@@ -13,11 +13,12 @@ import newPassword from "./componentsNav/newPassword";
 
 // comment Vincent : lignes pour REDUX
   // import MapLoc from './components/map';
+import storeLibrairy from './reducers/reducerLibrairy';
 import {Provider} from 'react-redux';
 import reducerToken from './reducers/reducerToken';
 import {createStore, combineReducers}  from 'redux';
 
-const store = createStore(combineReducers({reducerToken}),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStore(combineReducers({reducerToken,storeLibrairy}),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 console.disableYellowBox = true;
 
@@ -87,7 +88,7 @@ var BottomNavigator = createBottomTabNavigator(
     SignUp: SignUp,
     SignIn: SignIn,
     newPassword: newPassword,
-    homeNav: Home,
+    Home: Home,
     Bottom: BottomNavigator,
   }, {
     headerMode: 'none',

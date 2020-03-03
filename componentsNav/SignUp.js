@@ -9,39 +9,50 @@ function SignUp(props) {
   const [signUpEmail, setSignUpEmail] = useState('')
   const [signUpPassword, setSignUpPassword] = useState('')
   const [signUpPasswordMatch, setSignUpPasswordMatch] = useState('')
+  const [errorMatch, setErrorMatch] = useState('')
+  const [errorUserExistant, setErrorUserExistant] = useState('')
+  const [errorChampVide, setErrorChampVide] = useState('')
+  const [errorEmailInvalide, setErrorEmailInvalide] = useState('')
+  const [errorPassword, setErrorPassword] = useState('')
 
 
   var clickSignUp = async () => {
 
     if(signUpPassword !== signUpPasswordMatch){
-      alert("Les mots de passe ne sont pas identiques")
+      setErrorMatch("Les mots de passe ne sont pas identiques")
 
     } else {
       console.log('mdp ok')
-      const data = await fetch('http://192.168.0.11:3000/users/sign-up', {
+      const data = await fetch('http://10.2.5.202:3000/users/sign-up', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: `firstName=${signUpFirstName}&email=${signUpEmail}&password=${signUpPassword}`
       })
       console.log('envoyé')
       const response = await data.json()
-      console.log(response)
+      if(Object.keys(response).length != 0){
+        //Messages d'erreur depuis le Backend
+        setErrorEmailInvalide(response.error.emailNotValid)
+        setErrorUserExistant(response.error.email)
+        setErrorChampVide(response.error.emptyField)
+        setErrorPassword(response.error.passwordNotValid)
+      }
+
+      setSignUpFirstName('')
+      setSignUpEmail('')
+      setSignUpPassword('')
+      setSignUpPasswordMatch('')
 
       if(response.result == true){
         props.addToken(response.token)
+        props.navigation.navigate('Home')
       } else {
         console.log('pas de token')
       }
-
-      props.navigation.navigate('homeNav')
     }
   }
-
-  console.log(signUpFirstName)
-  console.log(signUpEmail)
-  console.log(signUpPassword)
-  console.log(signUpPasswordMatch)
   
+  console.log(errorMatch, errorChampVide, errorEmailInvalide)
     return(
       <ImageBackground source={require('../assets/origami.png')} style={styles.container}>
         <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
@@ -53,49 +64,58 @@ function SignUp(props) {
                 />
               <Text style={{ marginTop:25,marginLeft:5, fontSize:32, fontWeight:"500"}} >OrigApp</Text>
             </View>
-             
-            <TextInput
-            style = {{marginBottom: 25, borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-            inputStyle={{marginLeft: 10}}
-            placeholder=' Prénom'
-            onChangeText={(val) => setSignUpFirstName(val)}
-            />
+            
+            <View style={{marginBottom: 25}}>
+              <TextInput
+              style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
+              //inputStyle={{marginLeft: 1}}
+              placeholder=' Prénom'
+              onChangeText={(val) => setSignUpFirstName(val)}
+              />
+              {errorChampVide!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorChampVide}</Text>}
+            </View>
 
-            <TextInput
-            style = {{marginBottom: 25, borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-            inputStyle={{marginLeft: 10}}
-            placeholder=' Email'
-            onChangeText={(val) => setSignUpEmail(val)}
-            />
+            <View style={{marginBottom: 25}}>
+              <TextInput
+              style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
+              //inputStyle={{marginLeft: 10}}
+              placeholder=' Email'
+              onChangeText={(val) => setSignUpEmail(val)}
+              />
+              {errorUserExistant!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorUserExistant}</Text>}
+              {errorEmailInvalide!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorEmailInvalide}</Text>}
+            </View>
 
-            <TextInput
-            style = {{marginBottom: 25, borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-            inputStyle={{marginLeft: 10}}
-            placeholder=' Mot de passe'
-            onChangeText={(val) => setSignUpPassword(val)}
-            />
+            <View style={{marginBottom: 25}}>
+              <TextInput
+              style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
+              //inputStyle={{marginLeft: 10}}
+              placeholder=' Mot de passe'
+              onChangeText={(val) => setSignUpPassword(val)}
+              />
+              {errorPassword!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorPassword}</Text>}
+            </View>
 
-            <TextInput
-            style = {{marginBottom: 5, borderWidth : 1.0, borderColor: 'white',  borderRadius: 5, backgroundColor: 'white'}}
-            inputStyle={{marginLeft: 10}}
-            placeholder=' Confirmation de mot de passe '
-            onChangeText={(val) => setSignUpPasswordMatch(val)}
-            />
-
-            <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
+            <View style={{marginBottom: 25}}>
+              <TextInput
+              style = {{borderWidth : 1.0, borderColor: 'white',  borderRadius: 5, backgroundColor: 'white'}}
+             // inputStyle={{marginLeft: 10}}
+              placeholder=' Confirmation de mot de passe '
+              onChangeText={(val) => setSignUpPasswordMatch(val)}
+              />
+              {errorMatch !='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorMatch}</Text>}
+          
+              <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
               <Text style={{fontSize: 11, marginBottom: 20, textAlign: "right", fontStyle: "italic"}}>J'ai déjà un compte</Text>
             </TouchableOpacity>
+            </View>
 
            
             <Button
              title='Inscription'
              color='#FF473A'
              onPress={() => clickSignUp() }
-            />
-            
-          
-      
-                
+            />  
                 <Button
              title='nav HomePage'
              color='#FF473A'
