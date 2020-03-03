@@ -24,6 +24,7 @@ function Home(props) {
 
   //pour charger le store Redux avec la biblio du user
  const librairyToStore= ()=>{
+   console.log("librairyToStore")
   var newCataList = cataList.map(e=>{
     if(e.inLibrairy){
       props.manageLibrairy(e.id,true)
