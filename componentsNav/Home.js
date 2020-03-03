@@ -4,30 +4,40 @@ import { SearchBar, Badge,Divider  } from 'react-native-elements';
 // import { Container, Row } from 'reactstrap';
 import Books from './Books'
 import { set } from 'react-native-reanimated';
+import {connect} from 'react-redux';
 
-export default function Home(props) {
+function Home(props) {
   const [textSearch, setTextSearch] = useState("");
-  const [cataList,setCataList]=useState([{title: "Novo", url:"https://upload.wikimedia.org/wikipedia/commons/1/1f/Stories_for_summer_days_and_winter_nights.jpg",
-                                            author:"Eloise B."},{title: "Novo", url:"https://upload.wikimedia.org/wikipedia/commons/1/1f/Stories_for_summer_days_and_winter_nights.jpg",
-                                            author:"Eloise B."},{title: "Novo", url:"https://upload.wikimedia.org/wikipedia/commons/1/1f/Stories_for_summer_days_and_winter_nights.jpg",
-                                            author:"Eloise B."},{title: "Novo", url:"https://upload.wikimedia.org/wikipedia/commons/1/1f/Stories_for_summer_days_and_winter_nights.jpg",
-                                            author:"Eloise B."}]);
+  const [cataList,setCataList]=useState([]);
 
   useEffect(()=>{
-    const catalogue = async()=>{
+    const catalogue = async() =>{
       console.log("WELCOME HOME")
-      var responseFetch = await fetch('http://10.2.5.203:3000/home/homePage')
+      var responseFetch = await fetch('http://192.168.43.90:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6')
       var bookList = await responseFetch.json();
       console.log("Hello init catalogiue",bookList)
-      setCataList(bookList)
+      setCataList(bookList.livreMin)
+      
+      
     };
     catalogue();
   },[])
 
+  //pour charger le store Redux avec la biblio du user
+  useEffect(()=>{
+    var newCataList = cataList.map(e=>{
+      if(e.inLibrairy){
+        props.manageLibrairy(e.id,true)
+      }
+    })
+  },[cataList])
+ 
+  console.log("STore librairy",props.storeLibrairy)
   //RS creation du tableau de books pour afficher le catalogue
   var Book = cataList.map((e,i)=>{
+    
    return(
-    <Books key={i} title={e.title} url={e.url} author={e.author} illustrator={e.illustrator} />
+    <Books id={e.id} key={i} inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
    ) 
 
   })
@@ -44,15 +54,9 @@ export default function Home(props) {
        </View>
         <View style={{ flexDirection:"row",justifyContent:"center", alignItems:'center', marginTop:10}}>
           <SearchBar 
-<<<<<<< HEAD
-          containerStyle={{width:'80%', borderRadius:20, backgroundColor:'transparent'}}
-          inputContainerStyle={{backgroundColor:"none"}}
-          lightTheme="true"
-=======
           containerStyle={{width:'80%', borderRadius:20}}
          // inputContainerStyle={{backgroundColor:"none"}}
           lightTheme
->>>>>>> 8a4bba4a6a8d7151b2e9bb2d62e3370f5d65b8eb
           placeholder="Recherche..."
           onChangeText={(value)=> setTextSearch(value)}
           value={textSearch}
@@ -88,6 +92,20 @@ export default function Home(props) {
           </View>
           </ScrollView>
     </View>    
-
   );
 }
+function mapDispatchToProps(dispatch){
+  return {
+    manageLibrairy: function(id,bool){
+      dispatch({type: 'manageLibrairy',
+      id: id,
+      bool:bool})
+    } 
+  }
+}
+function mapStateToProps(state) {
+  return { storeLibrairy: state.storeLibrairy,
+   }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Home)
