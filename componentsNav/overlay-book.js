@@ -1,7 +1,8 @@
 import React, {useState,useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Text, View,} from 'react-native';
+import {Text, View,TouchableOpacity} from 'react-native';
 import {Icon,Overlay,Badge,Card } from 'react-native-elements';
+import { withNavigation } from 'react-navigation';
 
 
 
@@ -10,9 +11,7 @@ function OverlayContent(props) {
     // console.log("PROPS OVERLAY",props.overlayData)
 
 // VARIABLES
-// var idBook = props.overlayData.id;
-// var pageNum = props.overlayData.nb;
-const [arrayContent,setArrayContent] = useState([{pageNum:"",media:[]}]);
+// const [arrayContent,setArrayContent] = useState([{pageNum:"",media:[]}]);
 const [isVisibleOverlay,setIsVisibleOverlay] = useState(props.overlayData.toggle);
 console.log(isVisibleOverlay)
 console.log("hello props content",props.overlayData.content)
@@ -20,58 +19,62 @@ console.log("hello props content",props.overlayData.content)
 // GENERE LES ELEMENTS DE LA LIST
 let displayContentCard = props.overlayData.content.map((obj,i) => {
     return(
-        <Card
-            title={obj.title}
-            containerStyle={{borderRadius:10}}
-        >       
-        <View style = {{display:"flex",flexDirection:'row'}}>
-            <Icon 
-                name= 'download' type='antdesign'  size= {30} margin={5} marginRight='auto'
-                onPress={() => console.log('hello download content')}
+        <TouchableOpacity
+            onPress={() =>{props.navigation.navigate('contentMediaPage');props.storeOverlayInformation({toggle:false, content:[]});props.storeContentInformation({idBook:props.overlayData.id,idContent:props.overlayData.content[i].idContent})}}
+            >
+            <Card
+                title={obj.title}
+                containerStyle={{borderRadius:10}}
+            >       
+            <View style = {{display:"flex",flexDirection:'row'}}>
+                <Icon 
+                    name= 'download' type='antdesign'  size= {30} margin={5} marginRight='auto'
+                    onPress={() => console.log('hello download content')}
 
-            />
-            <View  style={{display:"flex",flexDirection:'row', marginLeft:'auto'}}>
-        {
-            obj.media.map((med, k) => {
-            
-            let iconType;
-            let library;
-            switch (med.type) {
-                case 'video': 
-                  iconType = 'video'
-                  library = 'entypo'
-                  break;
-            
-                case 'audio': 
-                  iconType = 'md-headset'
-                  library = 'ionicons'
-                  break;
-            
-                case 'image': 
-                  iconType = 'picture'
-                  library = 'antdesign'
-                  break;
-            
-                case 'text':
-                  iconType = 'text'
-                  library = 'entypo'
-                  break;
-                default:
-                  iconType = 'question'
-                  iconType = 'antdesign'
-              }
+                />
+                <View  style={{display:"flex",flexDirection:'row', marginLeft:'auto'}}>
+            {
+                obj.media.map((med, k) => {
+                
+                let iconType;
+                let library;
+                switch (med.type) {
+                    case 'video': 
+                    iconType = 'video'
+                    library = 'entypo'
+                    break;
+                
+                    case 'audio': 
+                    iconType = 'md-headset'
+                    library = 'ionicons'
+                    break;
+                
+                    case 'image': 
+                    iconType = 'picture'
+                    library = 'antdesign'
+                    break;
+                
+                    case 'text':
+                    iconType = 'text'
+                    library = 'entypo'
+                    break;
+                    default:
+                    iconType = 'question'
+                    iconType = 'antdesign'
+                }
 
-            
-            return (
-                <Icon name= {iconType} type={library}  size= {30} margin={5}/>
-            );
-            })
-        }
+                
+                return (
+                    <Icon name= {iconType} type={library}  size= {30} margin={5}/>
+                );
+                })
+            }
+                </View>
+                
             </View>
-            
-        </View>
 
-    </Card>
+        </Card>
+    </TouchableOpacity>
     )
 })
 
@@ -124,16 +127,24 @@ function mapDispatchToProps(dispatch) {
               overlayData : obj 
             } ) 
       },
-    }
+        storeContentInformation: function(obj) { 
+        dispatch( {
+            type: 'open-content-information',
+            contentData : obj 
+          } ) 
+    },
   }
+}
+    
+  
 
 
 
 
-export default connect(
+export default withNavigation(connect(
 mapStateToProps, 
 mapDispatchToProps
-)(OverlayContent);
+)(OverlayContent));
 
 
 

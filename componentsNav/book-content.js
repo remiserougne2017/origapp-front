@@ -8,12 +8,8 @@ import { set } from 'react-native-reanimated';
 
 function BookContent(props) { 
 
-console.log("hello route params",props.navigation.state.params)
 //VARIABLES
-    // comment Vincent : variables récupérées du store à remplacer par valeurs dynamiques 
     var token = 'dTsvaJw2PQiOtTWxykt5KcWco87eeSp6' //var token = props.token
-
-    // variable en dur le temps de récuperer les data from fetch
     const publisher = {publisher: "Les Editions du Sabot Rouge"}
     const dataComments = [
         {
@@ -35,7 +31,6 @@ console.log("hello route params",props.navigation.state.params)
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
 
 // LOAD BOOK FROM DB
-
     useEffect( ()=> {
         async function openBook() {
             var bookData = await fetch(`http://10.2.5.178:3000/books/open-book`, { 
@@ -54,7 +49,7 @@ console.log("hello route params",props.navigation.state.params)
 
 
 
-// Construction d'un tableau splité pour génèrer les card par page 
+// Construction d'un tableau splité pour génèrer les cards par page 
     var organisedContent = []
     let arrayPage = []
     for(let i=0;i<arrayDataBook.contents.length;i++){

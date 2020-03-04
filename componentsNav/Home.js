@@ -7,6 +7,7 @@ import { set } from 'react-native-reanimated';
 import {connect} from 'react-redux';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import FlashMessage from "react-native-flash-message";
+import Carrousel from './Carrousel';
 
 function Home(props) {
 
@@ -159,10 +160,17 @@ for (let i=0;i<tagsList.length;i++){
         </View>
         <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
           <Text style={{color:"#F9603E"}}>Les mieux notés</Text>
+          
         </View>
+
+        <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
+          <Carrousel/>
+        </View>
+
         <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
           <Text style={{color:"#F9603E"}}>Catalogue</Text>
         </View>   
+        
       <ScrollView contentContainerStyle={{padding: 5}}>
           <View style={{
               flex: 1,
