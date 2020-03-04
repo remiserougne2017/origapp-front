@@ -16,7 +16,12 @@ function SignUp(props) {
   const [errorPassword, setErrorPassword] = useState('')
 
 
-  var clickSignUp = async () => {
+  var clickSignUp = async (a, b, c, d) => {
+
+    setSignUpFirstName('')
+    setSignUpEmail('')
+    setSignUpPassword('')
+    setSignUpPasswordMatch('')
 
     if(signUpPassword !== signUpPasswordMatch){
       setErrorMatch("Les mots de passe ne sont pas identiques")
@@ -40,6 +45,7 @@ function SignUp(props) {
 
       if(response.result == true){
         props.addToken(response.token)
+        props.addPrenom(response.prenom)
         props.navigation.navigate('Home')
       } else {
         console.log('pas de token')
@@ -63,9 +69,9 @@ function SignUp(props) {
             <View style={{marginBottom: 25}}>
               <TextInput
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-              //inputStyle={{marginLeft: 1}}
               placeholder=' Prénom'
               onChangeText={(val) => setSignUpFirstName(val)}
+              value={signUpFirstName}
               />
               {errorChampVide!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorChampVide}</Text>}
             </View>
@@ -73,9 +79,9 @@ function SignUp(props) {
             <View style={{marginBottom: 25}}>
               <TextInput
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-              //inputStyle={{marginLeft: 10}}
               placeholder=' Email'
               onChangeText={(val) => setSignUpEmail(val)}
+              value={signUpEmail}
               />
               {errorUserExistant!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorUserExistant}</Text>}
               {errorEmailInvalide!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorEmailInvalide}</Text>}
@@ -84,9 +90,10 @@ function SignUp(props) {
             <View style={{marginBottom: 25}}>
               <TextInput
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-              //inputStyle={{marginLeft: 10}}
               placeholder=' Mot de passe'
+              secureTextEntry={true}
               onChangeText={(val) => setSignUpPassword(val)}
+              value={signUpPassword}
               />
               {errorPassword!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorPassword}</Text>}
             </View>
@@ -94,9 +101,10 @@ function SignUp(props) {
             <View style={{marginBottom: 25}}>
               <TextInput
               style = {{borderWidth : 1.0, borderColor: 'white',  borderRadius: 5, backgroundColor: 'white'}}
-             // inputStyle={{marginLeft: 10}}
+              secureTextEntry={true}
               placeholder=' Confirmation de mot de passe '
               onChangeText={(val) => setSignUpPasswordMatch(val)}
+              value={signUpPasswordMatch}
               />
               {errorMatch !='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorMatch}</Text>}
           
@@ -109,7 +117,7 @@ function SignUp(props) {
             <Button
              title='Inscription'
              color='#FF473A'
-             onPress={() => clickSignUp() }
+             onPress={() => clickSignUp(signUpFirstName, signUpEmail, signUpPassword, signUpPasswordMatch) }
             />  
                 <Button
              title='nav HomePage'
@@ -142,6 +150,9 @@ function mapDispatchToProps(dispatch){
     return {
       addToken: function(token){
         dispatch({type: 'addToken', token: token})
+      },
+      addPrenom: function(prenom){
+        dispatch({type: 'addPrenom', prenom: prenom})
       }
     }
   }

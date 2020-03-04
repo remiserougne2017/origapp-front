@@ -14,17 +14,19 @@ function SignIn(props) {
   const [errorPassword, setErrorPassword] = useState('')
 
 
-  var clickSignIn = async () => {
+  var clickSignIn = async (a, b) => {
 
-    console.log("signin")
+    //console.log("signin"+a,b)
+    setSignInEmail('')
+    setSignInPassword('')
 
     const data = await fetch('http://10.2.5.202:3000/users/sign-in', {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: `email=${signInEmail}&password=${signInPassword}`
+      body: `email=${a}&password=${b}`
     })
 
-    console.log('envoyé')
+    //console.log('envoyé')
     const response = await data.json()
     if(Object.keys(response).length != 0){
       //Messages d'erreur depuis le Backend
@@ -36,14 +38,13 @@ function SignIn(props) {
 
     if(response.result == true){
       props.addToken(response.token)
+      props.addPrenom(response.prenom)
       props.navigation.navigate('Home')
     } else {
       console.log('pas de token')
     }
   }
 
-  console.log(signInEmail)
-  console.log(signInPassword)
   
     return(
       <ImageBackground source={require('../assets/origami.png')} style={styles.container}>
@@ -60,20 +61,21 @@ function SignIn(props) {
             <View style={{marginBottom: 25}}>
               <TextInput
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-              //inputStyle={{marginLeft: 10}}
               placeholder=' Email'
               onChangeText={(val) => setSignInEmail(val)}
+              value={signInEmail}
               />
-              {errorChampVide!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorChampVide}</Text>}
+              {/* {errorChampVide!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorChampVide}</Text>} */}
               {errorEmailInexistant!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorEmailInexistant}</Text>}
             </View>
 
             <View style={{marginBottom: 25}}>
               <TextInput
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-              //inputStyle={{marginLeft: 10}}
               placeholder=' Mot de passe'
+              secureTextEntry={true}
               onChangeText={(val) => setSignInPassword(val)}
+              value={signInPassword}
               />
               {errorChampVide!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorChampVide}</Text>}
               {errorPassword!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorPassword}</Text>}
@@ -86,7 +88,7 @@ function SignIn(props) {
             <Button
              title='Connexion'
              color='#FF473A'
-             onPress={() => clickSignIn()}
+             onPress={() => clickSignIn(signInEmail, signInPassword)}
             />
 
             <TouchableOpacity onPress={() => props.navigation.navigate('SignUp')}>
@@ -113,6 +115,9 @@ const styles = StyleSheet.create({
     return {
       addToken: function(token){
         dispatch({type: 'addToken', token: token})
+      },
+      addPrenom: function(prenom){
+        dispatch({type: 'addPrenom', prenom: prenom})
       }
     }
   }
