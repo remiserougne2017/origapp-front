@@ -9,12 +9,7 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import FlashMessage from "react-native-flash-message";
 
 function Home(props) {
-<<<<<<< HEAD
-  
-=======
 
-
->>>>>>> ab69b4c7bd93275357217e646eeb217430cf88a7
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
   const [tagsList,setTagsList]=useState([])
@@ -33,7 +28,6 @@ function Home(props) {
    useEffect(()=>{
     const catalogue = async() =>{
       console.log("WELCOME HOME")
-<<<<<<< HEAD
       var responseFetch = await fetch(`http://10.2.5.203:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
@@ -46,12 +40,6 @@ function Home(props) {
       })
       setTagsList(tags)
       
-=======
-      var responseFetch = await fetch(`http://10.2.5.178:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
-      var bookList = await responseFetch.json();
-      setCataList(bookList.livreMin);
-      console.log("booklist",bookList.livreMin)
->>>>>>> ab69b4c7bd93275357217e646eeb217430cf88a7
     };
     catalogue();
     librairyToStore();
