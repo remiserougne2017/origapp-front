@@ -5,52 +5,55 @@ import { SearchBar, Badge,Divider  } from 'react-native-elements';
 import Books from './Books'
 import { set } from 'react-native-reanimated';
 import {connect} from 'react-redux';
+import { showMessage, hideMessage } from "react-native-flash-message";
+import FlashMessage from "react-native-flash-message";
 
 function Home(props) {
+
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
 
+  //pour charger le store Redux avec la biblio du user
+  const librairyToStore= ()=>{
+   var newCataList = cataList.map(e=>{
+     if(e.inLibrairy){
+       props.manageLibrairy(e.id,true)
+     }
+   })
+  }
+  
+   // Initialisation du composant
    useEffect(()=>{
-     const rechercheText = async()=>{
-       console.log("recherche en cours",textSearch)
-       var responseFetch = await fetch('http://10.2.3.37:3000/home/searchtext',{
-        method: 'POST',
-       headers: {'Content-Type':'application/x-www-form-urlencoded'},    
-       body: `textSearch=aventure`})
-       console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
-       var resultatsearch = await responseFetch.json();
-      console.log("ok pr le search")
-      
-    };
-   rechercheText();
-   },[textSearch])
-  useEffect(()=>{
     const catalogue = async() =>{
       console.log("WELCOME HOME")
-      var responseFetch = await fetch('http://192.168.43.90:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6')
+      var responseFetch = await fetch(`http://192.168.1.28:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
-      
     };
     catalogue();
     librairyToStore();
   },[])
 
-  //pour charger le store Redux avec la biblio du user
- const librairyToStore= ()=>{
-  var newCataList = cataList.map(e=>{
-    if(e.inLibrairy){
-      props.manageLibrairy(e.id,true)
-    }
-  })
- }
-     
-  console.log("STore librairy",props.storeLibrairy)
+   useEffect(()=>{
+     const rechercheText = async()=>{
+       console.log("recherche en cours",textSearch)
+       var responseFetch = await fetch('http://192.168.1.28:3000/home/searchtext',{
+        method: 'POST',
+       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.28'},    
+       body: `textSearch=aventure`})
+      //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
+       var resultatsearch = await responseFetch.json();
+      // console.log("ok pr le search")
+      
+    };
+   rechercheText();
+   },[textSearch])
+
   //RS creation du tableau de books pour afficher le catalogue
   var Book = cataList.map((e,i)=>{
-    
+
    return(
-    <Books id={e.id} key={i} inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
+    <Books id={e.id} key={i}  inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
    ) 
 
   })
@@ -104,6 +107,7 @@ function Home(props) {
             {Book}
           </View>
           </ScrollView>
+          <FlashMessage position="top" />
     </View>    
   );
 }
