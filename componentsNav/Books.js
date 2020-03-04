@@ -3,6 +3,9 @@ import { View, Text, Image } from 'react-native'
 import { Card,Rating,CheckBox  } from 'react-native-elements'
 import {connect} from 'react-redux';
 import {showMessage, hideMessage } from "react-native-flash-message";
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { withNavigation } from 'react-navigation';
+
 
 const Book = (props) => {
 
@@ -13,7 +16,7 @@ const [isCheck, setIsCheck] = useState(props.inLibrairy)
 const addLibrairy = async (id,bool) => {
     setIsCheck(bool)
     props.manageLibrairy(id,bool)
-    var responseFetch = await fetch(`http://192.168.1.28:3000/home/addLibrairy/${id}/${bool}/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+    var responseFetch = await fetch(`http://10.2.5.178:3000/home/addLibrairy/${id}/${bool}/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
     var resp = await responseFetch.json();
     showMessage({
         message: resp.mess,
@@ -24,12 +27,19 @@ const addLibrairy = async (id,bool) => {
 }
 
 return (
-            <Card containerStyle={{width:"45%",padding:2,backgroundColor:"white", marginLeft:"1%", marginRight:"1%"}}>
+          
+            <Card 
+              containerStyle={{width:"45%",padding:2,backgroundColor:"white", marginLeft:"1%", marginRight:"1%"}}
+              >
+                <TouchableOpacity
+                  onPress={() =>props.navigation.navigate('BookContent',{idBook:props.id})}
+                                    >
                 <Image
                     style={{width:"100%",height:250}}
                     resizeMode="cover"
                     source={{ uri: props.image }}
                 />
+                </TouchableOpacity>
                 <CheckBox 
                     onPress={() =>{addLibrairy(props.id,!isCheck)}}
                     checked={isCheck}
@@ -68,4 +78,4 @@ function mapStateToProps(state) {
      }
   }  
   
-  export default connect(null,mapDispatchToProps)(Book)
+  export default withNavigation(connect(null,mapDispatchToProps)(Book))

@@ -8,10 +8,9 @@ import { set } from 'react-native-reanimated';
 
 function BookContent(props) { 
 
-
+console.log("hello route params",props.navigation.state.params)
 //VARIABLES
     // comment Vincent : variables récupérées du store à remplacer par valeurs dynamiques 
-    var idBook = "5e5d4ccee909bf379423f491"
     var token = 'dTsvaJw2PQiOtTWxykt5KcWco87eeSp6' //var token = props.token
 
     // variable en dur le temps de récuperer les data from fetch
@@ -32,9 +31,8 @@ function BookContent(props) {
             idUser: 'user1'
         }
     ]
-
+    const [idBook,setIdBook] = useState(props.navigation.state.params.idBook)
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
-    // const [toggleOverlay,setToggleOverlay]= useState(false);
 
 // LOAD BOOK FROM DB
 

@@ -6,7 +6,8 @@ import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Parameters from "./componentsNav/parametersNav"
 import Library from "./componentsNav/libraryNav"
 import Home from "./componentsNav/Home"
-import BookContent from './componentsNav/book-content'
+import BookContent from './componentsNav/book-content';
+import Book from './componentsNav/Books'
 import SignUp from "./componentsNav/SignUp";
 import SignIn from "./componentsNav/SignIn";
 import newPassword from "./componentsNav/newPassword";
@@ -39,6 +40,7 @@ var StackNavigatorLibrary = createStackNavigator(
 var StackNavigatorHome = createStackNavigator(
   {
     Home:Home,
+    Book:Book,
     BookContent:BookContent,
 }, {headerMode: 'none',});
 

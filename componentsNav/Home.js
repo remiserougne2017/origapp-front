@@ -10,6 +10,7 @@ import FlashMessage from "react-native-flash-message";
 
 function Home(props) {
 
+
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
 
@@ -26,9 +27,10 @@ function Home(props) {
    useEffect(()=>{
     const catalogue = async() =>{
       console.log("WELCOME HOME")
-      var responseFetch = await fetch(`http://192.168.1.28:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+      var responseFetch = await fetch(`http://10.2.5.178:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
       var bookList = await responseFetch.json();
-      setCataList(bookList.livreMin)
+      setCataList(bookList.livreMin);
+      console.log("booklist",bookList.livreMin)
     };
     catalogue();
     librairyToStore();
@@ -37,9 +39,9 @@ function Home(props) {
    useEffect(()=>{
      const rechercheText = async()=>{
        console.log("recherche en cours",textSearch)
-       var responseFetch = await fetch('http://192.168.1.28:3000/home/searchtext',{
+       var responseFetch = await fetch('http://10.2.5.178:3000/home/searchtext',{
         method: 'POST',
-       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.28'},    
+       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.178'},    
        body: `textSearch=aventure`})
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
        var resultatsearch = await responseFetch.json();
