@@ -1,16 +1,17 @@
 import React, {useState,useEffect} from 'react';
-import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image} from 'react-native';
+import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity} from 'react-native';
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
-
+import OverlayContent from "../componentsNav/overlay-book"
+import { set } from 'react-native-reanimated';
 
 function BookContent(props) { 
 
-    // comment Vincent : variables récupérées du store 
-    var idBook = "5e5d4ccee909bf379423f491"
-    var token = 'dTsvaJw2PQiOtTWxykt5KcWco87eeSp6'
-   //var token = props.token
+console.log("hello route params",props.navigation.state.params)
+//VARIABLES
+    // comment Vincent : variables récupérées du store à remplacer par valeurs dynamiques 
+    var token = 'dTsvaJw2PQiOtTWxykt5KcWco87eeSp6' //var token = props.token
 
     // variable en dur le temps de récuperer les data from fetch
     const publisher = {publisher: "Les Editions du Sabot Rouge"}
@@ -30,13 +31,13 @@ function BookContent(props) {
             idUser: 'user1'
         }
     ]
-
-    // Load book from DB
+    const [idBook,setIdBook] = useState(props.navigation.state.params.idBook)
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
+
+// LOAD BOOK FROM DB
 
     useEffect( ()=> {
         async function openBook() {
-            console.log("hello fetch")
             var bookData = await fetch(`http://10.2.5.178:3000/books/open-book`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -44,7 +45,6 @@ function BookContent(props) {
                   }
             );
             var bookDataJson = await bookData.json();
-            // console.log(bookDataJson);
             setArrayDataBook(bookDataJson.dataBook);
       }
 
@@ -52,26 +52,42 @@ function BookContent(props) {
       },[])
 
 
-            // Construction d'un tableau splité pour génèrer les card par page 
-            var organisedContent = []
-            let arrayPage = []
-            for(let i=0;i<arrayDataBook.contents.length;i++){
-                if(arrayPage.indexOf(arrayDataBook.contents[i].pageNum)==-1)
-                { 
-                    arrayPage.push(arrayDataBook.contents[i].pageNum);
-                }
-            }
-            for(let j=0;j<arrayPage.length;j++){
-                let newArray = arrayDataBook.contents.filter(obj => obj.pageNum == arrayPage[j]);
-                let containerArray = {
-                    pageNumber: arrayPage[j],
-                    allContents:newArray
-                }
-                organisedContent.push(containerArray)
-            }
 
 
-    // CARD CONTENT CREATION  
+// Construction d'un tableau splité pour génèrer les card par page 
+    var organisedContent = []
+    let arrayPage = []
+    for(let i=0;i<arrayDataBook.contents.length;i++){
+        if(arrayPage.indexOf(arrayDataBook.contents[i].pageNum)==-1)
+        { 
+            arrayPage.push(arrayDataBook.contents[i].pageNum);
+        }
+    }
+    for(let j=0;j<arrayPage.length;j++){
+        let newArray = arrayDataBook.contents.filter(obj => obj.pageNum == arrayPage[j]);
+        let containerArray = {
+            pageNumber: arrayPage[j],
+            allContents:newArray
+        }
+        organisedContent.push(containerArray)
+    }
+
+    
+// OVERLAYlancer une fonction de reducer pour psser les infos a overlay-book
+function openOverlay (nb,id,bool, arr,tit){
+
+    let arrayContentSentToReducer
+    for(let i = 0;i<arr.length;i++){
+        if(arr[i].pageNumber == nb) {
+            arrayContentSentToReducer = arr[i].allContents
+        }
+    }
+    console.log("TITLE",tit)
+    props.storeOverlayInformation({id:id,nb:nb,toggle:bool,content:arrayContentSentToReducer,title:tit})
+}
+
+
+// CARD CONTENT CREATION  
 let cardDisplay = organisedContent.map((obj,i) => {
     let color; let colorFont;
     if(i%4==0) {color= '#F9603E';colorFont="white"} else if (i%3==0) {color= '#F4F4F4';colorFont="black"} else {color= '#F29782',colorFont="black"}
@@ -88,16 +104,20 @@ let cardDisplay = organisedContent.map((obj,i) => {
     })
 
     return (
-                <View style = {{backgroundColor:color, margin:10,borderRadius:5,padding:5, width:'40%', justifyContent:'center'}}>
-                    <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12,fontSize:9}} >page {obj.pageNumber}</Text>}
-                        badgeStyle={{backgroundColor:"#252525"}}
-                    />
-                <View style = {{justifyContent: 'center'}}>
-                    {titleList}
-                </View>
-                </View>)})
-
-
+    <TouchableOpacity
+        style = {{backgroundColor:color, margin:10,borderRadius:5,padding:5, width:'40%', justifyContent:'center'}}
+        onPress = {()=> openOverlay(obj.pageNumber,idBook,true,organisedContent,arrayDataBook.title)}
+    >
+        <View>
+            <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12,fontSize:9}} >page {obj.pageNumber}</Text>}
+                badgeStyle={{backgroundColor:"#252525"}}
+            />
+        <View style = {{justifyContent: 'center'}}>
+            {titleList}
+        </View>
+        </View>
+    </TouchableOpacity>
+    )})
 
 
 
@@ -136,7 +156,10 @@ let cardDisplay = organisedContent.map((obj,i) => {
                                 {cardDisplay}
 
                     </View>
+
                 </View>
+                <OverlayContent />
+
                 <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
                     <Divider 
                     style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15}} 
@@ -155,14 +178,27 @@ let cardDisplay = organisedContent.map((obj,i) => {
   }
 
 
-  function mapStateToProps(state) {
-    return { 
-      token: state.token,
+// GET USER TOKEN
+function mapDispatchToProps(dispatch) {
+    return {
+        storeOverlayInformation: function(obj) { 
+          dispatch( {
+              type: 'open-overlay',
+              overlayData : obj 
+            } ) 
+      },
     }
   }
 
-  
-  export default connect(
-    mapStateToProps, 
-    null
-  )(BookContent);
+
+function mapStateToProps(state) {
+return { 
+    token: state.token,
+}
+}
+
+
+export default connect(
+mapStateToProps, 
+mapDispatchToProps
+)(BookContent);
