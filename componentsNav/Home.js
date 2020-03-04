@@ -9,9 +9,11 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import FlashMessage from "react-native-flash-message";
 
 function Home(props) {
-
+  
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
+  const [tagsList,setTagsList]=useState([])
+  const [selectedTags,setSelectedTags]=useState([])
 
   //pour charger le store Redux avec la biblio du user
   const librairyToStore= ()=>{
@@ -26,24 +28,36 @@ function Home(props) {
    useEffect(()=>{
     const catalogue = async() =>{
       console.log("WELCOME HOME")
-      var responseFetch = await fetch(`http://192.168.1.28:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+      var responseFetch = await fetch(`http://10.2.5.203:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
+      //recup tags
+      var tagFetch = await fetch(`http://10.2.5.203:3000/home/homePage/tags`)
+      var tags = await tagFetch.json();
+      var tagsColor = tags.map(e=>{
+        e.color="grey"
+        return e
+      })
+      setTagsList(tags)
+      
     };
     catalogue();
     librairyToStore();
+    
   },[])
 
    useEffect(()=>{
      const rechercheText = async()=>{
        console.log("recherche en cours",textSearch)
-       var responseFetch = await fetch('http://192.168.1.28:3000/home/searchtext',{
+       var responseFetch = await fetch('http://10.2.5.203:3000/home/searchText',{
         method: 'POST',
-       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.28'},    
-       body: `textSearch=aventure`})
+       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.203'},    
+       body: `textSearch=${textSearch}`
+      })
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
        var resultatsearch = await responseFetch.json();
-      // console.log("ok pr le search")
+      console.log("ok pr le search",resultatsearch)
+      setCataList(resultatsearch.resultMin)
       
     };
    rechercheText();
@@ -51,15 +65,46 @@ function Home(props) {
 
   //RS creation du tableau de books pour afficher le catalogue
   var Book = cataList.map((e,i)=>{
-
    return(
     <Books id={e.id} key={i}  inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
    ) 
 
   })
+//RS fetch pour search tag
+const fetchTag = async (tags)=>{
+  var dataTag = JSON.stringify(tags)
+
+  var responseFetch = await fetch(`http://10.2.5.203:3000/home/searchText`,{
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.203'},    
+    body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token="dTsvaJw2PQiOtTWxykt5KcWco87eeSp6"`});
+    var resultatSearch = await responseFetch.json();
+    console.log("fetchTag result",resultatSearch)
+}
+  //RS création des Tags
+  const onPressTag=(tagId)=>{
+    var newTag= [...tagsList]
+    var index= newTag.map(f=>{
+      if(tagId==f._id){
+        f.color=="grey"?f.color="red":f.color="grey"
+      }
+      return f
+    })
+    setTagsList(index)
+    fetchTag(index)
+    };
+
+  var Tags = tagsList.map((e,i)=>{
+    return (
+      <Badge key={i} 
+      onPress={()=>{console.log("onPress Tags");onPressTag(e._id)}}
+      value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12}}>{e.name}</Text>}
+      badgeStyle={{backgroundColor: e.color, margin:3}}
+    />
+    )
+  })
 
   return (
-    
      <View style={{ flex: 1, width:"100%"}}>
        <View style={{ flexDirection:"row", marginTop:25}}>
        <Image
@@ -82,10 +127,8 @@ function Home(props) {
           source={require('../assets/qr-scan.png')}
         />
         </View>
-          <View style={{margin:10}}>
-            <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12}}>Jeunesse</Text>}
-              badgeStyle={{backgroundColor:"grey"}}
-            />
+          <View style={{flexDirection:"row", flexWrap:"wrap",margin:10}}>
+            {Tags}
           </View>
         <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
           <Divider style={{ backgroundColor: '#F9603E', width:"60%", /*opacity:"50%"*/ marginTop:15}} />
