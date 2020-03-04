@@ -11,17 +11,21 @@ import Book from './componentsNav/Books'
 import SignUp from "./componentsNav/SignUp";
 import SignIn from "./componentsNav/SignIn";
 import newPassword from "./componentsNav/newPassword";
+import contentMediaPage from "./componentsNav/content-media";
+
 
 // comment Vincent : lignes pour REDUX
   // import MapLoc from './components/map';
 import storeLibrairy from './reducers/reducerLibrairy';
 import overlayData from './reducers/reducerOverlay';
+import contentMediaData from './reducers/reducerContent';
+
 import {Provider} from 'react-redux';
 import reducerToken from './reducers/reducerToken';
 import reducerPrenom from './reducers/reducerPrenom';
 import {createStore, combineReducers}  from 'redux';
 
-const store = createStore(combineReducers({reducerToken,storeLibrairy, reducerPrenom, overlayData}),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStore(combineReducers({reducerToken,storeLibrairy, reducerPrenom, overlayData,contentMediaData}),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 console.disableYellowBox = true;
 
@@ -43,6 +47,7 @@ var StackNavigatorHome = createStackNavigator(
     Home:Home,
     Book:Book,
     BookContent:BookContent,
+    contentMediaPage:contentMediaPage,
 }, {headerMode: 'none',});
 
  var StackNavigatorParameters = createStackNavigator(

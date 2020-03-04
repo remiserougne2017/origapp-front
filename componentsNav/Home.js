@@ -10,7 +10,6 @@ import FlashMessage from "react-native-flash-message";
 
 function Home(props) {
 
-
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
 
@@ -30,7 +29,7 @@ function Home(props) {
       var responseFetch = await fetch(`http://10.2.5.178:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin);
-      console.log("booklist",bookList.livreMin)
+      console.log(bookList.livreMin)
     };
     catalogue();
     librairyToStore();
