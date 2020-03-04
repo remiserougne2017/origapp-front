@@ -129,6 +129,11 @@ function SignUp(props) {
              color='#FF473A'
              onPress={() => props.navigation.navigate('BookContent')}
             />
+                <Button
+             title='nav mediapage'
+             color='#FF473A'
+             onPress={() => props.navigation.navigate('contentMediaPage')}
+            />
            
            </View> 
         </KeyboardAvoidingView> 
