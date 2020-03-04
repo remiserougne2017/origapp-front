@@ -38,11 +38,6 @@ function SignUp(props) {
         setErrorPassword(response.error.passwordNotValid)
       }
 
-      setSignUpFirstName('')
-      setSignUpEmail('')
-      setSignUpPassword('')
-      setSignUpPasswordMatch('')
-
       if(response.result == true){
         props.addToken(response.token)
         props.navigation.navigate('Home')
