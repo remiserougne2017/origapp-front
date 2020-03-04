@@ -1,9 +1,10 @@
 import React, {useState,useEffect} from 'react';
-import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image} from 'react-native';
+import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity} from 'react-native';
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import OverlayContent from "../componentsNav/overlay-book"
+import { set } from 'react-native-reanimated';
 
 function BookContent(props) { 
 
@@ -33,12 +34,12 @@ function BookContent(props) {
     ]
 
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
+    // const [toggleOverlay,setToggleOverlay]= useState(false);
 
 // LOAD BOOK FROM DB
 
     useEffect( ()=> {
         async function openBook() {
-            console.log("hello fetch")
             var bookData = await fetch(`http://10.2.5.178:3000/books/open-book`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -46,12 +47,13 @@ function BookContent(props) {
                   }
             );
             var bookDataJson = await bookData.json();
-            // console.log(bookDataJson);
             setArrayDataBook(bookDataJson.dataBook);
       }
 
         openBook();
       },[])
+
+
 
 
 // Construction d'un tableau splité pour génèrer les card par page 
@@ -72,6 +74,20 @@ function BookContent(props) {
         organisedContent.push(containerArray)
     }
 
+    
+// OVERLAYlancer une fonction de reducer pour psser les infos a overlay-book
+function openOverlay (nb,id,bool, arr,tit){
+
+    let arrayContentSentToReducer
+    for(let i = 0;i<arr.length;i++){
+        if(arr[i].pageNumber == nb) {
+            arrayContentSentToReducer = arr[i].allContents
+        }
+    }
+    console.log("TITLE",tit)
+    props.storeOverlayInformation({id:id,nb:nb,toggle:bool,content:arrayContentSentToReducer,title:tit})
+}
+
 
 // CARD CONTENT CREATION  
 let cardDisplay = organisedContent.map((obj,i) => {
@@ -90,16 +106,20 @@ let cardDisplay = organisedContent.map((obj,i) => {
     })
 
     return (
-    <View style = {{backgroundColor:color, margin:10,borderRadius:5,padding:5, width:'40%', justifyContent:'center'}}>
-        <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12,fontSize:9}} >page {obj.pageNumber}</Text>}
-            badgeStyle={{backgroundColor:"#252525"}}
-        />
-    <View style = {{justifyContent: 'center'}}>
-        {titleList}
-    </View>
-    </View>)})
-
-
+    <TouchableOpacity
+        style = {{backgroundColor:color, margin:10,borderRadius:5,padding:5, width:'40%', justifyContent:'center'}}
+        onPress = {()=> openOverlay(obj.pageNumber,idBook,true,organisedContent,arrayDataBook.title)}
+    >
+        <View>
+            <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12,fontSize:9}} >page {obj.pageNumber}</Text>}
+                badgeStyle={{backgroundColor:"#252525"}}
+            />
+        <View style = {{justifyContent: 'center'}}>
+            {titleList}
+        </View>
+        </View>
+    </TouchableOpacity>
+    )})
 
 
 
@@ -133,7 +153,6 @@ let cardDisplay = organisedContent.map((obj,i) => {
                 </View>
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
                     <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les contenus à découvrir</Text>
-                    <OverlayContent/>
                     <View style = {{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection:'row',flexWrap:'wrap'}}>
 
                                 {cardDisplay}
@@ -141,6 +160,8 @@ let cardDisplay = organisedContent.map((obj,i) => {
                     </View>
 
                 </View>
+                <OverlayContent />
+
                 <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
                     <Divider 
                     style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15}} 
@@ -160,14 +181,26 @@ let cardDisplay = organisedContent.map((obj,i) => {
 
 
 // GET USER TOKEN
-  function mapStateToProps(state) {
-    return { 
-      token: state.token,
+function mapDispatchToProps(dispatch) {
+    return {
+        storeOverlayInformation: function(obj) { 
+          dispatch( {
+              type: 'open-overlay',
+              overlayData : obj 
+            } ) 
+      },
     }
   }
 
-  
-  export default connect(
-    mapStateToProps, 
-    null
-  )(BookContent);
+
+function mapStateToProps(state) {
+return { 
+    token: state.token,
+}
+}
+
+
+export default connect(
+mapStateToProps, 
+mapDispatchToProps
+)(BookContent);

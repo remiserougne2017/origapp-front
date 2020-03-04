@@ -14,11 +14,12 @@ import newPassword from "./componentsNav/newPassword";
 // comment Vincent : lignes pour REDUX
   // import MapLoc from './components/map';
 import storeLibrairy from './reducers/reducerLibrairy';
+import overlayData from './reducers/reducerOverlay';
 import {Provider} from 'react-redux';
 import reducerToken from './reducers/reducerToken';
 import {createStore, combineReducers}  from 'redux';
 
-const store = createStore(combineReducers({reducerToken,storeLibrairy}),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStore(combineReducers({reducerToken,storeLibrairy,overlayData}),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 console.disableYellowBox = true;
 
