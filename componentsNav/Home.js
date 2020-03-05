@@ -78,9 +78,9 @@ function Home(props) {
 const fetchTag = async (tags)=>{
   var dataTag = JSON.stringify(tags)
 
-  var responseFetch = await fetch(`http://192.168.1.28:3000/home/searchTag`,{
+  var responseFetch = await fetch(`http://10.2.5.202:3000/home/searchTag`,{
     method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.28'},    
+    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.202'},    
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token="dTsvaJw2PQiOtTWxykt5KcWco87eeSp6"`});
     var resultatSearch = await responseFetch.json();
     console.log("TAGRESULT",await resultatSearch)

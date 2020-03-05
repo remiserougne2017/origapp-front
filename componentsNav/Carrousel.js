@@ -1,11 +1,24 @@
-import React, {useRef, useState, Component} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {Text, View, SafeAreaView, Image } from 'react-native';
 import {Rating} from 'react-native-elements';
-import Carousel from 'react-native-snap-carousel'
+import Carousel from 'react-native-snap-carousel';
+import {connect} from 'react-redux';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import { withNavigation } from 'react-navigation';
+import Books from './Books.js'
 
-function Carrousel() {
+function Carrousel(props) {
 
     const[activeIndex, setActiveIndex] = useState('')
+    const [carrouselList,setCarrouselList]=useState([]);
+
+    var Book = carrouselList.map((e,i)=>{
+        return(
+         <Books id={e.id} key={i}  inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
+        ) 
+     }) 
+
+     console.log(Book)
 
     var carrousel = useRef(null)
     var images = [
@@ -30,17 +43,19 @@ function Carrousel() {
                 //padding: 50,
                 //marginLeft: 5,
                 /* marginRight: 5, */ }}>
-                 <Image  style={{ width:"80%", height: 140}} source={{uri: item.image}}/> 
-                 <Text style={{fontSize:11}}>{item.author}</Text>
-                 <Text style={{fontSize:11}}>{item.publisher}</Text>
-                 <Rating
-                    style={{marginTop:3}}
-                    imageSize={10}
-                    readonly
-                    startingValue={3}
-                    ratingBackgroundColor='red'
-                    />
-                 
+                <TouchableOpacity
+                  onPress={() =>props.navigation.navigate('BookContent',{idBook:'5e5fd3b2a2f6a844f031ec1c'})}>    
+                    <Image  style={{ width:"80%", height: 140}} source={{uri: item.image}}/> 
+                    <Text style={{fontSize:11}}>{item.author}</Text>
+                    <Text style={{fontSize:11}}>{item.publisher}</Text>
+                    <Rating
+                        style={{marginTop:3}}
+                        imageSize={10}
+                        readonly
+                        startingValue={3}
+                        ratingBackgroundColor='red'
+                        />
+                </TouchableOpacity>
             </View>
         );
     } 
@@ -62,4 +77,4 @@ function Carrousel() {
     
 }
 
-export default Carrousel
+export default withNavigation(Carrousel) 
