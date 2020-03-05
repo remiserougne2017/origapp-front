@@ -37,10 +37,10 @@ function Home(props) {
    useEffect(()=>{
      const rechercheText = async()=>{
        console.log("recherche en cours",textSearch)
-       var responseFetch = await fetch('http://192.168.1.28:3000/home/searchtext',{
+       var responseFetch = await fetch('http://10.2.3.37:3000/home/searchtext',{
         method: 'POST',
-       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.28'},    
-       body: `textSearch=aventure`})
+       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.3.37'},    
+       body: `textSearch=aventure&token=dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`})
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
        var resultatsearch = await responseFetch.json();
       // console.log("ok pr le search")
