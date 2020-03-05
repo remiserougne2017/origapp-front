@@ -6,7 +6,7 @@ import { Button, Icon  } from 'react-native-elements';
 import color from './color'
 
 function Scan(props) {
-    
+
 var camera = useRef(null);
 const [hasPermission, setHasPermission] = useState(null);
 const [type, setType] = useState(Camera.Constants.Type.back);
@@ -31,8 +31,7 @@ const sendPicture = async (path)=>{
     });
     console.log("PATH DATA",data)
     //envoi au backend pour enregistrer sur cloudinary
-   var response = await fetch("http://10.2.5.203:3000/home/scan",
-    {
+   var response = await fetch("http://10.2.5.203:3000/home/scan", {
       method: 'POST',
       body: data
     });  
