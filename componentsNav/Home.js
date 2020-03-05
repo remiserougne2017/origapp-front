@@ -132,7 +132,7 @@ for (let i=0;i<tagsList.length;i++){
   // })
 
   return (
-     <View style={{ flex: 1, width:"100%"}}>
+     <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
        <View style={{ flexDirection:"row", marginTop:25}}>
        <Image
           style={{width: 40, height: 40, margin:5}}
@@ -164,32 +164,49 @@ for (let i=0;i<tagsList.length;i++){
         <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
           <Divider style={{ backgroundColor: '#F9603E', width:"60%", /*opacity:"50%"*/ marginTop:15}} />
         </View>
-        <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
-          <Text style={{color:"#F9603E"}}>Les mieux notés</Text>
-          
-        </View>
 
-        <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
-          <Carrousel/>
-        </View>
+        <ScrollView stickyHeaderIndices={[2]}>
 
-        <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
-          <Text style={{color:"#F9603E"}}>Catalogue</Text>
-        </View>   
-        
-      <ScrollView contentContainerStyle={{padding: 5}}>
-          <View style={{
-              flex: 1,
-              flexDirection:"row",
-              justifyContent:"space-around",
-              flexWrap: 'wrap',
-              margin:"auto"  
-            }}>
-              {errorMessage!=""?<Text>{errorMessage}</Text>:null}
-              {Book}            
+          <View style={{ flexDirection:"row",
+                        justifyContent:"flex-start", 
+                        alignItems:'center', 
+                        marginTop:10, 
+                        marginLeft:10}}>
+            <Text style={{color:"#F9603E"}}>Les mieux notés</Text>
+            
           </View>
-          </ScrollView>
-          <FlashMessage position="top" />
+
+          <View style={{ flexDirection:"row",
+                        justifyContent:"flex-start", 
+                        alignItems:'center',
+                        marginTop:10}}>
+            <Carrousel/>
+          </View>
+
+          <View style={{ flexDirection:"row", 
+                        justifyContent:"flex-start",
+                        alignItems:'center',
+                        marginTop:10,
+                        marginLeft:10,
+                        paddingBottom:5, 
+                        backgroundColor:'#EEEEEE'}}>
+          <Text style={{color:"#F9603E"}}>Catalogue</Text>
+          </View>   
+          
+          <ScrollView contentContainerStyle={{padding: 5}}>
+            <View style={{
+                flex: 1,
+                flexDirection:"row",
+                justifyContent:"space-around",
+                flexWrap: 'wrap',
+                margin:"auto"  
+              }}>
+                {errorMessage!=""?<Text>{errorMessage}</Text>:null}
+                {Book}            
+            </View>
+            </ScrollView>
+            <FlashMessage position="top" />
+          </ScrollView>   
     </View>    
   );
 }
