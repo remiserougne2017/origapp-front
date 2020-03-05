@@ -17,6 +17,7 @@ function Home(props) {
   const [tagsList,setTagsList]=useState([])
   const [selectedTags,setSelectedTags]=useState([])
   const [errorMessage,setErrorMessage]=useState('')
+  const [bestRated, setBestRated]=useState('')
   
   //pour charger le store Redux avec la biblio du user
   const librairyToStore= ()=>{
@@ -35,6 +36,7 @@ function Home(props) {
       var responseFetch = await fetch(`http://10.2.5.202:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
+      setBestRated(bookList.livresMieuxNotes)
       //recup tags
       var tagFetch = await fetch(`http://10.2.5.202:3000/home/homePage/tags`)
       var tags = await tagFetch.json();
@@ -71,9 +73,10 @@ function Home(props) {
   var Book = cataList.map((e,i)=>{
    return(
     <Books id={e.id} key={i}  inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
-   ) 
-
+   )
   })
+
+
 //RS fetch pour search tag
 const fetchTag = async (tags)=>{
   var dataTag = JSON.stringify(tags)
@@ -131,6 +134,7 @@ for (let i=0;i<tagsList.length;i++){
   //   )
   // })
 
+  console.log(bestRated + 'carrousel')
   return (
      <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
        <View style={{ flexDirection:"row", marginTop:25}}>
@@ -180,7 +184,7 @@ for (let i=0;i<tagsList.length;i++){
                         justifyContent:"flex-start", 
                         alignItems:'center',
                         marginTop:10}}>
-            <Carrousel/>
+            <Carrousel data={bestRated}/>
           </View>
 
           <View style={{ flexDirection:"row", 
