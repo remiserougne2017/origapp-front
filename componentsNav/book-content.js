@@ -33,7 +33,7 @@ function BookContent(props) {
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
-            var bookData = await fetch(`http://10.2.5.178:3000/books/open-book`, { 
+            var bookData = await fetch(`http://10.2.5.203:3000/books/open-book`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
                     body: `idBook=${idBook}&token=${token}`
