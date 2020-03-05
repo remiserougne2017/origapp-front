@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
-//import {TextField, FilledTextField, OutlinedTextField} from 'react-native-material-textfield'; // Module pour gérer les inputs
 import {connect} from 'react-redux';
 
 function SignUp(props) {
@@ -28,6 +27,7 @@ function SignUp(props) {
 
     } else {
       console.log('mdp ok')
+      
       const data = await fetch('http://10.2.5.202:3000/users/sign-up', {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -41,6 +41,7 @@ function SignUp(props) {
         setErrorUserExistant(response.error.email)
         setErrorChampVide(response.error.emptyField)
         setErrorPassword(response.error.passwordNotValid)
+        console.log(response)
       }
 
       if(response.result == true){
@@ -66,28 +67,29 @@ function SignUp(props) {
               <Text style={{ marginTop:25,marginLeft:5, fontSize:32, fontWeight:"500"}} >OrigApp</Text>
             </View>
             
-            <View style={{marginBottom: 25}}>
+            <View style={{marginBottom:20}}>
               <TextInput
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
               placeholder=' Prénom'
               onChangeText={(val) => setSignUpFirstName(val)}
               value={signUpFirstName}
               />
-              {errorChampVide!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorChampVide}</Text>}
+             { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
             </View>
 
-            <View style={{marginBottom: 25}}>
+            <View style={{marginBottom:20}}>
               <TextInput
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
               placeholder=' Email'
               onChangeText={(val) => setSignUpEmail(val)}
               value={signUpEmail}
               />
-              {errorUserExistant!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorUserExistant}</Text>}
-              {errorEmailInvalide!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorEmailInvalide}</Text>}
+              { errorUserExistant ? <Text style={{fontSize:12,color:'red'}}>{errorUserExistant}</Text> : null }
+              { errorEmailInvalide ? <Text style={{fontSize:12,color:'red'}}>{errorEmailInvalide}</Text> : null}
+              { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
             </View>
 
-            <View style={{marginBottom: 25}}>
+            <View style={{marginBottom:20}}>
               <TextInput
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
               placeholder=' Mot de passe'
@@ -95,10 +97,11 @@ function SignUp(props) {
               onChangeText={(val) => setSignUpPassword(val)}
               value={signUpPassword}
               />
-              {errorPassword!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorPassword}</Text>}
+              { errorPassword ? <Text style={{fontSize:12,color:'red'}}>{errorPassword}</Text> : null }
+              { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
             </View>
 
-            <View style={{marginBottom: 25}}>
+            <View >
               <TextInput
               style = {{borderWidth : 1.0, borderColor: 'white',  borderRadius: 5, backgroundColor: 'white'}}
               secureTextEntry={true}
@@ -106,10 +109,10 @@ function SignUp(props) {
               onChangeText={(val) => setSignUpPasswordMatch(val)}
               value={signUpPasswordMatch}
               />
-              {errorMatch !='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorMatch}</Text>}
+              { errorMatch ? <Text style={{fontSize:12,color:'red'}}>{errorMatch}</Text> : null }
           
               <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
-              <Text style={{fontSize: 11, marginBottom: 20, textAlign: "right", fontStyle: "italic"}}>J'ai déjà un compte</Text>
+              <Text style={{fontSize: 11, marginBottom: 18, textAlign: "right", fontStyle: "italic"}}>J'ai déjà un compte</Text>
             </TouchableOpacity>
             </View>
 
