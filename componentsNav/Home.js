@@ -7,6 +7,7 @@ import { set } from 'react-native-reanimated';
 import {connect} from 'react-redux';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import FlashMessage from "react-native-flash-message";
+import Carrousel from './Carrousel';
 
 function Home(props) {
 
@@ -14,7 +15,7 @@ function Home(props) {
   const [cataList,setCataList]=useState([]);
   const [tagsList,setTagsList]=useState([])
   const [selectedTags,setSelectedTags]=useState([])
-
+  const [errorMessage,setErrorMessage]=useState('')
   //pour charger le store Redux avec la biblio du user
   const librairyToStore= ()=>{
    var newCataList = cataList.map(e=>{
@@ -27,12 +28,13 @@ function Home(props) {
    // Initialisation du composant
    useEffect(()=>{
     const catalogue = async() =>{
+      // await fetch('http://192.168.1.28:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
       console.log("WELCOME HOME")
-      var responseFetch = await fetch(`http://10.2.5.203:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+      var responseFetch = await fetch(`http://192.168.1.28:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
       //recup tags
-      var tagFetch = await fetch(`http://10.2.5.203:3000/home/homePage/tags`)
+      var tagFetch = await fetch(`http://192.168.1.28:3000/home/homePage/tags`)
       var tags = await tagFetch.json();
       var tagsColor = tags.map(e=>{
         e.color="grey"
@@ -49,9 +51,9 @@ function Home(props) {
    useEffect(()=>{
      const rechercheText = async()=>{
        console.log("recherche en cours",textSearch)
-       var responseFetch = await fetch('http://10.2.5.203:3000/home/searchText',{
+       var responseFetch = await fetch(`http://192.168.1.28:3000/home/searchtext/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`,{
         method: 'POST',
-       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.203'},    
+       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.28'},    
        body: `textSearch=${textSearch}`
       })
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
@@ -74,12 +76,25 @@ function Home(props) {
 const fetchTag = async (tags)=>{
   var dataTag = JSON.stringify(tags)
 
-  var responseFetch = await fetch(`http://10.2.5.203:3000/home/searchText`,{
+  var responseFetch = await fetch(`http://192.168.1.28:3000/home/searchTag`,{
     method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.203'},    
+    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.28'},    
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token="dTsvaJw2PQiOtTWxykt5KcWco87eeSp6"`});
     var resultatSearch = await responseFetch.json();
-    console.log("fetchTag result",resultatSearch)
+    console.log("TAGRESULT",await resultatSearch)
+    if(resultatSearch.result == 'ok'){
+      setErrorMessage('')
+      setCataList(resultatSearch.resultMin)
+    }else if(resultatSearch.result == "Aucune sélection")
+    {
+      setErrorMessage('')
+      setCataList(resultatSearch.resultMin)
+
+    }else{
+      setErrorMessage(resultatSearch.result)
+      setCataList([{}])
+    }
+    
 }
   //RS création des Tags
   const onPressTag=(tagId)=>{
@@ -94,15 +109,25 @@ const fetchTag = async (tags)=>{
     fetchTag(index)
     };
 
-  var Tags = tagsList.map((e,i)=>{
-    return (
-      <Badge key={i} 
-      onPress={()=>{console.log("onPress Tags");onPressTag(e._id)}}
-      value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12}}>{e.name}</Text>}
-      badgeStyle={{backgroundColor: e.color, margin:3}}
-    />
-    )
-  })
+  var Tags=[]
+for (let i=0;i<tagsList.length;i++){
+ Tags.push(
+<Badge key={i} 
+  onPress={()=>{console.log("onPress Tags");onPressTag(tagsList[i]._id)}}
+  value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12}}>{tagsList[i].name}</Text>}
+  badgeStyle={{backgroundColor: tagsList[i].color, margin:3}}
+/>
+ ) 
+}
+  // var Tags = tagsList.map((e,i)=>{
+  //   return (
+  //     <Badge key={i} 
+  //     onPress={()=>{console.log("onPress Tags");onPressTag(e._id)}}
+  //     value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12}}>{e.name}</Text>}
+  //     badgeStyle={{backgroundColor: e.color, margin:3}}
+  //   />
+  //   )
+  // })
 
   return (
      <View style={{ flex: 1, width:"100%"}}>
@@ -135,10 +160,17 @@ const fetchTag = async (tags)=>{
         </View>
         <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
           <Text style={{color:"#F9603E"}}>Les mieux notés</Text>
+          
         </View>
+
+        <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
+          <Carrousel/>
+        </View>
+
         <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
           <Text style={{color:"#F9603E"}}>Catalogue</Text>
         </View>   
+        
       <ScrollView contentContainerStyle={{padding: 5}}>
           <View style={{
               flex: 1,
@@ -147,7 +179,8 @@ const fetchTag = async (tags)=>{
               flexWrap: 'wrap',
               margin:"auto"  
             }}>
-            {Book}
+              {errorMessage!=""?<Text>{errorMessage}</Text>:null}
+              {Book}            
           </View>
           </ScrollView>
           <FlashMessage position="top" />
