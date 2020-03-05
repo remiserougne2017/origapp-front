@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet,ScrollView, Text, View,Image } from 'react-native';
+import { StyleSheet,ScrollView, Text, View,Image,TouchableOpacity } from 'react-native';
 import { SearchBar, Badge,Divider  } from 'react-native-elements';
 // import { Container, Row } from 'reactstrap';
 import Books from './Books'
@@ -8,6 +8,7 @@ import {connect} from 'react-redux';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import FlashMessage from "react-native-flash-message";
 import Carrousel from './Carrousel';
+import { withNavigation } from 'react-navigation';
 
 function Home(props) {
 
@@ -16,6 +17,7 @@ function Home(props) {
   const [tagsList,setTagsList]=useState([])
   const [selectedTags,setSelectedTags]=useState([])
   const [errorMessage,setErrorMessage]=useState('')
+  
   //pour charger le store Redux avec la biblio du user
   const librairyToStore= ()=>{
    var newCataList = cataList.map(e=>{
@@ -147,10 +149,14 @@ for (let i=0;i<tagsList.length;i++){
           onChangeText={(value)=> setTextSearch(value)}
           value={textSearch}
         />
-         <Image
-          style={{width: 40, height: 40, marginLeft:10}}
-          source={require('../assets/qr-scan.png')}
-        />
+        <TouchableOpacity onPress={()=>{console.log("SCAN");props.navigation.navigate('Scan')}}>
+          <Image
+           
+            style={{width: 40, height: 40, marginLeft:10}}
+            source={require('../assets/qr-scan.png')}
+          />
+        </TouchableOpacity>
+        
         </View>
           <View style={{flexDirection:"row", flexWrap:"wrap",margin:10}}>
             {Tags}
@@ -200,5 +206,4 @@ function mapStateToProps(state) {
   return { storeLibrairy: state.storeLibrairy,
    }
 }
-
-export default connect(mapStateToProps,mapDispatchToProps)(Home)
+export default withNavigation(connect(mapStateToProps,mapDispatchToProps)(Home))

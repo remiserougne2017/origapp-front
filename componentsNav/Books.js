@@ -14,10 +14,11 @@ const [isCheck, setIsCheck] = useState(props.inLibrairy)
 
 //Function appel route addLibrairy
 const addLibrairy = async (id,bool) => {
+    var responseFetch = await fetch(`http://192.168.1.28/home/addLibrairy/${id}/${bool}/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+    var resp = await responseFetch.json();
     setIsCheck(bool)
     props.manageLibrairy(id,bool)
-    var responseFetch = await fetch(`http://10.2.5.203:3000/home/addLibrairy/${id}/${bool}/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
-    var resp = await responseFetch.json();
+    console.log("MESSAGE!")
     showMessage({
         message: resp.mess,
         type: resp.type,
@@ -41,7 +42,7 @@ return (
                 />
                 </TouchableOpacity>
                 <CheckBox 
-                    onPress={() =>{addLibrairy(props.id,!isCheck)}}
+                    onPress={() =>{addLibrairy(props.id,!isCheck);console.log("ONPRESS")}}
                     checked={isCheck}
                     checkedColor="#F9603E"
                     containerStyle={{position: "absolute",
