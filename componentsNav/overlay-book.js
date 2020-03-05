@@ -97,7 +97,7 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
                 badgeStyle={{backgroundColor:"grey"}}
             />
             <Icon 
-                containerStyle={{marginLeft:'auto'}}
+                containerStyle={{marginLeft:250}}
                 name= "closecircleo" type='antdesign'  size= {20}
                 onPress={() => props.storeOverlayInformation({toggle:false, content:[]})}
             />
