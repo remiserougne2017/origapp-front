@@ -205,8 +205,9 @@ for (let i=0;i<tagsList.length;i++){
                 {Book}            
             </View>
             </ScrollView>
-            <FlashMessage position="top" />
+           
           </ScrollView>   
+          <FlashMessage position="top" />
     </View>    
   );
 }
