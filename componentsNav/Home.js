@@ -9,8 +9,11 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import FlashMessage from "react-native-flash-message";
 import Carrousel from './Carrousel';
 import { withNavigation } from 'react-navigation';
+import color from './color';
 
 function Home(props) {
+  //test d'apport de couleur en variable
+  console.log('COULEUr', color("red") )
 
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
