@@ -29,11 +29,11 @@ function Home(props) {
    useEffect(()=>{
     const catalogue = async() =>{
       console.log("WELCOME HOME")
-      var responseFetch = await fetch(`http://10.2.5.203:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+      var responseFetch = await fetch(`http://10.2.5.202:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
       //recup tags
-      var tagFetch = await fetch(`http://10.2.5.203:3000/home/homePage/tags`)
+      var tagFetch = await fetch(`http://10.2.5.202:3000/home/homePage/tags`)
       var tags = await tagFetch.json();
       var tagsColor = tags.map(e=>{
         e.color="grey"
