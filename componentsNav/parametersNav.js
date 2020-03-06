@@ -5,10 +5,39 @@ import { Button,Input, Avatar, Icon, Header} from 'react-native-elements';
 import {connect} from 'react-redux';
 /* import { Ionicons } from '@expo/vector-icons'; */
 
-function Parameters() { 
 
+ 
 
+function  Parameters(props) { 
 
+  /// recup identité user du store
+const [username, setUsername]= useState('')
+
+var clickLogOut = () => {
+  console.log("func clickLogOUt")
+  props.deleteToken()
+  props.deletePrenom()
+  props.navigation.navigate('SignIn') }
+
+console.log("HELLOOOOOOOOOO TOKEN PARAMETRE",props.token)
+  useEffect(() => {
+  const findUser = async () => {
+    const dataUser = await fetch ('http://10.2.3.37:3000/users/params', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: `token=${props.token}`
+    });
+    let resJson = await dataUser.json()
+    console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", resJson)
+    setUsername(resJson.user)
+  
+  }
+findUser()
+console.log("useEffect")
+},[])
+
+console.log("token user recupere dans store", props.token)
+   console.log("NAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAME", username)
 // RETURN GLOBAL DE LA PAGE
 
     return (
@@ -52,7 +81,7 @@ function Parameters() {
                             <Icon 
                             iconStyle={{iconRight: "true"}}
                             name= "logout" type='antdesign'  color= "black" size= {20}
-                            onPress={() => console.log("star this book")}
+                            
                             />
                       }
                         
@@ -60,8 +89,9 @@ function Parameters() {
                         type="clear"
                         titleStyle={{color: "black"}}
                         style={{marginRight: 0, marginLeft: "auto"}}
-                        /*  onPress={()=> socket.emit("sendMessage", currentMessage);
-                        setCurrentMessage("") } */
+                        onPress={() => {
+                            console.log("deconnection d'un user");
+                            clickLogOut()}}
                       />
             
               </View>
@@ -75,14 +105,14 @@ function Parameters() {
                       overlayContainerStyle={{backgroundColor: 'clear'}}
                       icon={{name: 'user', type: 'font-awesome', color: 'black'}}
                       size= {200}
-                      onPress={() => console.log("Works!")}
+                     
                       activeOpacity={0}
                     /*  containerStyle={{flex: 2, marginLeft: 20, marginTop: 115}} */
                  />
 
                     <View>
-                    <Text style={{fontSize:25, fontWeight:"700", marginLeft:10, marginTop: 50}}>Jean</Text>
-                    <Text style={{fontSize:25, fontWeight:"700", marginLeft:10}}>Dupont</Text>
+                    <Text style={{fontSize:25, fontWeight:"700", marginLeft:10, marginTop: 50}}>Compte : </Text>
+                    <Text style={{fontSize:25, fontWeight:"700", marginLeft:10}}>{username}</Text>
                     <Button style={{marginLeft: 0}} type="clear" titleStyle={{color: "black", fontSize:10}} title="Changer mon mot de passe"></Button>
                     </View>
       </View>
@@ -94,16 +124,15 @@ function Parameters() {
                             <Icon 
                             iconStyle={{ color: "black"}}
                             name="help-circle" type='feather'  color= "black" size= {20}
-                            onPress={() => console.log("star this book")}
+                            onPress={() => console.log("demande d'aide")}
                             />
-                      }
+                      } 
                         
                         title="  Aide"
                         type="clear"
                         titleStyle={{color: "black"}}
                         style={{marginRight: 0, marginLeft: "auto"}}
-                        /*  onPress={()=> socket.emit("sendMessage", currentMessage);
-                        setCurrentMessage("") } */
+                        
                       />
 
       </View>
@@ -120,45 +149,42 @@ function Parameters() {
                         type="clear"
                         titleStyle={{color: "black"}}
                         style={{marginRight: 0, marginLeft: "auto"}}
-                        /*  onPress={()=> socket.emit("sendMessage", currentMessage);
-                        setCurrentMessage("") } */
+                        
                       />
                   </View>
 
                     <View style={{flexDirection:'row', justifyContent:"space-between"}}>
                    <Button
-                      icon={   
+                       icon={   
                             <Icon 
                             iconStyle={{ color: "black"}}
                             name="group" type='fontawesome'  color= "black" size= {20}
-                            onPress={() => console.log("star this book")}
+                            onPress={() => console.log("voir les credits")}
                             />
-                      }
+                      } 
                         
                         title="  Credits"
                         type="clear"
                         titleStyle={{color: "black"}}
                         style={{marginRight: 0, marginLeft: "auto"}}
-                        /*  onPress={()=> socket.emit("sendMessage", currentMessage);
-                        setCurrentMessage("") } */
+                        
                       />
 
                       
                       <Button
-                      icon={   
+                       icon={   
                             <Icon 
                             iconStyle={{iconRight: "true"}}
                             name= "send" type='feather'  color= "black" size= {20}
                             onPress={() => console.log("star this book")}
                             />
-                      }
+                      } 
                         
                         title="  Nous contacter"
                         type="clear"
                         titleStyle={{color: "black"}}
                         style={{marginRight: 0, marginLeft: "auto"}}
-                        /*  onPress={()=> socket.emit("sendMessage", currentMessage);
-                        setCurrentMessage("") } */
+                       
                       />
                   </View>
                       
@@ -169,22 +195,34 @@ function Parameters() {
     );
   }
 
-
+  function mapStateToProps(state){
+    
+    return {token:state.reducerToken, prenom:state.reducerPrenom};
   
+  }
 
 
 
-  export default Parameters;
-
-  {/* <Icon 
-                iconRight="true"
-                name="log-out-outline"
-                size={15}
-                color="black"
-              /> */}
+  function mapDispatchToProps(dispatch){
+    return {
 
 
+          deleteToken: function(){
+
+            dispatch({type: 'deleteToken'})
+          },
+
+          deletePrenom: function(){
+
+            dispatch({type: 'deletePrenom'})
+          }
 
 
-              {/* <View style={{ flexDirection:"row",justifyContent:"center", alignItems:'center', marginTop:10}}> 
-              </View>    //// */}
+
+       }
+  }
+  
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Parameters)
