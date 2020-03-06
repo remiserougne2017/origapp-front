@@ -9,8 +9,11 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import FlashMessage from "react-native-flash-message";
 import Carrousel from './Carrousel';
 import { withNavigation } from 'react-navigation';
+import color from './color';
 
 function Home(props) {
+  //test d'apport de couleur en variable
+  console.log('COULEUr', color("red") )
 
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
@@ -31,7 +34,7 @@ function Home(props) {
    // Initialisation du composant
    useEffect(()=>{
     const catalogue = async() =>{
-      // await fetch('http://192.168.1.28:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
+      // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
       console.log("WELCOME HOME")
       var responseFetch = await fetch(`http://10.2.5.202:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
       var bookList = await responseFetch.json();
@@ -55,9 +58,9 @@ function Home(props) {
    useEffect(()=>{
      const rechercheText = async()=>{
        console.log("recherche en cours",textSearch)
-       var responseFetch = await fetch(`http://192.168.1.28:3000/home/searchtext/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`,{
+       var responseFetch = await fetch(`http://10.2.5.203:3000/home/searchtext/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`,{
         method: 'POST',
-       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.28'},    
+       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.203'},    
        body: `textSearch=${textSearch}`
       })
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
@@ -134,7 +137,7 @@ for (let i=0;i<tagsList.length;i++){
   //   )
   // })
 
-  console.log(bestRated + 'carrousel')
+
   return (
      <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
        <View style={{ flexDirection:"row", marginTop:25}}>
@@ -209,8 +212,9 @@ for (let i=0;i<tagsList.length;i++){
                 {Book}            
             </View>
             </ScrollView>
-            <FlashMessage position="top" />
+           
           </ScrollView>   
+          <FlashMessage position="top" />
     </View>    
   );
 }
