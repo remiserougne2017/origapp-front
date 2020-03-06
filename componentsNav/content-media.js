@@ -20,7 +20,7 @@ function contentMedia(props) {
 //VARIABLES
 var player = useRef(null);  
 const [dataContent,setDataContent] = useState({content: {title:"",media:[{type:''}],title:""}})
-
+console.log("PROPS OVERLAY DATA",props.overlayData)
 // LOAD MEDIA CONTENT FROM DB
     useEffect( ()=> {
         async function openContent() {
@@ -133,14 +133,41 @@ var displayMedia = dataContent.content.media.map((med, k) => {
     })
 
 // DISPLAY FIL D ARIANE : 
+   // shorten title
 if(dataContent.title !== undefined) {
     var titleShort = `< ${dataContent.title.substring(0,40)}...`;
     var pageNumDisplay = `< page : ${dataContent.pageNum}`
 }
 
+   // affichage réduit du fil d'ariane si 1 seul contenu
+var breadCrumb;
+if(props.overlayData.contentNumber>1) {
+    breadCrumb = 
+        <View style ={{marginTop:60, display:"flex", flexDirection:'row', alignItems:'center', backgroundColor: '#E1E1E1', height:50}}>
+            <Text
+                style = {{marginLeft:10,fontWeight:'bold'}}
+                onPress={() => {props.storeOverlayInformation(props.overlayData,false);props.navigation.navigate('BookContent')}}
+                >{titleShort}</Text>
+            <Text
+                style = {{marginLeft:10,fontWeight:'bold'}}
+                onPress={() => {props.storeOverlayInformation(props.overlayData,true);props.navigation.navigate('BookContent')}}
+
+                >{pageNumDisplay}</Text>
+        </View>
+} else {
+    breadCrumb = 
+        <View style ={{marginTop:60, display:"flex", flexDirection:'row', alignItems:'center', backgroundColor: '#E1E1E1', height:50}}>
+            <Text
+                style = {{marginLeft:10,fontWeight:'bold'}}
+                onPress={() => {props.storeOverlayInformation(props.overlayData,false);props.navigation.navigate('BookContent')}}
+                >{titleShort}</Text>
+        </View>
+
+}
+
+
 // DISPLAY border TITLE ON SCROLL:
 const [borderWidth,setBorderWidth] = useState(0);
-
 
 
 
@@ -148,8 +175,8 @@ const [borderWidth,setBorderWidth] = useState(0);
 
     return (
         <View>
-
-            <View style ={{marginTop:60, display:"flex", flexDirection:'row', alignItems:'center', backgroundColor: '#E1E1E1', height:50}}>
+            {breadCrumb}
+            {/* <View style ={{marginTop:60, display:"flex", flexDirection:'row', alignItems:'center', backgroundColor: '#E1E1E1', height:50}}>
                 <Text
                     style = {{marginLeft:10}}
                     onPress={() => {props.storeOverlayInformation(props.overlayData,false);props.navigation.navigate('BookContent')}}
@@ -159,9 +186,9 @@ const [borderWidth,setBorderWidth] = useState(0);
                     onPress={() => {props.storeOverlayInformation(props.overlayData,true);props.navigation.navigate('BookContent')}}
 
                 >{pageNumDisplay}</Text>
-            </View>
+            </View> */}
             <View>
-                    <Text style={{fontSize:25,marginTop:40,marginBottom:40,marginLeft:10,marginRight:10,paddingBottom:20,textAlign:'center',borderBottonColor:'#E1E1E1',borderBottomWidth:borderWidth}}>{dataContent.content.title}</Text>
+                    <Text style={{fontSize:25,marginTop:40,marginLeft:10,marginRight:10,paddingBottom:60,textAlign:'center',borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth}}>{dataContent.content.title}</Text>
             </View>
             <ScrollView
                 onScroll = {()=> setBorderWidth(2)}

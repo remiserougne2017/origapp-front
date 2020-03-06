@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import OverlayContent from "../componentsNav/overlay-book"
 import { set } from 'react-native-reanimated';
+import { withNavigationFocus } from 'react-navigation';
 
 function BookContent(props) { 
 
@@ -41,7 +42,7 @@ function BookContent(props) {
             );
             var bookDataJson = await bookData.json();
             setArrayDataBook(bookDataJson.dataBook);
-            console.log("ARRAY DATA",bookDataJson)
+            // console.log("ARRAY DATA",bookDataJson)
       }
 
         openBook();
@@ -70,16 +71,32 @@ function BookContent(props) {
 
     
 // OVERLAYlancer une fonction de reducer pour psser les infos a overlay-book
-function openOverlay (nb,id,bool, arr,tit){
-    // console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAARR",arr)
+function openOverlay (nb,id,arr,tit,index){
+    console.log('INDEX EST',index)
     let arrayContentSentToReducer
     for(let i = 0;i<arr.length;i++){
         if(arr[i].pageNumber == nb) {
             arrayContentSentToReducer = arr[i].allContents
-        }
+            // console.log("ELEMENT DE LA PAGE ",nb, 'EST',arr[i])
+            // console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAARR",arr);
+            if(arr[i].allContents.length>1) {
+                // console.log('IS VISIBLE >1',isVisibleOverlay);
+                props.storeOverlayInformation({id:id,nb:nb,toggle:"",content:arrayContentSentToReducer,title:tit,contentNumber:arr[i].allContents.length},true)
+        
+            }
+            else {
+                // console.log('IS VISIBLE <1',isVisibleOverlay);
+                props.storeOverlayInformation({id:id,nb:nb,toggle:"",content:arrayContentSentToReducer,title:tit,contentNumber:arr[i].allContents.length},false)
+                props.storeContentInformation({idBook:id,idContent:arr[i].allContents[0].idContent,contentNumber:1})
+                props.navigation.navigate('contentMediaPage');
+        
+            }       
+         }
     }
+
+
+
     // console.log("ARRAY CONTENT",arrayContentSentToReducer)
-    props.storeOverlayInformation({id:id,nb:nb,toggle:bool,content:arrayContentSentToReducer,title:tit})
 }
 
 
@@ -102,7 +119,7 @@ let cardDisplay = organisedContent.map((obj,i) => {
     return (
     <TouchableOpacity
         style = {{backgroundColor:color, margin:10,borderRadius:5,padding:5, width:'40%', justifyContent:'center'}}
-        onPress = {()=> openOverlay(obj.pageNumber,idBook,true,organisedContent,arrayDataBook.title)}
+        onPress = {()=> openOverlay(obj.pageNumber,idBook,organisedContent,arrayDataBook.title,i)}
     >
         <View>
             <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12,fontSize:9}} >page {obj.pageNumber}</Text>}
@@ -133,7 +150,7 @@ let cardDisplay = organisedContent.map((obj,i) => {
                             source= {{ uri: arrayDataBook.coverImage }}
                         />
                         <Icon 
-                                iconStyle={{position:'absolute',top:-320,right:-20}}
+                                iconStyle={{position:'absolute',top:-300,right:-20}}
                                 name= "staro" type='antdesign'  size= {40}
                                 onPress={() => console.log("star this book")}
                             />
@@ -177,12 +194,25 @@ let cardDisplay = organisedContent.map((obj,i) => {
 // GET USER TOKEN
 function mapDispatchToProps(dispatch) {
     return {
-        storeOverlayInformation: function(obj) { 
-          dispatch( {
-              type: 'open-overlay',
-              overlayData : obj 
-            } ) 
-      },
+        storeOverlayInformation: function(obj,bool) { 
+            if(bool == true){
+                dispatch( {
+                    type: 'open-overlay',
+                    overlayData : obj 
+            } ) }
+            else {
+                dispatch( {
+                    type: 'close-overlay',
+                    overlayData : obj 
+                    } ) }
+
+        },
+        storeContentInformation: function(obj) { 
+            dispatch( {
+                type: 'open-content-information',
+                contentData : obj 
+              } ) 
+        },
     }
   }
 
@@ -194,7 +224,7 @@ return {
 }
 
 
-export default connect(
+export default withNavigationFocus(connect(
 mapStateToProps, 
 mapDispatchToProps
-)(BookContent);
+)(BookContent));

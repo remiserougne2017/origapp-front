@@ -130,7 +130,6 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
 
 
 function mapStateToProps(state) {
-    console.log("STATE OVERLAY VALUE",state.overlayData.toggle)
     return { 
         overlayData: state.overlayData,
     }
