@@ -9,14 +9,18 @@ import { showMessage, hideMessage } from "react-native-flash-message";
 import FlashMessage from "react-native-flash-message";
 import Carrousel from './Carrousel';
 import { withNavigation } from 'react-navigation';
+import color from './color';
 
 function Home(props) {
+  //test d'apport de couleur en variable
+  console.log('COULEUr', color("red") )
 
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
   const [tagsList,setTagsList]=useState([])
   const [selectedTags,setSelectedTags]=useState([])
   const [errorMessage,setErrorMessage]=useState('')
+  const [bestRated, setBestRated]=useState('')
   
   //pour charger le store Redux avec la biblio du user
   const librairyToStore= ()=>{
@@ -30,11 +34,12 @@ function Home(props) {
    // Initialisation du composant
    useEffect(()=>{
     const catalogue = async() =>{
-      // await fetch('http://192.168.1.28:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
+      // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
       console.log("WELCOME HOME")
       var responseFetch = await fetch(`http://10.2.3.37:3000/home/homePage/gAzTrKaZlQLfFnOwwJ0WrvTGfCFThYlH`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
+      setBestRated(bookList.livresMieuxNotes)
       //recup tags
       var tagFetch = await fetch(`http://10.2.3.37:3000/home/homePage/tags`)
       var tags = await tagFetch.json();
@@ -55,7 +60,7 @@ function Home(props) {
        console.log("recherche en cours",textSearch)
        var responseFetch = await fetch(`http://10.2.3.37:3000/home/searchtext/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`,{
         method: 'POST',
-       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.28'},    
+       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.203'},    
        body: `textSearch=${textSearch}`
       })
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
@@ -71,16 +76,17 @@ function Home(props) {
   var Book = cataList.map((e,i)=>{
    return(
     <Books id={e.id} key={i}  inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
-   ) 
-
+   )
   })
+
+
 //RS fetch pour search tag
 const fetchTag = async (tags)=>{
   var dataTag = JSON.stringify(tags)
 
   var responseFetch = await fetch(`http://10.2.3.37:3000/home/searchTag`,{
     method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.28'},    
+    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.202'},    
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token="dTsvaJw2PQiOtTWxykt5KcWco87eeSp6"`});
     var resultatSearch = await responseFetch.json();
     console.log("TAGRESULT",await resultatSearch)
@@ -131,8 +137,9 @@ for (let i=0;i<tagsList.length;i++){
   //   )
   // })
 
+
   return (
-     <View style={{ flex: 1, width:"100%"}}>
+     <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
        <View style={{ flexDirection:"row", marginTop:25}}>
        <Image
           style={{width: 40, height: 40, margin:5}}
@@ -164,31 +171,49 @@ for (let i=0;i<tagsList.length;i++){
         <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
           <Divider style={{ backgroundColor: '#F9603E', width:"60%", /*opacity:"50%"*/ marginTop:15}} />
         </View>
-        <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
-          <Text style={{color:"#F9603E"}}>Les mieux notés</Text>
-          
-        </View>
 
-        <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
-          <Carrousel/>
-        </View>
+        <ScrollView stickyHeaderIndices={[2]}>
 
-        <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
-          <Text style={{color:"#F9603E"}}>Catalogue</Text>
-        </View>   
-        
-      <ScrollView contentContainerStyle={{padding: 5}}>
-          <View style={{
-              flex: 1,
-              flexDirection:"row",
-              justifyContent:"space-around",
-              flexWrap: 'wrap',
-              margin:"auto"  
-            }}>
-              {errorMessage!=""?<Text>{errorMessage}</Text>:null}
-              {Book}            
+          <View style={{ flexDirection:"row",
+                        justifyContent:"flex-start", 
+                        alignItems:'center', 
+                        marginTop:10, 
+                        marginLeft:10}}>
+            <Text style={{color:"#F9603E"}}>Les mieux notés</Text>
+            
           </View>
-          </ScrollView>
+
+          <View style={{ flexDirection:"row",
+                        justifyContent:"flex-start", 
+                        alignItems:'center',
+                        marginTop:10}}>
+            <Carrousel data={bestRated}/>
+          </View>
+
+          <View style={{ flexDirection:"row", 
+                        justifyContent:"flex-start",
+                        alignItems:'center',
+                        marginTop:10,
+                        marginLeft:10,
+                        paddingBottom:5, 
+                        backgroundColor:'#EEEEEE'}}>
+          <Text style={{color:"#F9603E"}}>Catalogue</Text>
+          </View>   
+          
+          <ScrollView contentContainerStyle={{padding: 5}}>
+            <View style={{
+                flex: 1,
+                flexDirection:"row",
+                justifyContent:"space-around",
+                flexWrap: 'wrap',
+                margin:"auto"  
+              }}>
+                {errorMessage!=""?<Text>{errorMessage}</Text>:null}
+                {Book}            
+            </View>
+            </ScrollView>
+           
+          </ScrollView>   
           <FlashMessage position="top" />
     </View>    
   );

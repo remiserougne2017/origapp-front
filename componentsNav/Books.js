@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {showMessage, hideMessage } from "react-native-flash-message";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
-
+import color from './color'
 
 const Book = (props) => {
 
@@ -18,7 +18,6 @@ const addLibrairy = async (id,bool) => {
     var resp = await responseFetch.json();
     setIsCheck(bool)
     props.manageLibrairy(id,bool)
-    console.log("MESSAGE!")
     showMessage({
         message: resp.mess,
         type: resp.type,
@@ -26,6 +25,7 @@ const addLibrairy = async (id,bool) => {
         backgroundColor:"#8FB2C9"
       });
 }
+
 
 return (
           
