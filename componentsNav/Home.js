@@ -22,11 +22,8 @@ function Home(props) {
   const [tagsList,setTagsList]=useState([])
   const [selectedTags,setSelectedTags]=useState([])
   const [errorMessage,setErrorMessage]=useState('')
-<<<<<<< HEAD
   const[loader,setLoader]=useState(false)
-=======
   const [bestRated, setBestRated]=useState('')
->>>>>>> fc3c998dfbcd46393028351a0d3444c3273bc84d
   
   //pour charger le store Redux avec la biblio du user
   const librairyToStore= ()=>{
