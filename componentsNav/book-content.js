@@ -41,6 +41,7 @@ function BookContent(props) {
             );
             var bookDataJson = await bookData.json();
             setArrayDataBook(bookDataJson.dataBook);
+            console.log("ARRAY DATA",bookDataJson)
       }
 
         openBook();
@@ -70,14 +71,14 @@ function BookContent(props) {
     
 // OVERLAYlancer une fonction de reducer pour psser les infos a overlay-book
 function openOverlay (nb,id,bool, arr,tit){
-
+    // console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAARR",arr)
     let arrayContentSentToReducer
     for(let i = 0;i<arr.length;i++){
         if(arr[i].pageNumber == nb) {
             arrayContentSentToReducer = arr[i].allContents
         }
     }
-    console.log("TITLE",tit)
+    // console.log("ARRAY CONTENT",arrayContentSentToReducer)
     props.storeOverlayInformation({id:id,nb:nb,toggle:bool,content:arrayContentSentToReducer,title:tit})
 }
 
@@ -89,7 +90,7 @@ let cardDisplay = organisedContent.map((obj,i) => {
     let titleList = obj.allContents.map((e,j)=>{
         return (
             <View style = {{alignItems:"center"}}>
-                <Text style={{marginBottom: 10, color:colorFont, textAlign:'center'}}>
+                <Text style={{fontSize:15,marginBottom: 10, color:colorFont, textAlign:'center'}}>
                 {e.title}
                 </Text>
                 <Divider style={{ backgroundColor: '#252525', width:"60%", marginTop:10, justifyContent:"center"}} />
@@ -128,7 +129,7 @@ let cardDisplay = organisedContent.map((obj,i) => {
 
                     <View style = {{marginTop:60}}>
                         <Image 
-                            style={{width: 250, height: 300, marginTop:20}}
+                            style={{width: 230, height: 280, marginTop:20}}
                             source= {{ uri: arrayDataBook.coverImage }}
                         />
                         <Icon 

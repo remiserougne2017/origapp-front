@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Text, View,TouchableOpacity} from 'react-native';
 import {Icon,Overlay,Badge,Card } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
+import { withNavigationFocus } from 'react-navigation';
 
 
 
@@ -12,15 +13,26 @@ function OverlayContent(props) {
 
 // VARIABLES
 // const [arrayContent,setArrayContent] = useState([{pageNum:"",media:[]}]);
-const [isVisibleOverlay,setIsVisibleOverlay] = useState(props.overlayData.toggle);
-console.log(isVisibleOverlay)
-console.log("hello props content",props.overlayData.content)
+const [isVisibleOverlay,setIsVisibleOverlay] = useState('');
+// console.log("isVIsible Overlay?",props.overlayData.toggle)
+// console.log("hello props overlaydata",props.overlayData)
+
+useEffect( ()=> {
+    console.log("hello useeffect close overlay",props.overlayData.toggle)
+    setIsVisibleOverlay(props.overlayData.toggle);
+
+
+  },[props.overlayData.toggle])
+//   console.log('PROPS OVERLAY DATA TOGGLE',props.overlayData);
+  console.log("focus",props.isFocused)
+  //   console.log("IS VISIBLE OVERLAY",isVisibleOverlay)
 
 // GENERE LES ELEMENTS DE LA LIST
 let displayContentCard = props.overlayData.content.map((obj,i) => {
+    // console.log("prooooooops",props.overlayData)
     return(
         <TouchableOpacity
-            onPress={() =>{props.navigation.navigate('contentMediaPage');props.storeOverlayInformation({toggle:false, content:[]});props.storeContentInformation({idBook:props.overlayData.id,idContent:props.overlayData.content[i].idContent})}}
+            onPress={() =>{props.storeOverlayInformation(props.overlayData);props.storeContentInformation({idBook:props.overlayData.id,idContent:props.overlayData.content[i].idContent});props.navigation.navigate('contentMediaPage');}}
             >
             <Card
                 title={obj.title}
@@ -35,7 +47,6 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
                 <View  style={{display:"flex",flexDirection:'row', marginLeft:'auto'}}>
             {
                 obj.media.map((med, k) => {
-                
                 let iconType;
                 let library;
                 switch (med.type) {
@@ -45,8 +56,8 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
                     break;
                 
                     case 'audio': 
-                    iconType = 'md-headset'
-                    library = 'ionicons'
+                    iconType = 'headphones'
+                    library = 'feather'
                     break;
                 
                     case 'image': 
@@ -58,6 +69,12 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
                     iconType = 'text'
                     library = 'entypo'
                     break;
+
+                    case 'quote':
+                    iconType = 'quote'
+                    library = 'entypo'
+                    break;
+
                     default:
                     iconType = 'question'
                     iconType = 'antdesign'
@@ -87,7 +104,7 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
         overlayStyle={{backgroundColor:"#D4D9DB"}}
         height= {"98%"}
         width={"98%"}
-        isVisible={props.overlayData.toggle}
+        isVisible={isVisibleOverlay}
         >
         <View style = {{display:"flex",flexDirection:"row", width:'100%'}}>
             <Badge value={<Text style={{marginRight:'auto',color: 'white',  paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12}}>page {props.overlayData.nb}</Text>}
@@ -96,7 +113,7 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
             <Icon 
                 containerStyle={{marginLeft:'auto'}}
                 name= "closecircleo" type='antdesign'  size= {20}
-                onPress={() => props.storeOverlayInformation({toggle:false, content:[]})}
+                onPress={() => {props.storeOverlayInformation(props.overlayData); console.log('PROP IN CLOSE',props.overlayData.toggle);props.navigation.navigate('BookContent');setIsVisibleOverlay(false)}}
             />
         </View>
         <View style ={{justifyContent:'center', marginTop:20}}>
@@ -113,6 +130,7 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
 
 
 function mapStateToProps(state) {
+    console.log("STATE OVERLAY VALUE",state.overlayData.toggle)
     return { 
         overlayData: state.overlayData,
     }
@@ -141,7 +159,7 @@ function mapDispatchToProps(dispatch) {
 
 
 
-export default withNavigation(connect(
+export default withNavigationFocus(connect(
 mapStateToProps, 
 mapDispatchToProps
 )(OverlayContent));
