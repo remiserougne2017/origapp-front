@@ -37,6 +37,7 @@ function SignIn(props) {
     if(response.result == true){
       props.addToken(response.token)
       props.addPrenom(response.prenom)
+      console.log(response.token)
       props.navigation.navigate('Home')
     } else {
       console.log('pas de token')
@@ -67,7 +68,7 @@ function SignIn(props) {
               { errorEmailInexistant ? <Text style={{fontSize:12,color:'red'}}>{errorEmailInexistant}</Text> : null }
             </View>
 
-            <View style={{marginBottom: 25}}>
+            <View style={{marginBottom: 5}}>
               <TextInput
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
               placeholder=' Mot de passe'
@@ -77,11 +78,13 @@ function SignIn(props) {
               />
               { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
               { errorPassword ? <Text style={{fontSize:12,color:'red'}}>{errorPassword}</Text> : null }
-            </View>
 
-            <TouchableOpacity onPress={() => props.navigation.navigate('newPassword')}>
+              <TouchableOpacity onPress={() => props.navigation.navigate('newPassword')}>
               <Text style={{fontSize: 11, marginBottom: 20, textAlign: "right", fontStyle: "italic"}}>Mot de passe oublié ?</Text>
             </TouchableOpacity>
+            </View>
+
+            
 
             <Button
              title='Connexion'

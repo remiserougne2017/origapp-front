@@ -36,12 +36,12 @@ function Home(props) {
     const catalogue = async() =>{
       // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
       console.log("WELCOME HOME")
-      var responseFetch = await fetch(`http://10.2.5.203:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+      var responseFetch = await fetch(`http://10.2.5.202:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
       setBestRated(bookList.livresMieuxNotes)
       //recup tags
-      var tagFetch = await fetch(`http://10.2.5.203:3000/home/homePage/tags`)
+      var tagFetch = await fetch(`http://10.2.5.20:3000/home/homePage/tags`)
       var tags = await tagFetch.json();
       var tagsColor = tags.map(e=>{
         e.color="grey"
@@ -58,9 +58,9 @@ function Home(props) {
    useEffect(()=>{
      const rechercheText = async()=>{
        console.log("recherche en cours",textSearch)
-       var responseFetch = await fetch(`http://10.2.5.203:3000/home/searchtext/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`,{
+       var responseFetch = await fetch(`http://10.2.5.202:3000/home/searchtext/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`,{
         method: 'POST',
-       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.203'},    
+       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.202'},    
        body: `textSearch=${textSearch}`
       })
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
@@ -229,6 +229,7 @@ function mapDispatchToProps(dispatch){
 }
 function mapStateToProps(state) {
   return { storeLibrairy: state.storeLibrairy,
+          token: state.token
    }
 }
 export default withNavigation(connect(mapStateToProps,mapDispatchToProps)(Home))
