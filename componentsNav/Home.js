@@ -22,7 +22,11 @@ function Home(props) {
   const [tagsList,setTagsList]=useState([])
   const [selectedTags,setSelectedTags]=useState([])
   const [errorMessage,setErrorMessage]=useState('')
+<<<<<<< HEAD
   const[loader,setLoader]=useState(false)
+=======
+  const [bestRated, setBestRated]=useState('')
+>>>>>>> fc3c998dfbcd46393028351a0d3444c3273bc84d
   
   //pour charger le store Redux avec la biblio du user
   const librairyToStore= ()=>{
@@ -46,6 +50,7 @@ function Home(props) {
       var responseFetch = await fetch(`http://10.2.5.203:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
+      setBestRated(bookList.livresMieuxNotes)
       //recup tags
       var tagFetch = await fetch(`http://10.2.5.203:3000/home/homePage/tags`)
       var tags = await tagFetch.json();
@@ -83,16 +88,17 @@ function Home(props) {
   var Book = cataList.map((e,i)=>{
    return(
     <Books id={e.id} key={i}  inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
-   ) 
-
+   )
   })
+
+
 //RS fetch pour search tag
 const fetchTag = async (tags)=>{
   var dataTag = JSON.stringify(tags)
 
-  var responseFetch = await fetch(`http://10.2.5.203:3000/home/searchTag`,{
+  var responseFetch = await fetch(`http://10.2.5.202:3000/home/searchTag`,{
     method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.203'},    
+    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.202'},    
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token="dTsvaJw2PQiOtTWxykt5KcWco87eeSp6"`});
     var resultatSearch = await responseFetch.json();
     console.log("TAGRESULT",await resultatSearch)
@@ -142,6 +148,7 @@ for (let i=0;i<tagsList.length;i++){
   //   />
   //   )
   // })
+
 
   return (
     
@@ -194,7 +201,7 @@ for (let i=0;i<tagsList.length;i++){
                         justifyContent:"flex-start", 
                         alignItems:'center',
                         marginTop:10}}>
-            <Carrousel/>
+            <Carrousel data={bestRated}/>
           </View>
 
           <View style={{ flexDirection:"row", 
