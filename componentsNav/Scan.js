@@ -3,13 +3,15 @@ import {Text, View, ImageBackground } from 'react-native';
 import { Camera } from 'expo-camera';
 import { withNavigationFocus } from 'react-navigation';
 import { Button, Icon  } from 'react-native-elements';
-import color from './color'
+import color from './color';
+import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
 
 function Scan(props) {
-    
+
 var camera = useRef(null);
 const [hasPermission, setHasPermission] = useState(null);
 const [type, setType] = useState(Camera.Constants.Type.back);
+const [flash, setFlash]=useState(Camera.Constants.FlashMode.off)
 
     //Permission demandée au click sur le bouton
 const askPermission =async() => {
@@ -31,8 +33,7 @@ const sendPicture = async (path)=>{
     });
     console.log("PATH DATA",data)
     //envoi au backend pour enregistrer sur cloudinary
-   var response = await fetch("http://10.2.5.203:3000/home/scan",
-    {
+   var response = await fetch("http://10.2.5.203:3000/scan/", {
       method: 'POST',
       body: data
     });  
@@ -48,7 +49,7 @@ if(props.isFocused && hasPermission) {
         Cam = <Camera style={{flex:1,justifyContent:"center",alignItems:"center"}}
             // ratio="16:9"
             ref={ref => (camera = ref)}
-            type={type} 
+            type={type} flashMode={flash}
             ></Camera>
     return (
     <View style={{ flex: 1, alignItems:'center'}}>
@@ -59,7 +60,24 @@ if(props.isFocused && hasPermission) {
         </View>
         <View style={{flex:1,width: '100%', height: '100%'}}>
             {Cam}
-            <Button  
+            <View style={{flexDirection:"row", justifyContent:"center",alignItems:'center',width:"40%", position: "absolute", bottom:50, right:100}}>
+            <Icone
+             onPress={() => {
+               console.log("Flash !", flash)
+              setFlash(
+                flash == Camera.Constants.FlashMode.off
+                  ? Camera.Constants.FlashMode.torch
+                  : Camera.Constants.FlashMode.off
+                  );
+              }}
+            name='flash'
+            type='MaterialCommunityIcons'
+            color='white'
+            size={24}
+            />
+            <Button 
+            titleStyle={{paddingRight:10}}
+            containerStyle={{margin:10}} 
         onPress={async () => {
         
             if (camera) {
@@ -74,13 +92,16 @@ if(props.isFocused && hasPermission) {
             };
         }}
           title="Déclencher" buttonStyle={{width: "100%", justifyContent:"center", backgroundColor:color("blue")}}
-          containerStyle={{width:"40%", position: "absolute", bottom:50, right:100}}
         icon={
             <Icon
             name="save"
             size={24}
             color="white"
-            />}/>           
+            marginRight={10}
+            marginLeft={5}
+            />}/>    
+            </View>
+                  
         </View>
     </View>
 );

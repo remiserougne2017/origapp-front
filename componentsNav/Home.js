@@ -10,17 +10,23 @@ import FlashMessage from "react-native-flash-message";
 import Carrousel from './Carrousel';
 import { withNavigation } from 'react-navigation';
 import color from './color';
+import Loader from './loader';
 
 function Home(props) {
   //test d'apport de couleur en variable
   console.log('COULEUr', color("red") )
+  
 
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
   const [tagsList,setTagsList]=useState([])
   const [selectedTags,setSelectedTags]=useState([])
   const [errorMessage,setErrorMessage]=useState('')
+<<<<<<< HEAD
+  const[loader,setLoader]=useState(false)
+=======
   const [bestRated, setBestRated]=useState('')
+>>>>>>> fc3c998dfbcd46393028351a0d3444c3273bc84d
   
   //pour charger le store Redux avec la biblio du user
   const librairyToStore= ()=>{
@@ -33,6 +39,11 @@ function Home(props) {
   
    // Initialisation du composant
    useEffect(()=>{
+     //affiche le loader et le coupe si chrgt > à 4 secondes
+     setLoader(true)
+     setTimeout(() => {
+      setLoader(false)
+    }, 4000);
     const catalogue = async() =>{
       // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
       console.log("WELCOME HOME")
@@ -48,7 +59,8 @@ function Home(props) {
         return e
       })
       setTagsList(tags)
-      
+      //ferme le loader
+      setLoader(false)
     };
     catalogue();
     librairyToStore();
@@ -139,7 +151,9 @@ for (let i=0;i<tagsList.length;i++){
 
 
   return (
+    
      <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
+     <Loader bool={loader} text="Chargement du catalogue..."/> 
        <View style={{ flexDirection:"row", marginTop:25}}>
        <Image
           style={{width: 40, height: 40, margin:5}}
@@ -215,7 +229,8 @@ for (let i=0;i<tagsList.length;i++){
            
           </ScrollView>   
           <FlashMessage position="top" />
-    </View>    
+    </View> 
+ 
   );
 }
 function mapDispatchToProps(dispatch){
