@@ -36,7 +36,7 @@ function Home(props) {
     const catalogue = async() =>{
       // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
       console.log("WELCOME HOME")
-      var responseFetch = await fetch(`http://10.2.3.37:3000/home/homePage/gAzTrKaZlQLfFnOwwJ0WrvTGfCFThYlH`)
+      var responseFetch = await fetch(`http://10.2.3.37:3000/home/homePage/${props.token}`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
       setBestRated(bookList.livresMieuxNotes)
@@ -58,9 +58,9 @@ function Home(props) {
    useEffect(()=>{
      const rechercheText = async()=>{
        console.log("recherche en cours",textSearch)
-       var responseFetch = await fetch(`http://10.2.3.37:3000/home/searchtext/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`,{
+       var responseFetch = await fetch(`http://10.2.3.37:3000/home/searchtext/${props.token}`,{
         method: 'POST',
-       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.203'},    
+       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.3.37'},    
        body: `textSearch=${textSearch}`
       })
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
@@ -86,7 +86,7 @@ const fetchTag = async (tags)=>{
 
   var responseFetch = await fetch(`http://10.2.3.37:3000/home/searchTag`,{
     method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.202'},    
+    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.3.37'},    
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token="dTsvaJw2PQiOtTWxykt5KcWco87eeSp6"`});
     var resultatSearch = await responseFetch.json();
     console.log("TAGRESULT",await resultatSearch)
