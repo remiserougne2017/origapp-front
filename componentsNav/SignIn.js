@@ -14,11 +14,19 @@ function SignIn(props) {
 
   var clickSignIn = async (a, b) => {
 
+<<<<<<< HEAD
     //console.log("signin"+a,b)
     setSignInEmail('')
     setSignInPassword('')
 
     const data = await fetch('http://10.2.5.178:3000/users/sign-in', {
+=======
+    console.log("signin"+a,b)
+    /* setSignInEmail('')
+    setSignInPassword('') */
+
+    const data = await fetch('http://10.2.3.37:3000/users/sign-in', {
+>>>>>>> d3df8ed95eb74f385ad29fa74dd8b5233a739ce4
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `email=${a}&password=${b}`
@@ -37,6 +45,7 @@ function SignIn(props) {
     if(response.result == true){
       props.addToken(response.token)
       props.addPrenom(response.prenom)
+      console.log(response.token)
       props.navigation.navigate('Home')
     } else {
       console.log('pas de token')
@@ -67,7 +76,7 @@ function SignIn(props) {
               { errorEmailInexistant ? <Text style={{fontSize:12,color:'red'}}>{errorEmailInexistant}</Text> : null }
             </View>
 
-            <View style={{marginBottom: 25}}>
+            <View style={{marginBottom: 5}}>
               <TextInput
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
               placeholder=' Mot de passe'
@@ -77,16 +86,19 @@ function SignIn(props) {
               />
               { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
               { errorPassword ? <Text style={{fontSize:12,color:'red'}}>{errorPassword}</Text> : null }
-            </View>
 
-            <TouchableOpacity onPress={() => props.navigation.navigate('newPassword')}>
+              <TouchableOpacity onPress={() => props.navigation.navigate('newPassword')}>
               <Text style={{fontSize: 11, marginBottom: 20, textAlign: "right", fontStyle: "italic"}}>Mot de passe oublié ?</Text>
             </TouchableOpacity>
+            </View>
+
+            
 
             <Button
              title='Connexion'
              color='#FF473A'
-             onPress={() => clickSignIn(signInEmail, signInPassword)}
+             onPress={() => {clickSignIn(signInEmail, signInPassword);
+            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")}}
             />
 
             <TouchableOpacity onPress={() => props.navigation.navigate('SignUp')}>

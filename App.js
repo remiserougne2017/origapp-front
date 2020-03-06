@@ -4,7 +4,7 @@ import {createAppContainer } from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import Parameters from "./componentsNav/parametersNav"
-import Library from "./componentsNav/libraryNav"
+import Library from "./componentsNav/Library"
 import Home from "./componentsNav/Home"
 import BookContent from './componentsNav/book-content';
 import Scan from './componentsNav/Scan'
