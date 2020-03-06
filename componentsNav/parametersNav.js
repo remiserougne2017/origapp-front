@@ -4,6 +4,7 @@ import { Button,Input, Avatar, Icon, Header} from 'react-native-elements';
 /*  import Icon from 'react-native-vector-icons'; */
 import {connect} from 'react-redux';
 /* import { Ionicons } from '@expo/vector-icons'; */
+import color from './color'
 
 
  
@@ -60,9 +61,9 @@ console.log("token user recupere dans store", props.token)
                               statusBarProps={{ barStyle: 'light-content' }}
                               barStyle="light-content" // or directly
                               leftComponent={{ icon: 'settings', type:'feather', color:'#fff', size: 50 }}
-                              centerComponent={{ text: '   Paramètres', style: { color: '#fff', fontSize:25, fontWeight:"800", fontStyle: "bold", marginTop:15, marginBottom:15 } }} ///
+                              centerComponent={{ text: '   Paramètres', style: { color: '#fff', fontSize:25, fontWeight:"800", fontStyle: "normal", marginTop:15, marginBottom:15 } }} ///
                               containerStyle={{
-                                backgroundColor: '#990000',
+                                backgroundColor: color("red"),
                                 paddingBottom: 40,
                                 paddingLeft: 40,
                                 paddingTop: 40,
@@ -86,7 +87,7 @@ console.log("token user recupere dans store", props.token)
                       }
                         
                         title="  Se déconnecter"
-                        type="clear"
+                        type="transparent"
                         titleStyle={{color: "black"}}
                         style={{marginRight: 0, marginLeft: "auto"}}
                         onPress={() => {
@@ -102,7 +103,7 @@ console.log("token user recupere dans store", props.token)
                       
                       rounded
                       
-                      overlayContainerStyle={{backgroundColor: 'clear'}}
+                      overlayContainerStyle={{backgroundColor: 'transparent'}}
                       icon={{name: 'user', type: 'font-awesome', color: 'black'}}
                       size= {200}
                      
@@ -113,7 +114,7 @@ console.log("token user recupere dans store", props.token)
                     <View>
                     <Text style={{fontSize:25, fontWeight:"700", marginLeft:10, marginTop: 50}}>Compte : </Text>
                     <Text style={{fontSize:25, fontWeight:"700", marginLeft:10}}>{username}</Text>
-                    <Button style={{marginLeft: 0}} type="clear" titleStyle={{color: "black", fontSize:10}} title="Changer mon mot de passe"></Button>
+                    <Button style={{marginLeft: 0}} type="transparent" titleStyle={{color: "black", fontSize:10}} title="Changer mon mot de passe"></Button>
                     </View>
       </View>
       
@@ -129,7 +130,7 @@ console.log("token user recupere dans store", props.token)
                       } 
                         
                         title="  Aide"
-                        type="clear"
+                        type="transparent"
                         titleStyle={{color: "black"}}
                         style={{marginRight: 0, marginLeft: "auto"}}
                         
@@ -146,7 +147,7 @@ console.log("token user recupere dans store", props.token)
                     <View style={{flexDirection:'row', justifyContent:"flex-start"}}>
                       <Button
                         title="A propos"
-                        type="clear"
+                        type="transparent"
                         titleStyle={{color: "black"}}
                         style={{marginRight: 0, marginLeft: "auto"}}
                         
@@ -164,7 +165,7 @@ console.log("token user recupere dans store", props.token)
                       } 
                         
                         title="  Credits"
-                        type="clear"
+                        type="transparent"
                         titleStyle={{color: "black"}}
                         style={{marginRight: 0, marginLeft: "auto"}}
                         
@@ -181,7 +182,7 @@ console.log("token user recupere dans store", props.token)
                       } 
                         
                         title="  Nous contacter"
-                        type="clear"
+                        type="transparent"
                         titleStyle={{color: "black"}}
                         style={{marginRight: 0, marginLeft: "auto"}}
                        
