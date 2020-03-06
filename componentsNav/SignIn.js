@@ -14,11 +14,11 @@ function SignIn(props) {
 
   var clickSignIn = async (a, b) => {
 
-    //console.log("signin"+a,b)
-    setSignInEmail('')
-    setSignInPassword('')
-    
-   const data = await fetch('http://10.2.5.202:3000/users/sign-in', {
+    console.log("signin"+a,b)
+    /* setSignInEmail('')
+    setSignInPassword('') */
+
+    const data = await fetch('http://10.2.3.37:3000/users/sign-in', {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `email=${a}&password=${b}`
@@ -89,7 +89,8 @@ function SignIn(props) {
             <Button
              title='Connexion'
              color='#FF473A'
-             onPress={() => clickSignIn(signInEmail, signInPassword)}
+             onPress={() => {clickSignIn(signInEmail, signInPassword);
+            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")}}
             />
 
             <TouchableOpacity onPress={() => props.navigation.navigate('SignUp')}>

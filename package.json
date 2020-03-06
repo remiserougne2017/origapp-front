@@ -17,6 +17,7 @@
     "react-native-elements": "^1.2.7",
     "react-native-flash-message": "^0.1.15",
     "react-native-gesture-handler": "~1.5.0",
+    "react-native-loading-spinner-overlay": "^1.1.0",
     "react-native-reanimated": "^1.7.0",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "^2.2.0",
@@ -32,8 +33,10 @@
     "redux": "^4.0.5"
   },
   "devDependencies": {
-    "babel-preset-expo": "~8.0.0",
-    "@babel/core": "^7.0.0"
+    "@babel/core": "^7.0.0",
+    "@iconify/icons-feather": "^1.0.7",
+    "@iconify/react": "^1.1.2",
+    "babel-preset-expo": "~8.0.0"
   },
   "private": true
 }
