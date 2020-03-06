@@ -19,11 +19,6 @@ const addLibrairy = async (id,bool) => {
     var resp = await responseFetch.json();
     setIsCheck(bool)
     props.manageLibrairy(id,bool)
-<<<<<<< HEAD
-    var responseFetch = await fetch(`http://10.2.5.178:3000/home/addLibrairy/${id}/${bool}/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
-    var resp = await responseFetch.json();
-=======
->>>>>>> 5c19ef098cd078b8a1b197131e3a8460757608ca
     showMessage({
         message: resp.mess,
         type: resp.type,

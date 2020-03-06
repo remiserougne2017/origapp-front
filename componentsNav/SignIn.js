@@ -17,13 +17,8 @@ function SignIn(props) {
     //console.log("signin"+a,b)
     setSignInEmail('')
     setSignInPassword('')
-<<<<<<< HEAD
 
     const data = await fetch('http://10.2.5.178:3000/users/sign-in', {
-=======
-    
-   const data = await fetch('http://10.2.5.202:3000/users/sign-in', {
->>>>>>> 5c19ef098cd078b8a1b197131e3a8460757608ca
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `email=${a}&password=${b}`

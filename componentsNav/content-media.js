@@ -3,7 +3,6 @@ import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,To
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
-import OverlayContent from "../componentsNav/overlay-book"
 import { set, color } from 'react-native-reanimated';
 // import Video from 'react-native-video';
 import { WebView } from 'react-native-webview';
@@ -20,7 +19,7 @@ function contentMedia(props) {
 //VARIABLES
 var player = useRef(null);  
 const [dataContent,setDataContent] = useState({content: {title:"",media:[{type:''}],title:""}})
-console.log("PROPS OVERLAY DATA",props.overlayData)
+
 // LOAD MEDIA CONTENT FROM DB
     useEffect( ()=> {
         async function openContent() {
@@ -132,37 +131,15 @@ var displayMedia = dataContent.content.media.map((med, k) => {
 
     })
 
-// DISPLAY FIL D ARIANE : 
-   // shorten title
+// Shorten title: 
 if(dataContent.title !== undefined) {
-    var titleShort = `< ${dataContent.title.substring(0,40)}...`;
-    var pageNumDisplay = `< page : ${dataContent.pageNum}`
-}
-
-   // affichage réduit du fil d'ariane si 1 seul contenu
-var breadCrumb;
-if(props.overlayData.contentNumber>1) {
-    breadCrumb = 
-        <View style ={{marginTop:60, display:"flex", flexDirection:'row', alignItems:'center', backgroundColor: '#E1E1E1', height:50}}>
-            <Text
-                style = {{marginLeft:10,fontWeight:'bold'}}
-                onPress={() => {props.storeOverlayInformation(props.overlayData,false);props.navigation.navigate('BookContent')}}
-                >{titleShort}</Text>
-            <Text
-                style = {{marginLeft:10,fontWeight:'bold'}}
-                onPress={() => {props.storeOverlayInformation(props.overlayData,true);props.navigation.navigate('BookContent')}}
-
-                >{pageNumDisplay}</Text>
-        </View>
-} else {
-    breadCrumb = 
-        <View style ={{marginTop:60, display:"flex", flexDirection:'row', alignItems:'center', backgroundColor: '#E1E1E1', height:50}}>
-            <Text
-                style = {{marginLeft:10,fontWeight:'bold'}}
-                onPress={() => {props.storeOverlayInformation(props.overlayData,false);props.navigation.navigate('BookContent')}}
-                >{titleShort}</Text>
-        </View>
-
+    var titleShort
+    if(dataContent.title.length>79) {
+        titleShort = `< ${dataContent.title.substring(0,80)}...`;
+    } else 
+    {
+        titleShort = dataContent.title
+    }
 }
 
 
@@ -175,18 +152,14 @@ const [borderWidth,setBorderWidth] = useState(0);
 
     return (
         <View>
-            {breadCrumb}
-            {/* <View style ={{marginTop:60, display:"flex", flexDirection:'row', alignItems:'center', backgroundColor: '#E1E1E1', height:50}}>
-                <Text
-                    style = {{marginLeft:10}}
-                    onPress={() => {props.storeOverlayInformation(props.overlayData,false);props.navigation.navigate('BookContent')}}
-                    >{titleShort}</Text>
-                <Text
-                    style = {{marginLeft:10}}
-                    onPress={() => {props.storeOverlayInformation(props.overlayData,true);props.navigation.navigate('BookContent')}}
-
-                >{pageNumDisplay}</Text>
-            </View> */}
+                <View style ={{marginTop:60, display:"flex", flexDirection:'row', alignItems:'center', backgroundColor: '#E1E1E1', height:50}}>
+                    <Text style = {{marginLeft:10,fontWeight:'bold'}} onPress={() => props.navigation.navigate('BookContent')}>
+                        {titleShort}
+                    </Text>
+                    <Text style = {{marginLeft:'auto',fontWeight:'bold',marginRight:10}}>
+                        page {dataContent.pageNum}
+                    </Text>
+                </View>
             <View>
                     <Text style={{fontSize:25,marginTop:40,marginLeft:10,marginRight:10,paddingBottom:60,textAlign:'center',borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth}}>{dataContent.content.title}</Text>
             </View>
@@ -202,31 +175,11 @@ const [borderWidth,setBorderWidth] = useState(0);
   }
 
 
-// GET USER TOKEN
-function mapDispatchToProps(dispatch) {
-    return {
-        storeOverlayInformation: function(obj,bool) { 
-            if(bool == true){
-                dispatch( {
-                    type: 'open-overlay',
-                    overlayData : obj 
-            } ) }
-            else {
-                dispatch( {
-                    type: 'close-overlay',
-                    overlayData : obj 
-                    } ) }
-
-        }
-      }
-    }
-
 
 
 function mapStateToProps(state) {
 return { 
     token: state.token,
-    overlayData:state.overlayData,
     contentMediaData:state.contentMediaData
 }
 }
@@ -234,6 +187,6 @@ return {
 
 export default withNavigation(connect(
     mapStateToProps, 
-    mapDispatchToProps
+    null
     )(contentMedia));
     

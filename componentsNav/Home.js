@@ -22,11 +22,8 @@ function Home(props) {
   const [tagsList,setTagsList]=useState([])
   const [selectedTags,setSelectedTags]=useState([])
   const [errorMessage,setErrorMessage]=useState('')
-<<<<<<< HEAD
   const[loader,setLoader]=useState(false)
-=======
   const [bestRated, setBestRated]=useState('')
->>>>>>> fc3c998dfbcd46393028351a0d3444c3273bc84d
   
   //pour charger le store Redux avec la biblio du user
   const librairyToStore= ()=>{
@@ -47,20 +44,12 @@ function Home(props) {
     const catalogue = async() =>{
       // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
       console.log("WELCOME HOME")
-<<<<<<< HEAD
       var responseFetch = await fetch(`http://10.2.5.178:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
-=======
-      var responseFetch = await fetch(`http://10.2.5.203:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
->>>>>>> 5c19ef098cd078b8a1b197131e3a8460757608ca
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
       setBestRated(bookList.livresMieuxNotes)
       //recup tags
-<<<<<<< HEAD
       var tagFetch = await fetch(`http://10.2.5.178:3000/home/homePage/tags`)
-=======
-      var tagFetch = await fetch(`http://10.2.5.203:3000/home/homePage/tags`)
->>>>>>> 5c19ef098cd078b8a1b197131e3a8460757608ca
       var tags = await tagFetch.json();
       var tagsColor = tags.map(e=>{
         e.color="grey"
@@ -78,15 +67,9 @@ function Home(props) {
    useEffect(()=>{
      const rechercheText = async()=>{
        console.log("recherche en cours",textSearch)
-<<<<<<< HEAD
        var responseFetch = await fetch(`http://10.2.5.178:3000/home/searchtext/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`,{
         method: 'POST',
        headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.178'},    
-=======
-       var responseFetch = await fetch(`http://10.2.5.203:3000/home/searchtext/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`,{
-        method: 'POST',
-       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.203'},    
->>>>>>> 5c19ef098cd078b8a1b197131e3a8460757608ca
        body: `textSearch=${textSearch}`
       })
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
@@ -110,15 +93,9 @@ function Home(props) {
 const fetchTag = async (tags)=>{
   var dataTag = JSON.stringify(tags)
 
-<<<<<<< HEAD
   var responseFetch = await fetch(`http://10.2.5.178:3000/home/searchTag`,{
     method: 'POST',
     headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.178'},    
-=======
-  var responseFetch = await fetch(`http://10.2.5.202:3000/home/searchTag`,{
-    method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.202'},    
->>>>>>> 5c19ef098cd078b8a1b197131e3a8460757608ca
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token="dTsvaJw2PQiOtTWxykt5KcWco87eeSp6"`});
     var resultatSearch = await responseFetch.json();
     console.log("TAGRESULT",await resultatSearch)

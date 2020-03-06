@@ -27,11 +27,7 @@ function SignUp(props) {
 
     } else {
       console.log('mdp ok')
-<<<<<<< HEAD
       const data = await fetch('http://10.2.5.178:3000/users/sign-up', {
-=======
-      const data = await fetch('http://10.2.5.203:3000/users/sign-up', {
->>>>>>> 5c19ef098cd078b8a1b197131e3a8460757608ca
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: `firstName=${signUpFirstName}&email=${signUpEmail}&password=${signUpPassword}`
@@ -128,7 +124,7 @@ function SignUp(props) {
                 <Button
              title='nav HomePage'
              color='#FF473A'
-             onPress={() => props.navigation.navigate('Home')}
+             onPress={() => props.navigation.navigate('Bottom')}
             />
                 <Button
              title='nav bookcontnt'
