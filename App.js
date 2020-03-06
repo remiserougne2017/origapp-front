@@ -7,6 +7,7 @@ import Parameters from "./componentsNav/parametersNav"
 import Library from "./componentsNav/libraryNav"
 import Home from "./componentsNav/Home"
 import BookContent from './componentsNav/book-content';
+import Scan from './componentsNav/Scan'
 import Book from './componentsNav/Books'
 import SignUp from "./componentsNav/SignUp";
 import SignIn from "./componentsNav/SignIn";
@@ -48,6 +49,7 @@ var StackNavigatorHome = createStackNavigator(
     Book:Book,
     BookContent:BookContent,
     contentMediaPage:contentMediaPage,
+    Scan : Scan
 }, {headerMode: 'none',});
 
  var StackNavigatorParameters = createStackNavigator(

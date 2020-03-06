@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet,ScrollView, Text, View,Image } from 'react-native';
+import { StyleSheet,ScrollView, Text, View,Image,TouchableOpacity } from 'react-native';
 import { SearchBar, Badge,Divider  } from 'react-native-elements';
 // import { Container, Row } from 'reactstrap';
 import Books from './Books'
@@ -8,14 +8,26 @@ import {connect} from 'react-redux';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import FlashMessage from "react-native-flash-message";
 import Carrousel from './Carrousel';
+import { withNavigation } from 'react-navigation';
+import color from './color';
+import Loader from './loader';
 
 function Home(props) {
+  //test d'apport de couleur en variable
+  console.log('COULEUr', color("red") )
+  
 
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
   const [tagsList,setTagsList]=useState([])
   const [selectedTags,setSelectedTags]=useState([])
   const [errorMessage,setErrorMessage]=useState('')
+<<<<<<< HEAD
+  const[loader,setLoader]=useState(false)
+=======
+  const [bestRated, setBestRated]=useState('')
+>>>>>>> fc3c998dfbcd46393028351a0d3444c3273bc84d
+  
   //pour charger le store Redux avec la biblio du user
   const librairyToStore= ()=>{
    var newCataList = cataList.map(e=>{
@@ -27,21 +39,36 @@ function Home(props) {
   
    // Initialisation du composant
    useEffect(()=>{
+     //affiche le loader et le coupe si chrgt > à 4 secondes
+     setLoader(true)
+     setTimeout(() => {
+      setLoader(false)
+    }, 4000);
     const catalogue = async() =>{
-      // await fetch('http://192.168.1.28:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
+      // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
       console.log("WELCOME HOME")
+<<<<<<< HEAD
       var responseFetch = await fetch(`http://10.2.5.178:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+=======
+      var responseFetch = await fetch(`http://10.2.5.203:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+>>>>>>> 5c19ef098cd078b8a1b197131e3a8460757608ca
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
+      setBestRated(bookList.livresMieuxNotes)
       //recup tags
+<<<<<<< HEAD
       var tagFetch = await fetch(`http://10.2.5.178:3000/home/homePage/tags`)
+=======
+      var tagFetch = await fetch(`http://10.2.5.203:3000/home/homePage/tags`)
+>>>>>>> 5c19ef098cd078b8a1b197131e3a8460757608ca
       var tags = await tagFetch.json();
       var tagsColor = tags.map(e=>{
         e.color="grey"
         return e
       })
       setTagsList(tags)
-      
+      //ferme le loader
+      setLoader(false)
     };
     catalogue();
     librairyToStore();
@@ -51,9 +78,15 @@ function Home(props) {
    useEffect(()=>{
      const rechercheText = async()=>{
        console.log("recherche en cours",textSearch)
+<<<<<<< HEAD
        var responseFetch = await fetch(`http://10.2.5.178:3000/home/searchtext/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`,{
         method: 'POST',
        headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.178'},    
+=======
+       var responseFetch = await fetch(`http://10.2.5.203:3000/home/searchtext/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`,{
+        method: 'POST',
+       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.203'},    
+>>>>>>> 5c19ef098cd078b8a1b197131e3a8460757608ca
        body: `textSearch=${textSearch}`
       })
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
@@ -69,16 +102,23 @@ function Home(props) {
   var Book = cataList.map((e,i)=>{
    return(
     <Books id={e.id} key={i}  inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
-   ) 
-
+   )
   })
+
+
 //RS fetch pour search tag
 const fetchTag = async (tags)=>{
   var dataTag = JSON.stringify(tags)
 
+<<<<<<< HEAD
   var responseFetch = await fetch(`http://10.2.5.178:3000/home/searchTag`,{
     method: 'POST',
     headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.178'},    
+=======
+  var responseFetch = await fetch(`http://10.2.5.202:3000/home/searchTag`,{
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.202'},    
+>>>>>>> 5c19ef098cd078b8a1b197131e3a8460757608ca
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token="dTsvaJw2PQiOtTWxykt5KcWco87eeSp6"`});
     var resultatSearch = await responseFetch.json();
     console.log("TAGRESULT",await resultatSearch)
@@ -129,8 +169,11 @@ for (let i=0;i<tagsList.length;i++){
   //   )
   // })
 
+
   return (
-     <View style={{ flex: 1, width:"100%"}}>
+    
+     <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
+     <Loader bool={loader} text="Chargement du catalogue..."/> 
        <View style={{ flexDirection:"row", marginTop:25}}>
        <Image
           style={{width: 40, height: 40, margin:5}}
@@ -147,10 +190,14 @@ for (let i=0;i<tagsList.length;i++){
           onChangeText={(value)=> setTextSearch(value)}
           value={textSearch}
         />
-         <Image
-          style={{width: 40, height: 40, marginLeft:10}}
-          source={require('../assets/qr-scan.png')}
-        />
+        <TouchableOpacity onPress={()=>{console.log("SCAN");props.navigation.navigate('Scan')}}>
+          <Image
+           
+            style={{width: 40, height: 40, marginLeft:10}}
+            source={require('../assets/qr-scan.png')}
+          />
+        </TouchableOpacity>
+        
         </View>
           <View style={{flexDirection:"row", flexWrap:"wrap",margin:10}}>
             {Tags}
@@ -158,33 +205,52 @@ for (let i=0;i<tagsList.length;i++){
         <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
           <Divider style={{ backgroundColor: '#F9603E', width:"60%", /*opacity:"50%"*/ marginTop:15}} />
         </View>
-        <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
-          <Text style={{color:"#F9603E"}}>Les mieux notés</Text>
-          
-        </View>
 
-        <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
-          <Carrousel/>
-        </View>
+        <ScrollView stickyHeaderIndices={[2]}>
 
-        <View style={{ flexDirection:"row",justifyContent:"flex-start", alignItems:'center', marginTop:10, marginLeft:18}}>
-          <Text style={{color:"#F9603E"}}>Catalogue</Text>
-        </View>   
-        
-      <ScrollView contentContainerStyle={{padding: 5}}>
-          <View style={{
-              flex: 1,
-              flexDirection:"row",
-              justifyContent:"space-around",
-              flexWrap: 'wrap',
-              margin:"auto"  
-            }}>
-              {errorMessage!=""?<Text>{errorMessage}</Text>:null}
-              {Book}            
+          <View style={{ flexDirection:"row",
+                        justifyContent:"flex-start", 
+                        alignItems:'center', 
+                        marginTop:10, 
+                        marginLeft:10}}>
+            <Text style={{color:"#F9603E"}}>Les mieux notés</Text>
+            
           </View>
-          </ScrollView>
+
+          <View style={{ flexDirection:"row",
+                        justifyContent:"flex-start", 
+                        alignItems:'center',
+                        marginTop:10}}>
+            <Carrousel data={bestRated}/>
+          </View>
+
+          <View style={{ flexDirection:"row", 
+                        justifyContent:"flex-start",
+                        alignItems:'center',
+                        marginTop:10,
+                        marginLeft:10,
+                        paddingBottom:5, 
+                        backgroundColor:'#EEEEEE'}}>
+          <Text style={{color:"#F9603E"}}>Catalogue</Text>
+          </View>   
+          
+          <ScrollView contentContainerStyle={{padding: 5}}>
+            <View style={{
+                flex: 1,
+                flexDirection:"row",
+                justifyContent:"space-around",
+                flexWrap: 'wrap',
+                margin:"auto"  
+              }}>
+                {errorMessage!=""?<Text>{errorMessage}</Text>:null}
+                {Book}            
+            </View>
+            </ScrollView>
+           
+          </ScrollView>   
           <FlashMessage position="top" />
-    </View>    
+    </View> 
+ 
   );
 }
 function mapDispatchToProps(dispatch){
@@ -200,5 +266,4 @@ function mapStateToProps(state) {
   return { storeLibrairy: state.storeLibrairy,
    }
 }
-
-export default connect(mapStateToProps,mapDispatchToProps)(Home)
+export default withNavigation(connect(mapStateToProps,mapDispatchToProps)(Home))

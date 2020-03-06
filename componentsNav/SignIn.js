@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 import {connect} from 'react-redux';
-//import {TextField, FilledTextField, OutlinedTextField} from 'react-native-material-textfield'; // Module pour gérer les inputs
-//import {Button, Input, Text} from 'react-native-elements';
 
 function SignIn(props) {
   
@@ -19,8 +17,13 @@ function SignIn(props) {
     //console.log("signin"+a,b)
     setSignInEmail('')
     setSignInPassword('')
+<<<<<<< HEAD
 
     const data = await fetch('http://10.2.5.178:3000/users/sign-in', {
+=======
+    
+   const data = await fetch('http://10.2.5.202:3000/users/sign-in', {
+>>>>>>> 5c19ef098cd078b8a1b197131e3a8460757608ca
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `email=${a}&password=${b}`
@@ -65,8 +68,8 @@ function SignIn(props) {
               onChangeText={(val) => setSignInEmail(val)}
               value={signInEmail}
               />
-              {/* {errorChampVide!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorChampVide}</Text>} */}
-              {errorEmailInexistant!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorEmailInexistant}</Text>}
+              { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
+              { errorEmailInexistant ? <Text style={{fontSize:12,color:'red'}}>{errorEmailInexistant}</Text> : null }
             </View>
 
             <View style={{marginBottom: 25}}>
@@ -77,8 +80,8 @@ function SignIn(props) {
               onChangeText={(val) => setSignInPassword(val)}
               value={signInPassword}
               />
-              {errorChampVide!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorChampVide}</Text>}
-              {errorPassword!='' && <Text style = {{color:'#FF473A', fontWeight: 'bold', fontSize:11}}>{errorPassword}</Text>}
+              { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
+              { errorPassword ? <Text style={{fontSize:12,color:'red'}}>{errorPassword}</Text> : null }
             </View>
 
             <TouchableOpacity onPress={() => props.navigation.navigate('newPassword')}>

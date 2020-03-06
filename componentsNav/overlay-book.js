@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import {connect} from 'react-redux';
-import {Text, View,TouchableOpacity} from 'react-native';
+import {Text, View,TouchableOpacity, ImageBackground} from 'react-native';
 import {Icon,Overlay,Badge,Card } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { withNavigationFocus } from 'react-navigation';
@@ -29,8 +29,7 @@ useEffect( ()=> {
 
 // GENERE LES ELEMENTS DE LA LIST
 let displayContentCard = props.overlayData.content.map((obj,i) => {
-    // console.log("prooooooops",props.overlayData)
-    return(
+    return( 
         <TouchableOpacity
             onPress={() =>{props.storeOverlayInformation(props.overlayData);props.storeContentInformation({idBook:props.overlayData.id,idContent:props.overlayData.content[i].idContent});props.navigation.navigate('contentMediaPage');}}
             >
@@ -79,18 +78,14 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
                     iconType = 'question'
                     iconType = 'antdesign'
                 }
-
-                
                 return (
                     <Icon name= {iconType} type={library}  size= {30} margin={5}/>
-                );
-                })
-            }
+            );
+        })
+    }
+                    </View>                   
                 </View>
-                
-            </View>
-
-        </Card>
+            </Card>        
     </TouchableOpacity>
     )
 })
@@ -100,18 +95,20 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
 // RETURN GLOBAL DE LA PAGE
 
     return (
+
     <Overlay 
         overlayStyle={{backgroundColor:"#D4D9DB"}}
         height= {"98%"}
         width={"98%"}
         isVisible={isVisibleOverlay}
         >
-        <View style = {{display:"flex",flexDirection:"row", width:'100%'}}>
+            <ImageBackground source={require('../assets/background-content.png')} style={{flex:1,width:"100%",height:"100%"}}> 
+        <View style = {{display:"flex",flexDirection:"row", width:'120%'}}>
             <Badge value={<Text style={{marginRight:'auto',color: 'white',  paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12}}>page {props.overlayData.nb}</Text>}
                 badgeStyle={{backgroundColor:"grey"}}
             />
             <Icon 
-                containerStyle={{marginLeft:'auto'}}
+                containerStyle={{marginLeft:250}}
                 name= "closecircleo" type='antdesign'  size= {20}
                 onPress={() => {props.storeOverlayInformation(props.overlayData); console.log('PROP IN CLOSE',props.overlayData.toggle);props.navigation.navigate('BookContent');setIsVisibleOverlay(false)}}
             />
@@ -121,10 +118,10 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
         </View>
         <View>
             {displayContentCard}
-
         </View>
-
+        </ImageBackground>        
     </Overlay>
+
     );
   }
 

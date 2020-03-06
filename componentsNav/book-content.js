@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import OverlayContent from "../componentsNav/overlay-book"
 import { set } from 'react-native-reanimated';
 import { withNavigationFocus } from 'react-navigation';
+import { Assets } from 'react-navigation-stack';
 
 function BookContent(props) { 
 
@@ -34,7 +35,7 @@ function BookContent(props) {
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
-            var bookData = await fetch(`http://10.2.5.178:3000/books/open-book`, { 
+            var bookData = await fetch(`http://10.2.5.203:3000/books/open-book`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
                     body: `idBook=${idBook}&token=${token}`
@@ -121,14 +122,14 @@ let cardDisplay = organisedContent.map((obj,i) => {
         style = {{backgroundColor:color, margin:10,borderRadius:5,padding:5, width:'40%', justifyContent:'center'}}
         onPress = {()=> openOverlay(obj.pageNumber,idBook,organisedContent,arrayDataBook.title,i)}
     >
-        <View>
-            <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12,fontSize:9}} >page {obj.pageNumber}</Text>}
-                badgeStyle={{backgroundColor:"#252525"}}
-            />
-        <View style = {{justifyContent: 'center'}}>
-            {titleList}
-        </View>
-        </View>
+            <View>
+                <Badge value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12,fontSize:9}} >page {obj.pageNumber}</Text>}
+                    badgeStyle={{backgroundColor:"#252525"}}
+                />
+            <View style = {{justifyContent: 'center'}}>
+                {titleList}
+            </View>
+            </View>
     </TouchableOpacity>
     )})
 
@@ -140,8 +141,7 @@ let cardDisplay = organisedContent.map((obj,i) => {
 // RETURN GLOBAL DE LA PAGE
 
     return (
-    <ScrollView>
-        <ImageBackground source = {require('../assets/origami.png')} style = {{ width:'100%'}}>        
+    <ScrollView>     
                 <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',marginLeft:20, marginRight:20}}>
 
                     <View style = {{marginTop:60}}>
@@ -171,14 +171,13 @@ let cardDisplay = organisedContent.map((obj,i) => {
                     </View>
 
                 </View>
-                <OverlayContent />
-
+                {/* APPEL LE COMPOSANT OVERLAY */}
+                <OverlayContent/>
                 <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
                     <Divider 
                     style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15}} 
                     />
                 </View>
-                </ImageBackground>
 
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
                     <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les avis et commentaires</Text>

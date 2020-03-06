@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {showMessage, hideMessage } from "react-native-flash-message";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
-
+import color from './color'
 
 const Book = (props) => {
 
@@ -14,10 +14,16 @@ const [isCheck, setIsCheck] = useState(props.inLibrairy)
 
 //Function appel route addLibrairy
 const addLibrairy = async (id,bool) => {
+  console.log("HE")
+    var responseFetch = await fetch(`http://10.2.5.203/home/addLibrairy/${id}/${bool}/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+    var resp = await responseFetch.json();
     setIsCheck(bool)
     props.manageLibrairy(id,bool)
+<<<<<<< HEAD
     var responseFetch = await fetch(`http://10.2.5.178:3000/home/addLibrairy/${id}/${bool}/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
     var resp = await responseFetch.json();
+=======
+>>>>>>> 5c19ef098cd078b8a1b197131e3a8460757608ca
     showMessage({
         message: resp.mess,
         type: resp.type,
@@ -25,6 +31,7 @@ const addLibrairy = async (id,bool) => {
         backgroundColor:"#8FB2C9"
       });
 }
+
 
 return (
           
@@ -41,7 +48,7 @@ return (
                 />
                 </TouchableOpacity>
                 <CheckBox 
-                    onPress={() =>{addLibrairy(props.id,!isCheck)}}
+                    onPress={() =>{addLibrairy(props.id,!isCheck);console.log("ONPRESS")}}
                     checked={isCheck}
                     checkedColor="#F9603E"
                     containerStyle={{position: "absolute",
