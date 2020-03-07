@@ -10,7 +10,7 @@ import { Assets } from 'react-navigation-stack';
 function BookContent(props) { 
 
 //VARIABLES
-    var token = 'dTsvaJw2PQiOtTWxykt5KcWco87eeSp6' //var token = props.token
+    var token = props.token //var token = props.token
     const publisher = {publisher: "Les Editions du Sabot Rouge"}
     const dataComments = [
         {
@@ -34,7 +34,7 @@ function BookContent(props) {
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
-            var bookData = await fetch(`http://10.2.5.203:3000/books/open-book`, { 
+            var bookData = await fetch(`http://192.168.1.12:3000/books/open-book`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
                     body: `idBook=${idBook}&token=${token}`
@@ -98,7 +98,7 @@ let cardDisplay = organisedContent.map((obj,i) => {
      
         )
     })
-
+console.log('book'+props.token)
     return (
     <TouchableOpacity
         style = {{backgroundColor:color, margin:10,borderRadius:5,padding:5, width:'40%', justifyContent:'center'}}

@@ -23,7 +23,7 @@ var clickLogOut = () => {
 console.log("HELLOOOOOOOOOO TOKEN PARAMETRE",props.token)
   useEffect(() => {
   const findUser = async () => {
-    const dataUser = await fetch ('http://10.2.3.37:3000/users/params', {
+    const dataUser = await fetch ('http://192.168.1.12:3000/users/params', {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `token=${props.token}`

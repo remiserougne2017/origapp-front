@@ -14,7 +14,8 @@ const [isCheck, setIsCheck] = useState(props.inLibrairy)
 
 //Function appel route addLibrairy
 const addLibrairy = async (id,bool) => {
-    var responseFetch = await fetch(`http://10.2.3.37:3000/home/addLibrairy/${id}/${bool}/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+  
+    var responseFetch = await fetch(`http://192.168.1.12:3000/home/addLibrairy/${id}/${bool}/${props.reducerToken}`)
     var resp = await responseFetch.json();
     setIsCheck(bool)
     props.manageLibrairy(id,bool)
@@ -75,8 +76,8 @@ function mapDispatchToProps(dispatch){
   };
 function mapStateToProps(state) {
     return { storeLibrairy: state.storeLibrairy,
-            token: state.token
+            reducerToken: state.reducerToken
      }
   }  
   
-  export default withNavigation(connect(null,mapDispatchToProps)(Book))
+  export default withNavigation(connect(mapStateToProps,mapDispatchToProps)(Book))

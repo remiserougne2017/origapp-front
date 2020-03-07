@@ -18,7 +18,7 @@ function SignIn(props) {
     /* setSignInEmail('')
     setSignInPassword('') */
 
-    const data = await fetch('http://10.2.3.37:3000/users/sign-in', {
+    const data = await fetch('http://192.168.1.12:3000/users/sign-in', {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `email=${a}&password=${b}`
@@ -89,8 +89,7 @@ function SignIn(props) {
             <Button
              title='Connexion'
              color='#FF473A'
-             onPress={() => {clickSignIn(signInEmail, signInPassword);
-            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")}}
+             onPress={() => {clickSignIn(signInEmail, signInPassword)}}
             />
 
             <TouchableOpacity onPress={() => props.navigation.navigate('SignUp')}>

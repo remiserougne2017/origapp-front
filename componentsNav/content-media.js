@@ -18,7 +18,7 @@ console.log("Hello content media",props.contentMediaData)
     useEffect( ()=> {
         async function openContent() {
             console.log("data body:",props.contentMediaData)
-            var resContentData = await fetch(`http://10.2.5.202:3000/books/open-content`, { 
+            var resContentData = await fetch(`http://192.168.1.12:3000/books/open-content`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
                     body: `idBook=${props.contentMediaData.idBook}&idContent=${props.contentMediaData.idContent}`

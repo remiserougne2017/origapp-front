@@ -1,6 +1,6 @@
-export default function(token = 'dTsvaJw2PQiOtTWxykt5KcWco87eeSp6', action){
+export default function(token = '', action){
     if(action.type == 'addToken'){
-        console.log('reducer')
+        console.log('reducer'+action.token)
         return action.token
     } else if (action.type == 'deleteToken'){
         console.log('reducer delete token');
