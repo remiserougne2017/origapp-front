@@ -71,14 +71,14 @@ var BottomNavigator = createBottomTabNavigator(
       tabBarIcon: ({ tintColor }) => {
         let imageIcon
         if (navigation.state.routeName == 'Home') {
-          imageIcon = <Icon name= "home" type='antdesign' color={tintColor}  size= {40}/> 
+          imageIcon = <Icon name= "home" type='antdesign' color={tintColor}  size= {25}/> 
           
         } else if (navigation.state.routeName == 'Library') {
-          imageIcon = <Icon name= "book" type='entypo' color={tintColor}  size= {40}/> 
+          imageIcon = <Icon name= "book" type='entypo' color={tintColor}  size= {25}/> 
 
           
         } else if (navigation.state.routeName == 'Parameters') {
-          imageIcon = <Icon name= "setting" type='antdesign' color={tintColor}  size= {40}/> 
+          imageIcon = <Icon name= "setting" type='antdesign' color={tintColor}  size= {25}/> 
 
         }        
         return imageIcon;
@@ -99,7 +99,6 @@ var BottomNavigator = createBottomTabNavigator(
     SignUp: SignUp,
     SignIn: SignIn,
     newPassword: newPassword,
-    Home: Home,
     Bottom: BottomNavigator,
   }, {
     headerMode: 'none',

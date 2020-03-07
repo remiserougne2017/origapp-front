@@ -14,9 +14,9 @@ function SignIn(props) {
 
   var clickSignIn = async (a, b) => {
 
-    console.log("signin"+a,b)
-    /* setSignInEmail('')
-    setSignInPassword('') */
+    //console.log("signin"+a,b)
+    setSignInEmail('')
+    setSignInPassword('')
 
     const data = await fetch('http://192.168.1.12:3000/users/sign-in', {
       method: 'POST',

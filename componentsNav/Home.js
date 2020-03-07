@@ -48,6 +48,7 @@ function Home(props) {
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
       setBestRated(bookList.livresMieuxNotes)
+
       //recup tags
       var tagFetch = await fetch(`http://192.168.1.12:3000/home/homePage/tags`)
       var tags = await tagFetch.json();
@@ -69,7 +70,7 @@ function Home(props) {
        console.log("recherche en cours",textSearch)
        var responseFetch = await fetch(`http://192.168.1.12:3000/home/searchtext/${props.reducerToken}`,{
         method: 'POST',
-       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.12'},    
+       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.12'},
        body: `textSearch=${textSearch}`
       })
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
@@ -92,6 +93,7 @@ function Home(props) {
 //RS fetch pour search tag
 const fetchTag = async (tags)=>{
   var dataTag = JSON.stringify(tags)
+
 
   var responseFetch = await fetch(`http://192.168.1.12:3000/home/searchTag`,{
     method: 'POST',
