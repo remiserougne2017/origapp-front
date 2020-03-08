@@ -9,8 +9,9 @@ import { WebView } from 'react-native-webview';
 // import WebView from 'react-native-android-fullscreen-webview-video';
 // import WebView from 'react-native-android-fullscreen-webview-video';
 // import { AudioControls } from 'react-native-hue-player';
-import SoundPlayer from 'react-native-sound-player'
+import SoundPlayer from 'react-native-sound-player';
 import { withNavigation } from 'react-navigation';
+import Ip from './Ip' // A enlever en production !
 
 
 
@@ -23,7 +24,7 @@ const [dataContent,setDataContent] = useState({content: {title:"",media:[{type:'
 // LOAD MEDIA CONTENT FROM DB
     useEffect( ()=> {
         async function openContent() {
-            var resContentData = await fetch(`http://192.168.1.12:3000/books/open-content`, { 
+            var resContentData = await fetch(`${Ip()}:3000/books/open-content`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
                     body: `idBook=${props.contentMediaData.idBook}&idContent=${props.contentMediaData.idContent}`

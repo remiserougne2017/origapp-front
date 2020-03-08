@@ -5,6 +5,7 @@ import { withNavigationFocus } from 'react-navigation';
 import { Button, Icon  } from 'react-native-elements';
 import color from './color';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ip from './Ip'; // A enlever en production !
 
 function Scan(props) {
 
@@ -33,7 +34,7 @@ const sendPicture = async (path)=>{
     });
     console.log("PATH DATA",data)
     //envoi au backend pour enregistrer sur cloudinary
-   var response = await fetch("http://10.2.5.203:3000/scan/", {
+   var response = await fetch(`${Ip()}:3000/scan/`, {
       method: 'POST',
       body: data
     });  

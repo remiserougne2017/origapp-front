@@ -7,10 +7,12 @@ import FlashMessage from "react-native-flash-message";
 import Carrousel from './Carrousel';
 import { withNavigation } from 'react-navigation';
 import color from './color';
+import Ip from './Ip'; // A enlever en production !
 
 function Library(props) {
 
   const [mesLivres,setMesLivres]=useState([]);
+  const [lastRead,setLastRead]=useState([]);
   const [errorMessage,setErrorMessage]=useState('')
   
    // Initialisation du composant
@@ -18,13 +20,26 @@ function Library(props) {
     const maBibliotheque = async() =>{
       
       //console.log("librairy")
-      var responseFetch = await fetch(`http://192.168.1.12:3000/home/myLibrary/${props.reducerToken}`)
+      var responseFetch = await fetch(`${Ip()}:3000/home/myLibrary/${props.reducerToken}`)
       var responseLivres = await responseFetch.json();
       setMesLivres(responseLivres)
       
     };  
     maBibliotheque();  
   },[props.storeLibrairy])
+
+  // Initialisation Last Reads
+  useEffect(()=>{
+    const lastReads = async() =>{
+      
+      //console.log("librairy")
+      var responseFetch = await fetch(`${Ip()}:3000/lists/lastRead/${props.reducerToken}`)
+      var responseLastReads = await responseFetch.json();
+      setLastRead(responseLastReads)
+      
+    };  
+    lastReads();  
+  },[])
 
   //Création du tableau pour afficher la bibliothèque
   var Book = mesLivres.map((e,i)=>{
@@ -37,6 +52,20 @@ function Library(props) {
            illustrators={e.illustrator}
            rating={e.rating} />
           )
+  })
+
+  //Création du tableau pour afficher les dernières lectures
+  var latestBooks = lastRead.map((e,i)=>{
+    return({
+      id:e._id,
+      key:i,
+      //inLibrairy={e.inLibrairy}
+      title:e.title,
+      image:e.image,
+      authors:e.authors,
+      illustrators:e.illustrator,
+      rating:e.rating
+    })
   })
 
   return (
@@ -68,7 +97,7 @@ function Library(props) {
                         justifyContent:"flex-start", 
                         alignItems:'center',
                         marginTop:10}}>
-            <Carrousel data={Book}/>
+            <Carrousel data={latestBooks}/>
           </View>
 
          <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>

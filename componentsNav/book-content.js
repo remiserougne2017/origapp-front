@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
 import { withNavigationFocus } from 'react-navigation';
 import { Assets } from 'react-navigation-stack';
+import Ip from './Ip'; // A enlever en production !
 
 function BookContent(props) { 
 
@@ -34,7 +35,7 @@ function BookContent(props) {
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
-            var bookData = await fetch(`http://192.168.1.12:3000/books/open-book`, { 
+            var bookData = await fetch(`${Ip()}:3000/books/open-book`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
                     body: `idBook=${idBook}&token=${token}`

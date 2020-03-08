@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 import {connect} from 'react-redux';
+import Ip from './Ip'; // a enlever en production !
 
 function SignIn(props) {
   
@@ -18,7 +19,7 @@ function SignIn(props) {
     setSignInEmail('')
     setSignInPassword('')
 
-    const data = await fetch('http://192.168.1.12:3000/users/sign-in', {
+    const data = await fetch(`${Ip()}:3000/users/sign-in`, {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `email=${a}&password=${b}`

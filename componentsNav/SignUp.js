@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 import {connect} from 'react-redux';
+import Ip from './Ip' // A enlever en production !
 
 function SignUp(props) {
   
@@ -27,7 +28,7 @@ function SignUp(props) {
 
     } else {
       console.log('mdp ok')
-      const data = await fetch('http://10.2.5.178:3000/users/sign-up', {
+      const data = await fetch(`${Ip()}:3000/users/sign-up`, {
         method: 'POST',
         headers: {'Content-Type': 'application/x-www-form-urlencoded'},
         body: `firstName=${signUpFirstName}&email=${signUpEmail}&password=${signUpPassword}`

@@ -11,6 +11,7 @@ import Carrousel from './Carrousel';
 import { withNavigation } from 'react-navigation';
 import color from './color';
 import Loader from './loader';
+import Ip from './Ip';
 
 function Home(props) {
   //test d'apport de couleur en variable
@@ -44,13 +45,13 @@ function Home(props) {
     const catalogue = async() =>{
       // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
       console.log("WELCOME HOME")
-      var responseFetch = await fetch(`http://192.168.1.12:3000/home/homePage/${props.reducerToken}`)
+      var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.reducerToken}`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
       setBestRated(bookList.livresMieuxNotes)
 
       //recup tags
-      var tagFetch = await fetch(`http://192.168.1.12:3000/home/homePage/tags`)
+      var tagFetch = await fetch(`${Ip()}:3000/home/homePage/tags`)
       var tags = await tagFetch.json();
       var tagsColor = tags.map(e=>{
         e.color="grey"
@@ -68,9 +69,9 @@ function Home(props) {
    useEffect(()=>{
      const rechercheText = async()=>{
        console.log("recherche en cours",textSearch)
-       var responseFetch = await fetch(`http://192.168.1.12:3000/home/searchtext/${props.reducerToken}`,{
+       var responseFetch = await fetch(`${Ip()}:3000/home/searchtext/${props.reducerToken}`,{
         method: 'POST',
-       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.12'},
+       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},
        body: `textSearch=${textSearch}`
       })
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
@@ -95,9 +96,9 @@ const fetchTag = async (tags)=>{
   var dataTag = JSON.stringify(tags)
 
 
-  var responseFetch = await fetch(`http://192.168.1.12:3000/home/searchTag`,{
+  var responseFetch = await fetch(`${Ip()}:3000/home/searchTag`,{
     method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://192.168.1.12'},    
+    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},    
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token=${props.reducerToken}`});
     var resultatSearch = await responseFetch.json();
     console.log("TAGRESULT",await resultatSearch)
