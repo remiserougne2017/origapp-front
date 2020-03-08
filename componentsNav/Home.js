@@ -23,8 +23,8 @@ function Home(props) {
   const [tagsList,setTagsList]=useState([])
   const [selectedTags,setSelectedTags]=useState([])
   const [errorMessage,setErrorMessage]=useState('')
-  const[loader,setLoader]=useState(false)
-  const [bestRated, setBestRated]=useState('')
+  const [loader,setLoader]=useState(false)
+  const [bestRated, setBestRated]=useState([])
   
   //pour charger le store Redux avec la biblio du user
   const librairyToStore= ()=>{
@@ -50,6 +50,12 @@ function Home(props) {
       setCataList(bookList.livreMin)
       setBestRated(bookList.livresMieuxNotes)
 
+      // Chargement livres mieux notés
+      var responseBestRated = await fetch(`${Ip()}:3000/lists/bestRated`)
+      var bestRatedList = await responseBestRated.json();  
+      console.log(bestRatedList+'blu')
+      setBestRated(bestRatedList)
+
       //recup tags
       var tagFetch = await fetch(`${Ip()}:3000/home/homePage/tags`)
       var tags = await tagFetch.json();
@@ -61,6 +67,7 @@ function Home(props) {
       //ferme le loader
       setLoader(false)
     };
+
     catalogue();
     librairyToStore();
     
@@ -82,6 +89,9 @@ function Home(props) {
     };
    rechercheText();
    },[textSearch])
+
+   // Chargement de la liste des livres mieux notés
+ 
 
   //RS creation du tableau de books pour afficher le catalogue
   var Book = cataList.map((e,i)=>{
@@ -148,7 +158,6 @@ for (let i=0;i<tagsList.length;i++){
   //   />
   //   )
   // })
-
   return (
     
      <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
