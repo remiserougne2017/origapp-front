@@ -38,6 +38,7 @@ function SignIn(props) {
     if(response.result == true){
       props.addToken(response.token)
       props.addPrenom(response.prenom)
+      setSignInPassword('')
       console.log(response.token)
       props.navigation.navigate('Home')
     } else {
@@ -90,7 +91,8 @@ function SignIn(props) {
             <Button
              title='Connexion'
              color='#FF473A'
-             onPress={() => {clickSignIn(signInEmail, signInPassword)}}
+             onPress={() => {clickSignIn(signInEmail, signInPassword);
+            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^signin")}}
             />
 
             <TouchableOpacity onPress={() => props.navigation.navigate('SignUp')}>
