@@ -5,9 +5,10 @@ import {Rating} from "react-native-ratings";
 import color    from './color';
 import {connect} from 'react-redux';
 import { withNavigation } from 'react-navigation';
+import Ip from './Ip'
 
 const RatingPage = (props) => {
-  console.log("IsVisible?",props.isVisible)
+  console.log("IsVisible overlay component?",props.isVisible)
     const ip="192.168.1.28"
     const[userComment,setUserComment]=useState('')
     const [isVisible,setIsvisible]=useState(props.isVisible)
@@ -20,16 +21,24 @@ const RatingPage = (props) => {
      
     const sendComments = async ()=>{
       console.log("envoyer comment")
-    var comment =  await fetch(`http://${ip}:3000/books/comments`, {
+    var comment =  await fetch(`http://${Ip()}:3000/books/comments`, {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: `comment=${userComment}&token=${props.token}&idBook=${props.idBook}&rating=${userRating}`
           })
           
-        }
+        };
+
+      const onClickCancel =()=>{
+        console.log("PRESS annuler");
+        setIsvisible(false);
+        setUserComment("");
+        Keyboard.dismiss();
+        props.parentRatingFunction(false)
+      }
 
  return (
-         <Overlay isVisible={isVisible} fullScreen={true}>   
+         <Overlay isVisible={props.isVisible} fullScreen={true}>   
       
           <View style={{flex:1, justifyContent:"center", alignItems:"center", width:"100%"}}>
           <Text style={{fontSize:20,marginTop:30, marginBottom:10, marginRight:40,marginLeft:40}}>Glissez votre note!</Text>
@@ -59,7 +68,7 @@ const RatingPage = (props) => {
                 buttonStyle={{backgroundColor:"transparent"}}
                 titleStyle={{color:"black",textDecorationLine:'underline', fontWeight:"300"}}
                 containerStyle={{marginRight:10,marginBottom:40,color:"red"}}
-                onPress={()=>{console.log("PRESS annuler");setIsvisible(false);setUserComment("");Keyboard.dismiss()}}
+                onPress={()=>{onClickCancel()}}
                 title="Annuler" />
               <Button 
                 buttonStyle={{backgroundColor:color("blue")}}
