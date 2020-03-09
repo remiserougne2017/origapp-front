@@ -6,10 +6,11 @@ import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
 import { withNavigationFocus } from 'react-navigation';
 import { Assets } from 'react-navigation-stack';
+import OverlayRating from './overlay-rating';
 import Ip from './Ip'; // A enlever en production !
 
 function BookContent(props) { 
-
+    
 //VARIABLES
     var token = props.token //var token = props.token
     const publisher = {publisher: "Les Editions du Sabot Rouge"}
@@ -31,7 +32,8 @@ function BookContent(props) {
     ]
     const [idBook,setIdBook] = useState(props.navigation.state.params.idBook)
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
-
+    const [overlayRatingVisible, setOverlayRatingVisible]=useState(false)
+    console.log("star this book",idBook, overlayRatingVisible);
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
@@ -43,16 +45,12 @@ function BookContent(props) {
             );
             var bookDataJson = await bookData.json();
             setArrayDataBook(bookDataJson.dataBook);
-            console.log("ARRAY  USABLE DATA",bookDataJson)
+            //console.log("ARRAY  USABLE DATA",bookDataJson)
       }
-
         openBook();
       },[])
 
-
-
-
-
+console.log('livre', props.navigation.state.params.idBook,idBook)
 // CARD CONTENT CREATION  
 let cardDisplay = arrayDataBook.contents.map((obj,i) => {
         return (
@@ -140,19 +138,13 @@ let cardDisplay = arrayDataBook.contents.map((obj,i) => {
 
     })
 
-
-
-
-
-
 // RETURN GLOBAL DE LA PAGE
-
     return (
 
     <ScrollView>  
 
             <ImageBackground source={require('../assets/origami.png')} style={{width: '100%', height: '100%'}}>
-
+            <OverlayRating isVisible={overlayRatingVisible} idBook={idBook} />
                     <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',marginLeft:20, marginRight:20}}>
                         <View style = {{marginTop:60}}>
                             <Image 
@@ -198,7 +190,6 @@ let cardDisplay = arrayDataBook.contents.map((obj,i) => {
     );
   }
 
-
 // GET USER TOKEN
 function mapDispatchToProps(dispatch) {
     return {
@@ -211,15 +202,10 @@ function mapDispatchToProps(dispatch) {
     }
   }
 
-
 function mapStateToProps(state) {
 return { 
     token: state.reducerToken,
 }
 }
 
-
-export default withNavigationFocus(connect(
-mapStateToProps, 
-mapDispatchToProps
-)(BookContent));
+export default withNavigationFocus(connect(mapStateToProps, mapDispatchToProps)(BookContent))

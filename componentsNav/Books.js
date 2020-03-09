@@ -9,6 +9,7 @@ import color from './color';
 import Ip from './Ip'; // A enlever en production !
 
 const Book = (props) => {
+  const ip="192.168.1.28"
 
 //Function d'appel route lastRead
 
@@ -23,7 +24,7 @@ const [isCheck, setIsCheck] = useState(props.inLibrairy)
 //Function appel route addLibrairy
 const addLibrairy = async (id,bool) => {
   
-    var responseFetch = await fetch(`${Ip()}:3000/home/addLibrairy/${id}/${bool}/${props.reducerToken}`)
+    var responseFetch = await fetch(`${Ip()}:3000/home/addLibrairy/${id}/${bool}/${props.token}`)
     var resp = await responseFetch.json();
     setIsCheck(bool)
     props.manageLibrairy(id,bool)
@@ -33,9 +34,7 @@ const addLibrairy = async (id,bool) => {
         icon:"auto",
         backgroundColor:"#8FB2C9"
       });
-}
-
-
+  }
 return (
           
             <Card 
@@ -51,7 +50,7 @@ return (
                 />
                 </TouchableOpacity>
                 <CheckBox 
-                    onPress={() =>{addLibrairy(props.id,!isCheck);console.log("ONPRESS")}}
+                    onPress={() =>{addLibrairy(props.id,!isCheck);console.log("ONPRESS",props.id)}}
                     checked={isCheck}
                     checkedColor="#F9603E"
                     containerStyle={{position: "absolute",
@@ -84,7 +83,7 @@ function mapDispatchToProps(dispatch){
   };
 function mapStateToProps(state) {
     return { storeLibrairy: state.storeLibrairy,
-            reducerToken: state.reducerToken
+            token: state.reducerToken
      }
   }  
   
