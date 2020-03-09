@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import Ip from './Ip' // A enlever en production !
 
 function SignUp(props) {
-  
+  const ip="192.168.1.28"
   const [signUpFirstName, setSignUpFirstName] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
   const [signUpPassword, setSignUpPassword] = useState('')
@@ -125,23 +125,28 @@ function SignUp(props) {
                 <Button
              title='nav HomePage'
              color='#FF473A'
-             onPress={() => props.navigation.navigate('Bottom')}
+             onPress={() =>{props.navigation.navigate('Home');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
             />
                 <Button
              title='nav bookcontnt'
              color='#FF473A'
-             onPress={() => props.navigation.navigate('BookContent')}
+             onPress={() =>{props.navigation.navigate('BookContent');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
             />
             <Button
              title='Paramètres'
              color='#FF473A'
-             onPress={() => props.navigation.navigate('Parameters') }
+             onPress={() =>{ props.navigation.navigate('Parameters');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
             />  
 
                 <Button
              title='nav mediapage'
              color='#FF473A'
-             onPress={() => props.navigation.navigate('contentMediaPage')}
+             onPress={() =>{props.navigation.navigate('contentMediaPage');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
+            />
+             <Button
+             title='RATING'
+             color='#FF473A'
+             onPress={() =>{props.navigation.navigate('RatingPage');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
             />
            
            </View> 

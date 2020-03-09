@@ -14,6 +14,7 @@ import Loader from './loader';
 import Ip from './Ip';
 
 function Home(props) {
+  const ip="192.168.1.28"
   //test d'apport de couleur en variable
   console.log('COULEUr', color("red") )
   
@@ -45,11 +46,11 @@ function Home(props) {
     const catalogue = async() =>{
       // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
       console.log("WELCOME HOME")
-      var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.reducerToken}`)
+      var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
       var bookList = await responseFetch.json();
-      setCataList(bookList.livreMin)
       setBestRated(bookList.livresMieuxNotes)
-
+      setCataList(bookList.livreMin)
+      
       // Chargement livres mieux notés
       var responseBestRated = await fetch(`${Ip()}:3000/lists/bestRated`)
       var bestRatedList = await responseBestRated.json();  
@@ -100,6 +101,8 @@ function Home(props) {
    )
   })
 
+  //RS creation du catalogue avec une boucle
+
 
 //RS fetch pour search tag
 const fetchTag = async (tags)=>{
@@ -109,7 +112,7 @@ const fetchTag = async (tags)=>{
   var responseFetch = await fetch(`${Ip()}:3000/home/searchTag`,{
     method: 'POST',
     headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},    
-    body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token=${props.reducerToken}`});
+    body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token=${props.token}`});
     var resultatSearch = await responseFetch.json();
     console.log("TAGRESULT",await resultatSearch)
     if(resultatSearch.result == 'ok'){
@@ -122,7 +125,7 @@ const fetchTag = async (tags)=>{
 
     }else{
       setErrorMessage(resultatSearch.result)
-      setCataList([{}])
+      setCataList([])
     }
     
 }
@@ -252,7 +255,7 @@ function mapDispatchToProps(dispatch){
 }
 function mapStateToProps(state) {
   return { storeLibrairy: state.storeLibrairy,
-          reducerToken: state.reducerToken
+          token: state.reducerToken
    }
 }
 export default withNavigation(connect(mapStateToProps,mapDispatchToProps)(Home))

@@ -5,7 +5,7 @@ import Ip from './Ip'; // a enlever en production !
 
 function SignIn(props) {
   
-
+  const ip="192.168.1.28"
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
   const [errorChampVide, setErrorChampVide] = useState('')
