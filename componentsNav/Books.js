@@ -8,14 +8,15 @@ import { withNavigation } from 'react-navigation';
 import color from './color'
 
 const Book = (props) => {
+  const ip="192.168.1.28"
 
     //booleen pour la checkBox d'ajout à la bibli
 const [isCheck, setIsCheck] = useState(props.inLibrairy)
 
 //Function appel route addLibrairy
 const addLibrairy = async (id,bool) => {
-  console.log("HE")
-    var responseFetch = await fetch(`http://10.2.5.203/home/addLibrairy/${id}/${bool}/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+  console.log("HE", id, bool)
+  var responseFetch = await fetch(`http://${ip}:3000/home/addLibrairy/${id}/${bool}/${props.token}`)
     var resp = await responseFetch.json();
     setIsCheck(bool)
     props.manageLibrairy(id,bool)
@@ -25,9 +26,7 @@ const addLibrairy = async (id,bool) => {
         icon:"auto",
         backgroundColor:"#8FB2C9"
       });
-}
-
-
+  }
 return (
           
             <Card 
@@ -43,7 +42,7 @@ return (
                 />
                 </TouchableOpacity>
                 <CheckBox 
-                    onPress={() =>{addLibrairy(props.id,!isCheck);console.log("ONPRESS")}}
+                    onPress={() =>{addLibrairy(props.id,!isCheck);console.log("ONPRESS",props.id)}}
                     checked={isCheck}
                     checkedColor="#F9603E"
                     containerStyle={{position: "absolute",
@@ -76,8 +75,8 @@ function mapDispatchToProps(dispatch){
   };
 function mapStateToProps(state) {
     return { storeLibrairy: state.storeLibrairy,
-            token: state.token
+            token: state.reducerToken
      }
   }  
   
-  export default withNavigation(connect(null,mapDispatchToProps)(Book))
+  export default withNavigation(connect(mapStateToProps,mapDispatchToProps)(Book))

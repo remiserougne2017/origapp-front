@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 
 function SignIn(props) {
   
-
+  const ip="192.168.1.28"
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
   const [errorChampVide, setErrorChampVide] = useState('')
@@ -18,7 +18,7 @@ function SignIn(props) {
     setSignInEmail('')
     setSignInPassword('')
     
-   const data = await fetch('http://10.2.5.202:3000/users/sign-in', {
+   const data = await fetch(`http://${ip}:3000/users/sign-in`, {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `email=${a}&password=${b}`

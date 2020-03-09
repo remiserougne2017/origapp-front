@@ -22,17 +22,13 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
         <TouchableOpacity
             onPress={() =>{props.navigation.navigate('contentMediaPage');props.storeOverlayInformation({toggle:false, content:[]});props.storeContentInformation({idBook:props.overlayData.id,idContent:props.overlayData.content[i].idContent})}}
             >
-                
                 <Card   
                     title={obj.title}
-                    containerStyle={{borderRadius:10}}
-                >       
+                    containerStyle={{borderRadius:10}}>       
                 <View style = {{display:"flex",flexDirection:'row'}}>
                     <Icon 
                         name= 'download' type='antdesign'  size= {30} margin={5} marginRight='auto'
-                        onPress={() => console.log('hello download content')}
-
-                    />
+                        onPress={() => console.log('hello download content')}/>
                     <View  style={{display:"flex",flexDirection:'row', marginLeft:'auto'}}>
                 {
                     obj.media.map((med, k) => {
@@ -71,20 +67,14 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
                     })
                 }
                     </View>
-                    
                 </View>
-
             </Card>        
     </TouchableOpacity>
     )
 })
 
-
-
 // RETURN GLOBAL DE LA PAGE
-
     return (
-
     <Overlay 
         overlayStyle={{backgroundColor:"#D4D9DB"}}
         height= {"98%"}
@@ -139,11 +129,6 @@ function mapDispatchToProps(dispatch) {
   }
 }
     
-  
-
-
-
-
 export default withNavigation(connect(
 mapStateToProps, 
 mapDispatchToProps

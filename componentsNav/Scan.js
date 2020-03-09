@@ -1,5 +1,5 @@
 import React, {useRef, useState, Component} from 'react';
-import {Text, View, ImageBackground } from 'react-native';
+import {Text, View, ImageBackground,Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import { withNavigationFocus } from 'react-navigation';
 import { Button, Icon  } from 'react-native-elements';
@@ -60,7 +60,8 @@ if(props.isFocused && hasPermission) {
         </View>
         <View style={{flex:1,width: '100%', height: '100%'}}>
             {Cam}
-            <View style={{flexDirection:"row", justifyContent:"center",alignItems:'center',width:"40%", position: "absolute", bottom:50, right:100}}>
+            <View style={{flexDirection:"row", justifyContent:"center",alignItems:'center',
+            width:"40%", position: "absolute", bottom:50, right:100}}>
             <Icone
              onPress={() => {
                console.log("Flash !", flash)
@@ -74,32 +75,29 @@ if(props.isFocused && hasPermission) {
             type='MaterialCommunityIcons'
             color='white'
             size={24}
+            style={{marginRight:40}}
             />
+            <Image style={{width: 80, height: 80, position:"relative"}} 
+                source={require('../assets/orange-1618917_1280.png')}>
+               
+            </Image>      
             <Button 
-            titleStyle={{paddingRight:10}}
-            containerStyle={{margin:10}} 
-        onPress={async () => {
-        
-            if (camera) {
-            let photo = await camera.takePictureAsync({
-              quality : 0.7,
-              base64: true,
-              exif: true
-                }); 
-            console.log("photo?",photo.uri)
-            sendPicture(photo.uri)
-
-            };
-        }}
-          title="Déclencher" buttonStyle={{width: "100%", justifyContent:"center", backgroundColor:color("blue")}}
-        icon={
-            <Icon
-            name="save"
-            size={24}
-            color="white"
-            marginRight={10}
-            marginLeft={5}
-            />}/>    
+                titleStyle={{paddingRight:10}}
+                buttonStyle={{width: "100%", justifyContent:"center", backgroundColor:"red", paddingRight:30}}
+                containerStyle={{position:"absolute"}} 
+                onPress={async () => {
+                if (camera) {
+                    let photo = await camera.takePictureAsync({
+                    quality : 0.7,
+                    base64: true,
+                        exif: true
+                            }); 
+                    console.log("photo?",photo.uri)
+                    sendPicture(photo.uri)
+                        };
+                    }}
+                 
+                />        
             </View>
                   
         </View>
