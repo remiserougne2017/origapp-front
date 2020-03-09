@@ -20,10 +20,9 @@ function Library(props) {
     const maBibliotheque = async() =>{
       
       //console.log("librairy")
-      var responseFetch = await fetch(`${Ip()}:3000/home/myLibrary/${props.reducerToken}`)
+      var responseFetch = await fetch(`${Ip()}:3000/home/myLibrary/${props.token}`)
       var responseLivres = await responseFetch.json();
       setMesLivres(responseLivres)
-      
     };  
     maBibliotheque();  
   },[props.storeLibrairy])
@@ -33,7 +32,7 @@ function Library(props) {
     const lastReads = async() =>{
       
       //console.log("librairy")
-      var responseFetch = await fetch(`${Ip()}:3000/lists/lastRead/${props.reducerToken}`)
+      var responseFetch = await fetch(`${Ip()}:3000/lists/lastRead/${props.token}`)
       var responseLastReads = await responseFetch.json();
       setLastRead(responseLastReads)
       
@@ -156,7 +155,7 @@ function Library(props) {
 
 function mapStateToProps(state) {
   return { storeLibrairy: state.storeLibrairy,
-          reducerToken: state.reducerToken
+          token: state.reducerToken
    }
 }
 export default withNavigation(connect(mapStateToProps)(Library))
