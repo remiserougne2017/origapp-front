@@ -48,7 +48,6 @@ function Home(props) {
       console.log("WELCOME HOME")
       var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
       var bookList = await responseFetch.json();
-      setBestRated(bookList.livresMieuxNotes)
       setCataList(bookList.livreMin)
       
       // Chargement livres mieux notés
@@ -77,7 +76,7 @@ function Home(props) {
    useEffect(()=>{
      const rechercheText = async()=>{
        console.log("recherche en cours",textSearch)
-       var responseFetch = await fetch(`${Ip()}:3000/home/searchtext/${props.reducerToken}`,{
+       var responseFetch = await fetch(`${Ip()}:3000/home/searchtext/${props.token}`,{
         method: 'POST',
        headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},
        body: `textSearch=${textSearch}`
@@ -90,8 +89,6 @@ function Home(props) {
     };
    rechercheText();
    },[textSearch])
-
-   // Chargement de la liste des livres mieux notés
  
 
   //RS creation du tableau de books pour afficher le catalogue
@@ -255,7 +252,7 @@ function mapDispatchToProps(dispatch){
 }
 function mapStateToProps(state) {
   return { storeLibrairy: state.storeLibrairy,
-          token: state.reducerToken
+           token: state.reducerToken
    }
 }
 export default withNavigation(connect(mapStateToProps,mapDispatchToProps)(Home))

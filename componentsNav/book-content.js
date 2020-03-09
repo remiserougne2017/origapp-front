@@ -5,37 +5,20 @@ import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
 import { withNavigation,withNavigationFocus } from 'react-navigation';
-import { Assets } from 'react-navigation-stack';
 import OverlayRating from './overlay-rating';
 import Ip from './Ip'; // A enlever en production !
 import colorImport from './color'
 
 function BookContent(props) { 
-    const ip="192.168.1.28"
-
+    
 //VARIABLES
     var token = props.token //var token = props.token
     const publisher = {publisher: "Les Editions du Sabot Rouge"}
-    const dataComments = [
-        {
-            book: "Le Ara de Rosa",
-            date: '11111111111',
-            rating: 2,
-            text: "Bof ce livre",
-            idUser: 'user1'
-        },
-        {
-            book: "Le Ara de Rosa",
-            date: '11111111111',
-            rating: 5,
-            text: "Super ce livre. IL est vraiment génia let puis c'est bien pour les enfants.énia let puis c'est bien pour les enfantsénia let puis c'est bien pour les enfants.énia let puis c'est bien pour les enfantsénia let puis c'est bien pour les enfantsénia let puis c'est bien pour les enfants ",
-            idUser: 'user1'
-        }
-    ]
     const [idBook,setIdBook] = useState(props.navigation.state.params.idBook)
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
     const [overlayRatingVisible, setOverlayRatingVisible]=useState(false)
     console.log("star this book",idBook, overlayRatingVisible);
+
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
@@ -47,7 +30,6 @@ function BookContent(props) {
             );
             var bookDataJson = await bookData.json();
             setArrayDataBook(bookDataJson.dataBook);
-            // console.log("ARRAY  USABLE DATA",bookDataJson)
       }
         openBook();
       },[])
@@ -85,7 +67,6 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                 <View style ={{position: 'absolute',top:300,marginLeft:'auto',marginBottom:5}}>
                 </View>
                 <Image 
-
                         style={{ height: 240,borderRadius:10}}
                         source= {{uri: urlImageContent}}
                         
@@ -95,8 +76,6 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                     {obj.title.toUpperCase()}
                 </Text>
                 </View>
-
-
             </View>
             {/* <Divider style={{ backgroundColor: '#6B6262', width:"100%", marginTop:15}} /> */}
             <View style = {{display:"flex",flexDirection:'row', marginTop:10}}>
@@ -152,6 +131,11 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
         )
     })
 
+
+    //Création d'une fonction parent pour gerer le booleen isVisible & overlayRating Visible 
+    const parentRatingFunction = (bool)=>{
+        setOverlayRatingVisible(bool)
+    }
 // RETURN GLOBAL DE LA PAGE
     return (
     <ScrollView>     
@@ -181,7 +165,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                 </View>
                 {/* APPEL LE COMPOSANT OVERLAY */}
                 {/* <OverlayContent/> */}
-                <OverlayRating isVisible={overlayRatingVisible} idBook={idBook} />
+                <OverlayRating isVisible={overlayRatingVisible} idBook={idBook} parentRatingFunction={parentRatingFunction}/>
                 <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
                     <Divider 
                     style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15}} 
