@@ -9,11 +9,14 @@ import { withNavigation } from 'react-navigation';
 import color from './color';
 import Ip from './Ip'; // A enlever en production !
 
+
+
 function Library(props) {
 
   const [mesLivres,setMesLivres]=useState([]);
   const [lastRead,setLastRead]=useState([]);
   const [errorMessage,setErrorMessage]=useState('')
+  const [suggestBooks, setSuggestBooks]=useState([]);
   
    // Initialisation du composant
    useEffect(()=>{
@@ -37,8 +40,25 @@ function Library(props) {
       setLastRead(responseLastReads)
       
     };  
+
     lastReads();  
   },[])
+
+  //// Initialisation Suggestions
+  useEffect(()=>{
+    const suggest = async() =>{
+      console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
+      var suggestFetch = await fetch(`${Ip()}:3000/home/suggest/${props.token}`)
+      var Suggestions = await suggestFetch.json();
+      setSuggestBooks(Suggestions.mySuggest)
+      console.log("mySuggest", Suggestions.mySuggest)
+      
+    };
+
+    suggest();
+  },[])
+
+console.log("suggestBook", suggestBooks)
 
   //Création du tableau pour afficher la bibliothèque
   var Book = mesLivres.map((e,i)=>{
@@ -66,7 +86,22 @@ function Library(props) {
       rating:e.rating
     })
   })
+///////////////////////////////////////////////////////////////////              ///   mySuggest ou suggestBooks
+  var Suggest = suggestBooks.map((e,i)=>{
+  
+    return({
+      //inLibrairy={e.inLibrairy}
+      key:i,
+      title:e.title,
+      image:e.image,
+      authors:e.authors,
+      illustrators:e.illustrator,
+      rating:e.rating
+    })
+  })
+/////////////////////////////////////////////////////////
 
+console.log("Suggest,,,,,,,,,,,,,,,,,,,,,,", Suggest)
   return (
      <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
        <View style={{ flexDirection:"row", marginTop:25}}>
@@ -143,7 +178,7 @@ function Library(props) {
                         justifyContent:"flex-start", 
                         alignItems:'center',
                         marginTop:10}}>
-            <Carrousel data={Book}/>
+            <Carrousel data={Suggest}/>
           </View>
             </ScrollView>
            
