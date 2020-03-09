@@ -7,36 +7,65 @@ import FlashMessage from "react-native-flash-message";
 import Carrousel from './Carrousel';
 import { withNavigation } from 'react-navigation';
 import color from './color';
+import Ip from './Ip'; // A enlever en production !
 
 function Library(props) {
 
-  const [cataList,setCataList]=useState([]);
+  const [mesLivres,setMesLivres]=useState([]);
+  const [lastRead,setLastRead]=useState([]);
   const [errorMessage,setErrorMessage]=useState('')
-  const [bestRated, setBestRated]=useState('')
-  
-
   
    // Initialisation du composant
    useEffect(()=>{
-    const catalogue = async() =>{
+    const maBibliotheque = async() =>{
       
-      console.log("WELCOME HOME")
-      var responseFetch = await fetch(`http://10.2.5.202:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
-      var bookList = await responseFetch.json();
-      setCataList(bookList.livreMin)
-      setBestRated(bookList.livresMieuxNotes)
+      //console.log("librairy")
+      var responseFetch = await fetch(`${Ip()}:3000/home/myLibrary/${props.reducerToken}`)
+      var responseLivres = await responseFetch.json();
+      setMesLivres(responseLivres)
       
-    };
-    catalogue();
-    
-    
+    };  
+    maBibliotheque();  
+  },[props.storeLibrairy])
+
+  // Initialisation Last Reads
+  useEffect(()=>{
+    const lastReads = async() =>{
+      
+      //console.log("librairy")
+      var responseFetch = await fetch(`${Ip()}:3000/lists/lastRead/${props.reducerToken}`)
+      var responseLastReads = await responseFetch.json();
+      setLastRead(responseLastReads)
+      
+    };  
+    lastReads();  
   },[])
 
-  //RS creation du tableau de books pour afficher le catalogue
-  var Book = cataList.map((e,i)=>{
+  //Création du tableau pour afficher la bibliothèque
+  var Book = mesLivres.map((e,i)=>{
    return(
-    <Books id={e.id} key={i}  inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
-   )
+    <Books id={e.id} key={i}
+           inLibrairy={e.inLibrairy}
+           title={e.title}
+           image={e.image}
+           authors={e.authors}
+           illustrators={e.illustrator}
+           rating={e.rating} />
+          )
+  })
+
+  //Création du tableau pour afficher les dernières lectures
+  var latestBooks = lastRead.map((e,i)=>{
+    return({
+      id:e._id,
+      key:i,
+      //inLibrairy={e.inLibrairy}
+      title:e.title,
+      image:e.image,
+      authors:e.authors,
+      illustrators:e.illustrator,
+      rating:e.rating
+    })
   })
 
   return (
@@ -68,7 +97,7 @@ function Library(props) {
                         justifyContent:"flex-start", 
                         alignItems:'center',
                         marginTop:10}}>
-            <Carrousel data={bestRated}/>
+            <Carrousel data={latestBooks}/>
           </View>
 
          <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
@@ -105,8 +134,8 @@ function Library(props) {
                         justifyContent:"flex-start",
                         alignItems:'center',
                         marginTop:10,
-                        marginLeft:10,
-                        paddingBottom:5, 
+                        marginLeft:8,
+                        //paddingBottom:5, 
                         backgroundColor:'#EEEEEE'}}>
           <Text style={{color:"#F9603E"}}>Vous devriez aimer</Text>
           </View>
@@ -115,7 +144,7 @@ function Library(props) {
                         justifyContent:"flex-start", 
                         alignItems:'center',
                         marginTop:10}}>
-            <Carrousel data={bestRated}/>
+            <Carrousel data={Book}/>
           </View>
             </ScrollView>
            
@@ -127,6 +156,7 @@ function Library(props) {
 
 function mapStateToProps(state) {
   return { storeLibrairy: state.storeLibrairy,
+          reducerToken: state.reducerToken
    }
 }
 export default withNavigation(connect(mapStateToProps)(Library))

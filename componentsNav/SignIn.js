@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 import {connect} from 'react-redux';
+import Ip from './Ip'; // a enlever en production !
 
 function SignIn(props) {
   
@@ -14,19 +15,11 @@ function SignIn(props) {
 
   var clickSignIn = async (a, b) => {
 
-<<<<<<< HEAD
     //console.log("signin"+a,b)
     setSignInEmail('')
     setSignInPassword('')
 
-    const data = await fetch('http://10.2.5.178:3000/users/sign-in', {
-=======
-    console.log("signin"+a,b)
-    /* setSignInEmail('')
-    setSignInPassword('') */
-
-    const data = await fetch('http://10.2.3.37:3000/users/sign-in', {
->>>>>>> d3df8ed95eb74f385ad29fa74dd8b5233a739ce4
+    const data = await fetch(`${Ip()}:3000/users/sign-in`, {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `email=${a}&password=${b}`
@@ -97,8 +90,7 @@ function SignIn(props) {
             <Button
              title='Connexion'
              color='#FF473A'
-             onPress={() => {clickSignIn(signInEmail, signInPassword);
-            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")}}
+             onPress={() => {clickSignIn(signInEmail, signInPassword)}}
             />
 
             <TouchableOpacity onPress={() => props.navigation.navigate('SignUp')}>
