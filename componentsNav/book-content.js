@@ -4,8 +4,7 @@ import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
-import { withNavigationFocus } from 'react-navigation';
-import { Assets } from 'react-navigation-stack';
+import { withNavigation,withNavigationFocus } from 'react-navigation';
 import OverlayRating from './overlay-rating';
 import Ip from './Ip'; // A enlever en production !
 
@@ -14,26 +13,11 @@ function BookContent(props) {
 //VARIABLES
     var token = props.token //var token = props.token
     const publisher = {publisher: "Les Editions du Sabot Rouge"}
-    const dataComments = [
-        {
-            book: "Le Ara de Rosa",
-            date: '11111111111',
-            rating: 2,
-            text: "Bof ce livre",
-            idUser: 'user1'
-        },
-        {
-            book: "Le Ara de Rosa",
-            date: '11111111111',
-            rating: 5,
-            text: "Super ce livre. IL est vraiment génia let puis c'est bien pour les enfants.énia let puis c'est bien pour les enfantsénia let puis c'est bien pour les enfants.énia let puis c'est bien pour les enfantsénia let puis c'est bien pour les enfantsénia let puis c'est bien pour les enfants ",
-            idUser: 'user1'
-        }
-    ]
     const [idBook,setIdBook] = useState(props.navigation.state.params.idBook)
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
     const [overlayRatingVisible, setOverlayRatingVisible]=useState(false)
     console.log("star this book",idBook, overlayRatingVisible);
+
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
@@ -45,12 +29,10 @@ function BookContent(props) {
             );
             var bookDataJson = await bookData.json();
             setArrayDataBook(bookDataJson.dataBook);
-            //console.log("ARRAY  USABLE DATA",bookDataJson)
       }
         openBook();
       },[])
 
-console.log('livre', props.navigation.state.params.idBook,idBook)
 // CARD CONTENT CREATION  
 let cardDisplay = arrayDataBook.contents.map((obj,i) => {
         return (
@@ -69,18 +51,14 @@ let cardDisplay = arrayDataBook.contents.map((obj,i) => {
                 />
                 </View>
                 <Image 
-
                         style={{ height: 240,borderRadius:10}}
                         source= {{uri: arrayDataBook.coverImage}}
-                        
                     />
                 <View style ={{width:'80%',marginTop:10, marginBottom:10, position: 'absolute', bottom: 0, left: 20, backgroundColor:'#F8ED49'}}>
                 <Text style ={{fontSize:16}}>
                     {obj.title}
                 </Text>
                 </View>
-
-
             </View>
             <Divider style={{ backgroundColor: '#6B6262', width:"100%", marginTop:15}} />
             <View style = {{display:"flex",flexDirection:'row', marginTop:10}}>
@@ -133,53 +111,49 @@ let cardDisplay = arrayDataBook.contents.map((obj,i) => {
             </View>
         </View>
     </TouchableOpacity>
-
         )
-
     })
 
+
+    //Création d'une fonction parent pour gerer le booleen isVisible & overlayRating Visible 
+    const parentRatingFunction = (bool)=>{
+        setOverlayRatingVisible(bool)
+    }
 // RETURN GLOBAL DE LA PAGE
     return (
-
-    <ScrollView>  
-
-            <ImageBackground source={require('../assets/origami.png')} style={{width: '100%', height: '100%'}}>
-            <OverlayRating isVisible={overlayRatingVisible} idBook={idBook} />
-                    <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',marginLeft:20, marginRight:20}}>
-                        <View style = {{marginTop:60}}>
-                            <Image 
-                                style={{width: 230, height: 280, marginTop:20}}
-                                source= {{ uri: arrayDataBook.coverImage }}
-                            />
-                            <Icon 
-                                    iconStyle={{position:'absolute',top:-300,right:-20}}
-                                    name= "staro" type='antdesign'  size= {40}
-                                    onPress={() => console.log("star this book")}
-                                />
-                            <Text>{arrayDataBook.author}</Text>
-                            <Text>{publisher.publisher}</Text>                        
-                        </View>
-                        <View style = {{alignItems:"center"}}>
-                            <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>{arrayDataBook.title}</Text>
-                            <Text >{arrayDataBook.description}</Text>
-                        </View>
-                    </View>
-                    <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
-                        <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les contenus à découvrir</Text>
-                        <View style = {{marginLeft:0}}>
-
-                            {cardDisplay}
-
-                        </View>
-
-                    </View>
-                    <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
-                        <Divider 
-                        style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15}} 
+    <ScrollView>     
+                <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',marginLeft:20, marginRight:20}}>
+                    <View style = {{marginTop:60}}>
+                    <Text onPress={() =>{setOverlayRatingVisible(true);
+                    }}
+                        style={{fontStyle:"italic"}}
+                        >Donnez votre avis...</Text>
+                        <Image 
+                            style={{width: 250, height: 300, marginTop:20}}
+                            source= {{ uri: arrayDataBook.coverImage }}
                         />
+                        <Text>{arrayDataBook.author}</Text>
+                        <Text>{publisher.publisher}</Text>                        
                     </View>
-            </ImageBackground>
-
+                    <View style = {{alignItems:"center"}}>
+                        <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>{arrayDataBook.title}</Text>
+                        <Text >{arrayDataBook.description}</Text>
+                    </View>
+                </View>
+                <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
+                    <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les contenus à découvrir</Text>
+                    <View style = {{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection:'row',flexWrap:'wrap'}}>
+                        {cardDisplay}
+                    </View>
+                </View>
+                {/* APPEL LE COMPOSANT OVERLAY */}
+                {/* <OverlayContent/> */}
+                <OverlayRating isVisible={overlayRatingVisible} idBook={idBook} parentRatingFunction={parentRatingFunction}/>
+                <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
+                    <Divider 
+                    style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15}} 
+                    />
+                </View>
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
                     <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les avis et commentaires</Text>
   
@@ -204,8 +178,13 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
 return { 
-    token: state.reducerToken,
+    storeLibrairy: state.storeLibrairy,
+    token: state.reducerToken
 }
 }
 
-export default withNavigationFocus(connect(mapStateToProps, mapDispatchToProps)(BookContent))
+
+export default withNavigationFocus(connect(
+mapStateToProps, 
+mapDispatchToProps
+)(BookContent));

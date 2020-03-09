@@ -23,7 +23,6 @@ function Library(props) {
       var responseFetch = await fetch(`${Ip()}:3000/home/myLibrary/${props.token}`)
       var responseLivres = await responseFetch.json();
       setMesLivres(responseLivres)
-      
     };  
     maBibliotheque();  
   },[props.storeLibrairy])
