@@ -66,7 +66,6 @@ var displayMedia = dataContent.content.media.map((med, k) => {
         case 'audio':    
         displayBlocMedia = <Audio duration={med.duration} title={med.title} source={med.source}/>
         break;
-
         case 'image': 
         // console.log(med.source);
         if(med.source.search('http') == -1) {
@@ -155,6 +154,7 @@ const [borderWidth,setBorderWidth] = useState(0);
             <ScrollView
                 onScroll = {()=> setBorderWidth(2)}
                 style={{marginBottom:50}}
+                contentContainerStyle={{height:3000}}
             >
                 {displayMedia}
             </ScrollView>
