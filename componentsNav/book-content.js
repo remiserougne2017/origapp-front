@@ -36,8 +36,9 @@ function BookContent(props) {
 
 // CARD CONTENT CREATION  
 let arrayColor = ['#a5af2a','#fda329','#24c6ae'];
-
+let listIdContentForSwipe = []
 let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.pageNum - objB.pageNum;}).map((obj,i) => {
+        listIdContentForSwipe.push(obj.idContent);
         let urlImageContent;
         if(obj.imageContent == undefined) {
                 urlImageContent = arrayDataBook.coverImage
@@ -54,7 +55,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
 
         return (
     <TouchableOpacity
-        onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,idContent:obj.idContent});props.navigation.navigate('contentMediaPage');}}
+        onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,idContent:obj.idContent,listAllIdContent:listIdContentForSwipe,position:i});props.navigation.navigate('contentMediaPage');}}
         >
         <View
             style={{width:'100%',marginBottom:10,borderRadius:10, backgroundColor:'#FDFDFD'}}
