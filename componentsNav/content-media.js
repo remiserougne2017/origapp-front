@@ -57,12 +57,12 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                     // style={styles.backgroundVideo} 
                     />   */}
 
-                {/* <WebView
+                <WebView
                     style={ {margin: 20} }
                     source={{ uri: med.source }}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}   
-                    /> */}
+                    />
                 <Text style = {{marginLeft:15,fontStyle:'italic'}}>Vidéo : {med.title}</Text>
 
             </View> 
@@ -163,7 +163,6 @@ var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
 
     })
 
-console.log("POSIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIITON",position)
 
 // RETURN GLOBAL DE LA PAGE
 
@@ -172,8 +171,11 @@ console.log("POSIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIITON",position)
             onSwipeLeft={onSwipeLeft}
             onSwipeRight={onSwipeRight}
             >
-            <View>
-                <View style ={{marginTop:60, display:"flex", flexDirection:'row', alignItems:'center', height:50}}>
+            <View style = {{width:'100%'}}>
+                <View style = {{flexDirection:"row",justifyContent:'center',alignItems:'center',marginTop:40}}>
+                     {bulletBreadCrumb}
+                </View>
+                <View style ={{marginTop:10, display:"flex", flexDirection:'row', alignItems:'center', height:15}}>
                     <View style = {{flexDirection:'row', backgroundColor:'#fda329',position:'absolute',left:0,padding:5,borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15}}>
                         <Icon 
                                 name= 'back' type='antdesign'  size= {20} margin={5} marginLeft={20} color={'white'}
@@ -187,11 +189,10 @@ console.log("POSIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIITON",position)
                         page {dataContent.pageNum}
                     </Text>
                 </View>
-                <View style = {{flexDirection:"row",justifyContent:'center',alignItems:'center'}}>
-                {bulletBreadCrumb}
-                </View>
-                <View>
-                        <Text style={{backgroundColor:colorImport('red'),padding:5,color:"white",fontSize:25,marginTop:40,marginLeft:10,marginRight:10,textAlign:'center',borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth,borderRadius:10,marginBottom:30}}>{dataContent.content.title}</Text>
+                <View style = {{width:'100%'}}>
+                        <Text style={{
+                                padding:5,color:"black",marginBottom:10,fontSize:25,marginTop:20,marginLeft:10,marginRight:10,textAlign:'center',
+                                borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth,borderRadius:10, }}>{dataContent.content.title}</Text>
                 </View>
                 <ScrollView
                     onScroll = {()=> setBorderWidth(2)}

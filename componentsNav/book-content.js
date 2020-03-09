@@ -140,7 +140,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
 // RETURN GLOBAL DE LA PAGE
     return (
     <ScrollView>     
-                <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',marginLeft:20, marginRight:20}}>
+                <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'#D6D6D6',paddingBottom:20}}>
                     <View style = {{alignItems: 'center', justifyContent: 'center',marginTop:60}}>
                         <Text style={{fontSize:25,marginTop:20,marginBottom:10,textAlign:"center",
                             backgroundColor:colorImport('red'),paddingHorizontal:30,paddingBottom:5,color:"white", borderRadius:10}}>
@@ -155,8 +155,10 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                         <View style={{alignItems:"flex-start"}}>
                             <Text style ={{fontStyle:'italic'}}>{arrayDataBook.author}</Text>
                             <Text style ={{fontStyle:'italic'}}>{publisher.publisher}</Text>  
-                        </View>             
-                        <Text style={{marginTop:10}}>{arrayDataBook.description}</Text>         
+                        </View> 
+                        <View>            
+                            <Text style={{textAlign:'center',marginTop:10,fontSize:14}}>{arrayDataBook.description}</Text>         
+                        </View>
                     </View>
                 </View>
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
