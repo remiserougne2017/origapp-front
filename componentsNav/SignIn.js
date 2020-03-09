@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 import {connect} from 'react-redux';
+import Ip from './Ip'; // a enlever en production !
 
 function SignIn(props) {
   
@@ -14,11 +15,11 @@ function SignIn(props) {
 
   var clickSignIn = async (a, b) => {
 
-    console.log("signin"+a,b)
-    /* setSignInEmail('')
-    setSignInPassword('') */
+    //console.log("signin"+a,b)
+    setSignInEmail('')
+    setSignInPassword('')
 
-    const data = await fetch('http://10.2.3.37:3000/users/sign-in', {
+    const data = await fetch(`${Ip()}:3000/users/sign-in`, {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `email=${a}&password=${b}`
@@ -38,6 +39,7 @@ function SignIn(props) {
       props.addToken(response.token)
       props.addPrenom(response.prenom)
       setSignInPassword('')
+      console.log(response.token)
       props.navigation.navigate('Home')
     } else {
       console.log('pas de token')
@@ -68,7 +70,7 @@ function SignIn(props) {
               { errorEmailInexistant ? <Text style={{fontSize:12,color:'red'}}>{errorEmailInexistant}</Text> : null }
             </View>
 
-            <View style={{marginBottom: 25}}>
+            <View style={{marginBottom: 5}}>
               <TextInput
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
               placeholder=' Mot de passe'
@@ -78,11 +80,13 @@ function SignIn(props) {
               />
               { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
               { errorPassword ? <Text style={{fontSize:12,color:'red'}}>{errorPassword}</Text> : null }
-            </View>
 
-            <TouchableOpacity onPress={() => props.navigation.navigate('newPassword')}>
+              <TouchableOpacity onPress={() => props.navigation.navigate('newPassword')}>
               <Text style={{fontSize: 11, marginBottom: 20, textAlign: "right", fontStyle: "italic"}}>Mot de passe oublié ?</Text>
             </TouchableOpacity>
+            </View>
+
+            
 
             <Button
              title='Connexion'

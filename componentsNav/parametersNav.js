@@ -4,7 +4,8 @@ import { Button,Input, Avatar, Icon, Header} from 'react-native-elements';
 /*  import Icon from 'react-native-vector-icons'; */
 import {connect} from 'react-redux';
 /* import { Ionicons } from '@expo/vector-icons'; */
-import color from './color'
+import color from './color';
+import Ip from './Ip'; // A enlever en production;
 
 
  
@@ -23,7 +24,7 @@ var clickLogOut = () => {
 console.log("HELLOOOOOOOOOO TOKEN PARAMETRE",props.token)
   useEffect(() => {
   const findUser = async () => {
-    const dataUser = await fetch ('http://10.2.3.37:3000/users/params', {
+    const dataUser = await fetch (`${Ip()}:3000/users/params`, {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `token=${props.token}`
@@ -87,7 +88,7 @@ console.log("token user recupere dans store", props.token)
                       }
                         
                         title="  Se déconnecter"
-                        type="transparent"
+                        type="clear"
                         titleStyle={{color: "black"}}
                         style={{marginRight: 0, marginLeft: "auto"}}
                         onPress={() => {
