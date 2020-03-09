@@ -9,12 +9,10 @@ import { WebView } from 'react-native-webview';
 // import WebView from 'react-native-android-fullscreen-webview-video';
 // import WebView from 'react-native-android-fullscreen-webview-video';
 // import { AudioControls } from 'react-native-hue-player';
-import SoundPlayer from 'react-native-sound-player';
 import { withNavigation } from 'react-navigation';
 import Ip from './Ip' // A enlever en production !
 import Audio from './audio'
 import colorImport from './color';
-
 
 function contentMedia(props) { 
 
