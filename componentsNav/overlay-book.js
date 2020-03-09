@@ -90,12 +90,8 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
     )
 })
 
-
-
 // RETURN GLOBAL DE LA PAGE
-
     return (
-
     <Overlay 
         overlayStyle={{backgroundColor:"#D4D9DB"}}
         height= {"98%"}
@@ -150,11 +146,6 @@ function mapDispatchToProps(dispatch) {
   }
 }
     
-  
-
-
-
-
 export default withNavigationFocus(connect(
 mapStateToProps, 
 mapDispatchToProps

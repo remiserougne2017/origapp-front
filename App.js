@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon } from 'react-native-elements';
+import {Image} from 'react-native'
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
@@ -13,6 +14,7 @@ import SignUp from "./componentsNav/SignUp";
 import SignIn from "./componentsNav/SignIn";
 import newPassword from "./componentsNav/newPassword";
 import contentMediaPage from "./componentsNav/content-media";
+import Rating from './componentsNav/overlay-rating';
 
 
 // comment Vincent : lignes pour REDUX
@@ -49,7 +51,8 @@ var StackNavigatorHome = createStackNavigator(
     Book:Book,
     BookContent:BookContent,
     contentMediaPage:contentMediaPage,
-    Scan : Scan
+    Scan : Scan,
+    RatingPage : Rating,
 }, {headerMode: 'none',});
 
  var StackNavigatorParameters = createStackNavigator(
@@ -71,14 +74,17 @@ var BottomNavigator = createBottomTabNavigator(
       tabBarIcon: ({ tintColor }) => {
         let imageIcon
         if (navigation.state.routeName == 'Home') {
-          imageIcon = <Icon name= "home" type='antdesign' color={tintColor}  size= {25}/> 
+          imageIcon = <Image source={require('./assets/icons/icon.png')} />
+          // imageIcon = <Icon name= "home" type='antdesign' color={tintColor}  size= {40}/> 
           
         } else if (navigation.state.routeName == 'Library') {
-          imageIcon = <Icon name= "book" type='entypo' color={tintColor}  size= {25}/> 
+          imageIcon = <Image source={require('./assets/icons/books-stack-of-three.png')} />
+          // <Icon name= "book" type='entypo' color={tintColor}  size= {40}/> 
 
           
         } else if (navigation.state.routeName == 'Parameters') {
-          imageIcon = <Icon name= "setting" type='antdesign' color={tintColor}  size= {25}/> 
+          imageIcon = <Image source={require('./assets/icons/cogwheel.png')} />
+          // imageIcon = <Icon name= "setting" type='antdesign' color={tintColor}  size= {40}/> 
 
         }        
         return imageIcon;
@@ -99,12 +105,12 @@ var BottomNavigator = createBottomTabNavigator(
     SignUp: SignUp,
     SignIn: SignIn,
     newPassword: newPassword,
+    // Home: Home,
     Bottom: BottomNavigator,
   }, {
     headerMode: 'none',
     
   });
-
 
 
   // comment Vincent : return global de app
