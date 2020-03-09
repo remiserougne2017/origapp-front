@@ -4,10 +4,11 @@ import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
-import { withNavigationFocus } from 'react-navigation';
+import { withNavigation,withNavigationFocus } from 'react-navigation';
 import { Assets } from 'react-navigation-stack';
 import OverlayRating from './overlay-rating';
 import Ip from './Ip'; // A enlever en production !
+import colorImport from './color'
 
 function BookContent(props) { 
     const ip="192.168.1.28"
@@ -46,44 +47,58 @@ function BookContent(props) {
             );
             var bookDataJson = await bookData.json();
             setArrayDataBook(bookDataJson.dataBook);
-            console.log("ARRAY  USABLE DATA",bookDataJson)
+            // console.log("ARRAY  USABLE DATA",bookDataJson)
       }
         openBook();
       },[])
 
-
 // CARD CONTENT CREATION  
-let cardDisplay = arrayDataBook.contents.map((obj,i) => {
+let arrayColor = ['#a5af2a','#fda329','#24c6ae'];
+
+let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.pageNum - objB.pageNum;}).map((obj,i) => {
+        let urlImageContent;
+        if(obj.imageContent == undefined) {
+                urlImageContent = arrayDataBook.coverImage
+        } else { urlImageContent = obj.imageContent}
+        var badgeColor;
+        if(i%3==0) {
+            badgeColor = '#a5af2a'
+        } else if(i%2==1) {
+            badgeColor = '#fda329'
+        } else if(i%2==0){
+            badgeColor = '#24c6ae'
+        }
+
+
         return (
     <TouchableOpacity
         onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,idContent:obj.idContent});props.navigation.navigate('contentMediaPage');}}
         >
         <View
-            style={{width:'100%', padding:10,marginBottom:10,borderRadius:10, backgroundColor:'#FDFDFD'}}
+            style={{width:'100%',marginBottom:10,borderRadius:10, backgroundColor:'#FDFDFD'}}
             >
 
             <View style ={{width:'100%'}}>
-
-                <View style ={{marginLeft:'auto',marginBottom:5}}>
-                <Badge value={<Text style={{marginRight:'auto',color: 'white',  paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12}}>page {obj.pageNum}</Text>}
-                    badgeStyle={{backgroundColor:"grey"}}
-                />
+                <View style = {{backgroundColor:badgeColor, position:'absolute', top:20, width:60,zIndex:7,left:0,justifyContent:'center',alignItems:'center',height:30,borderBottomRightRadius:10,borderTopRightRadius:10}}>
+                    <Text style ={{color:'white'}}>page {obj.pageNum}</Text>
+                </View>
+                <View style ={{position: 'absolute',top:300,marginLeft:'auto',marginBottom:5}}>
                 </View>
                 <Image 
 
                         style={{ height: 240,borderRadius:10}}
-                        source= {{uri: arrayDataBook.coverImage}}
+                        source= {{uri: urlImageContent}}
                         
                     />
-                <View style ={{width:'80%',marginTop:10, marginBottom:10, position: 'absolute', bottom: 0, left: 20, backgroundColor:'#F8ED49'}}>
-                <Text style ={{fontSize:16}}>
-                    {obj.title}
+                <View style ={{width:'80%', position: 'absolute', bottom: 20, backgroundColor:badgeColor,height:30,alignItems:'center',justifyContent:'center',borderBottomRightRadius:10,borderTopRightRadius:10}}>
+                <Text style ={{fontSize:16,color:"white"}}>
+                    {obj.title.toUpperCase()}
                 </Text>
                 </View>
 
 
             </View>
-            <Divider style={{ backgroundColor: '#6B6262', width:"100%", marginTop:15}} />
+            {/* <Divider style={{ backgroundColor: '#6B6262', width:"100%", marginTop:15}} /> */}
             <View style = {{display:"flex",flexDirection:'row', marginTop:10}}>
                 <Icon 
                     name= 'download' type='antdesign'  size= {20} margin={5} marginRight='auto'
@@ -134,53 +149,44 @@ let cardDisplay = arrayDataBook.contents.map((obj,i) => {
             </View>
         </View>
     </TouchableOpacity>
-
         )
-
     })
 
 // RETURN GLOBAL DE LA PAGE
     return (
-
-    <ScrollView>  
-
-            <ImageBackground source={require('../assets/origami.png')} style={{width: '100%', height: '100%'}}>
-            <OverlayRating isVisible={overlayRatingVisible} idBook={idBook} />
-                    <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',marginLeft:20, marginRight:20}}>
-                        <View style = {{marginTop:60}}>
-                            <Image 
-                                style={{width: 230, height: 280, marginTop:20}}
-                                source= {{ uri: arrayDataBook.coverImage }}
-                            />
-                            <Icon 
-                                    iconStyle={{position:'absolute',top:-300,right:-20}}
-                                    name= "staro" type='antdesign'  size= {40}
-                                    onPress={() => console.log("star this book")}
-                                />
-                            <Text>{arrayDataBook.author}</Text>
-                            <Text>{publisher.publisher}</Text>                        
-                        </View>
-                        <View style = {{alignItems:"center"}}>
-                            <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>{arrayDataBook.title}</Text>
-                            <Text >{arrayDataBook.description}</Text>
-                        </View>
-                    </View>
-                    <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
-                        <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les contenus à découvrir</Text>
-                        <View style = {{marginLeft:0}}>
-
-                            {cardDisplay}
-
-                        </View>
-
-                    </View>
-                    <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
-                        <Divider 
-                        style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15}} 
+    <ScrollView>     
+                <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',marginLeft:20, marginRight:20}}>
+                    <View style = {{marginTop:60}}>
+                    <Text onPress={() =>{setOverlayRatingVisible(true);
+                    }}
+                        style={{fontStyle:"italic"}}
+                        >Donnez votre avis...</Text>
+                        <Image 
+                            style={{width: 250, height: 300, marginTop:20}}
+                            source= {{ uri: arrayDataBook.coverImage }}
                         />
+                        <Text style ={{fontStyle:'italic'}}>{arrayDataBook.author}</Text>
+                        <Text style ={{fontStyle:'italic'}}>{publisher.publisher}</Text>                        
                     </View>
-            </ImageBackground>
-
+                    <View style = {{alignItems:"center",justifyContent:"center"}}>
+                        <Text style={{fontSize:25,marginTop:20,marginBottom:10,backgroundColor:colorImport('red'),padding:5,color:"white"}}>{arrayDataBook.title}</Text>
+                        <Text>{arrayDataBook.description}</Text>
+                    </View>
+                </View>
+                <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
+                    <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les contenus à découvrir</Text>
+                    <View>
+                        {cardDisplay}
+                    </View>
+                </View>
+                {/* APPEL LE COMPOSANT OVERLAY */}
+                {/* <OverlayContent/> */}
+                <OverlayRating isVisible={overlayRatingVisible} idBook={idBook} />
+                <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
+                    <Divider 
+                    style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15}} 
+                    />
+                </View>
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
                     <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les avis et commentaires</Text>
   

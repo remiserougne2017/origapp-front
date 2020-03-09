@@ -1,7 +1,10 @@
 const color = (name) => {
     var red = "#F9603E";
     var marron ="#FED18C";
-    var blue ="#8FB2C9"
+    var blue ="#8FB2C9";
+    // 4ECDC4
+    // E3B505
+    // EE964B
 
     switch (name) {
         case 'red':
