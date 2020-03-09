@@ -9,11 +9,10 @@ import { WebView } from 'react-native-webview';
 // import WebView from 'react-native-android-fullscreen-webview-video';
 // import WebView from 'react-native-android-fullscreen-webview-video';
 // import { AudioControls } from 'react-native-hue-player';
-import SoundPlayer from 'react-native-sound-player';
 import { withNavigation } from 'react-navigation';
 import Ip from './Ip' // A enlever en production !
-
-
+import Audio from './audio'
+import colorImport from './color';
 
 function contentMedia(props) { 
 
@@ -64,25 +63,8 @@ var displayMedia = dataContent.content.media.map((med, k) => {
             </View> 
         break; 
 
-        case 'audio':        
-        // try {
-        //     // play the file tone.mp3
-        //     SoundPlayer.playSoundFile('test', 'mp3')
-        //     console.log("playing sound ?")
-        //     // or play from url
-        //     // SoundPlayer.playUrl('https://example.com/music.mp3')
-        //   } catch (e) {
-        //     console.log(`cannot play the sound file`, e)
-        //   }
-        displayBlocMedia = 
-            <View>
-                <Text>Hello audio </Text> 
-              
-                {/* <AudioControls
-                    initialTrack={1} // starts on second audio file
-                    playlist={playlistSample}
-                /> */}
-            </View>   
+        case 'audio':    
+        displayBlocMedia = <Audio duration={med.duration} title={med.title} source={med.source}/>
         break;
 
         case 'image': 
@@ -153,20 +135,27 @@ const [borderWidth,setBorderWidth] = useState(0);
 
     return (
         <View>
-                <View style ={{marginTop:60, display:"flex", flexDirection:'row', alignItems:'center', backgroundColor: '#E1E1E1', height:50}}>
-                    <Text style = {{marginLeft:10,fontWeight:'bold'}} onPress={() => props.navigation.navigate('BookContent')}>
-                        {titleShort}
-                    </Text>
-                    <Text style = {{marginLeft:'auto',fontWeight:'bold',marginRight:10}}>
+                <View style ={{marginTop:60, display:"flex", flexDirection:'row', alignItems:'center', height:50}}>
+                    <View style = {{flexDirection:'row', backgroundColor:'#fda329',position:'absolute',left:0,padding:5,borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15}}>
+                        <Icon 
+                                name= 'back' type='antdesign'  size= {20} margin={5} marginLeft={20} color={'white'}
+                                onPress={() => props.navigation.navigate('BookContent')}
+                        />
+                        <Text style = {{color: 'white',marginLeft:10}} onPress={() => props.navigation.navigate('BookContent')}>
+                            {titleShort}
+                        </Text>
+                    </View>
+                    <Text style = {{backgroundColor:'#fda329',position:'absolute',right:0,padding:5,borderTopLeftRadius:10,borderBottomLeftRadius:10,color:'white'}}>
                         page {dataContent.pageNum}
                     </Text>
                 </View>
             <View>
-                    <Text style={{fontSize:25,marginTop:40,marginLeft:10,marginRight:10,paddingBottom:60,textAlign:'center',borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth}}>{dataContent.content.title}</Text>
+                    <Text style={{backgroundColor:colorImport('red'),padding:5,color:"white",fontSize:25,marginTop:40,marginLeft:10,marginRight:10,textAlign:'center',borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth,borderRadius:10,marginBottom:30}}>{dataContent.content.title}</Text>
             </View>
             <ScrollView
                 onScroll = {()=> setBorderWidth(2)}
-                contentContainerStyle ={{height:3000}}>
+                style={{marginBottom:50}}
+            >
                 {displayMedia}
             </ScrollView>
 
@@ -175,12 +164,9 @@ const [borderWidth,setBorderWidth] = useState(0);
     );
   }
 
-
-
-
 function mapStateToProps(state) {
 return { 
-    token: state.token,
+    token: state.reducerToken,
     contentMediaData:state.contentMediaData
 }
 }

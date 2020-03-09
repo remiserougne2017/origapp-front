@@ -9,7 +9,7 @@ function Loader(props) {
        
           <Spinner
             visible={props.bool}
-            textContent="Chargement du contenu..."
+            textContent={props.text}
             textStyle={{
                 color: '#FFF'
               }}
