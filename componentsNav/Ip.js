@@ -1,5 +1,5 @@
 const Ip = () => {
-    return "http://192.168.1.12"
+    return "http://10.2.5.178"
 }   
 
 export default Ip
