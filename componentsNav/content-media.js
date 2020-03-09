@@ -9,12 +9,11 @@ import { WebView } from 'react-native-webview';
 // import WebView from 'react-native-android-fullscreen-webview-video';
 // import WebView from 'react-native-android-fullscreen-webview-video';
 // import { AudioControls } from 'react-native-hue-player';
-import SoundPlayer from 'react-native-sound-player';
 import { withNavigation } from 'react-navigation';
 import Ip from './Ip' // A enlever en production !
+import Audio from './audio'
 import colorImport from './color';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-
 
 function contentMedia(props) { 
 
@@ -69,27 +68,9 @@ var displayMedia = dataContent.content.media.map((med, k) => {
             </View> 
         break; 
 
-        case 'audio':        
-        // try {
-        //     // play the file tone.mp3
-        //     SoundPlayer.playSoundFile('test', 'mp3')
-        //     console.log("playing sound ?")
-        //     // or play from url
-        //     // SoundPlayer.playUrl('https://example.com/music.mp3')
-        //   } catch (e) {
-        //     console.log(`cannot play the sound file`, e)
-        //   }
-        displayBlocMedia = 
-            <View>
-                <Text>Hello audio </Text> 
-              
-                {/* <AudioControls
-                    initialTrack={1} // starts on second audio file
-                    playlist={playlistSample}
-                /> */}
-            </View>   
+        case 'audio':    
+        displayBlocMedia = <Audio duration={med.duration} title={med.title} source={med.source}/>
         break;
-
         case 'image': 
         // console.log(med.source);
         if(med.source.search('http') == -1) {
@@ -224,12 +205,9 @@ console.log("POSIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIITON",position)
     );
   }
 
-
-
-
 function mapStateToProps(state) {
 return { 
-    token: state.token,
+    token: state.reducerToken,
     contentMediaData:state.contentMediaData
 }
 }
