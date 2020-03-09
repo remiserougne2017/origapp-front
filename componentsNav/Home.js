@@ -11,6 +11,7 @@ import Carrousel from './Carrousel';
 import { withNavigation } from 'react-navigation';
 import color from './color';
 import Loader from './loader';
+import Ip from './Ip';
 
 function Home(props) {
   const ip="192.168.1.28"
@@ -23,8 +24,8 @@ function Home(props) {
   const [tagsList,setTagsList]=useState([])
   const [selectedTags,setSelectedTags]=useState([])
   const [errorMessage,setErrorMessage]=useState('')
-  const[loader,setLoader]=useState(false)
-  const [bestRated, setBestRated]=useState('')
+  const [loader,setLoader]=useState(false)
+  const [bestRated, setBestRated]=useState([])
   
   //pour charger le store Redux avec la biblio du user
   const librairyToStore= ()=>{
@@ -45,12 +46,19 @@ function Home(props) {
     const catalogue = async() =>{
       // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
       console.log("WELCOME HOME")
-      var responseFetch = await fetch(`http://${ip}:3000/home/homePage/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+      var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
       var bookList = await responseFetch.json();
       setBestRated(bookList.livresMieuxNotes)
       setCataList(bookList.livreMin)
+      
+      // Chargement livres mieux notés
+      var responseBestRated = await fetch(`${Ip()}:3000/lists/bestRated`)
+      var bestRatedList = await responseBestRated.json();  
+      console.log(bestRatedList+'blu')
+      setBestRated(bestRatedList)
+
       //recup tags
-      var tagFetch = await fetch(`http://${ip}:3000/home/homePage/tags`)
+      var tagFetch = await fetch(`${Ip()}:3000/home/homePage/tags`)
       var tags = await tagFetch.json();
       var tagsColor = tags.map(e=>{
         e.color="grey"
@@ -60,6 +68,7 @@ function Home(props) {
       //ferme le loader
       setLoader(false)
     };
+
     catalogue();
     librairyToStore();
     
@@ -68,9 +77,9 @@ function Home(props) {
    useEffect(()=>{
      const rechercheText = async()=>{
        console.log("recherche en cours",textSearch)
-       var responseFetch = await fetch(`http://${ip}:3000/home/searchtext/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`,{
+       var responseFetch = await fetch(`${Ip()}:3000/home/searchtext/${props.reducerToken}`,{
         method: 'POST',
-       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':'http://10.2.5.203'},    
+       headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},
        body: `textSearch=${textSearch}`
       })
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
@@ -81,6 +90,9 @@ function Home(props) {
     };
    rechercheText();
    },[textSearch])
+
+   // Chargement de la liste des livres mieux notés
+ 
 
   //RS creation du tableau de books pour afficher le catalogue
   var Book = cataList.map((e,i)=>{
@@ -96,10 +108,11 @@ function Home(props) {
 const fetchTag = async (tags)=>{
   var dataTag = JSON.stringify(tags)
 
-  var responseFetch = await fetch(`http://${ip}:3000/home/searchTag`,{
+
+  var responseFetch = await fetch(`${Ip()}:3000/home/searchTag`,{
     method: 'POST',
-    headers: {'Content-Type':'application/x-www-form-urlencoded'},    
-    body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token="dTsvaJw2PQiOtTWxykt5KcWco87eeSp6"`});
+    headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},    
+    body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token=${props.token}`});
     var resultatSearch = await responseFetch.json();
     console.log("TAGRESULT",await resultatSearch)
     if(resultatSearch.result == 'ok'){
@@ -148,8 +161,6 @@ for (let i=0;i<tagsList.length;i++){
   //   />
   //   )
   // })
-
-
   return (
     
      <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
@@ -244,6 +255,7 @@ function mapDispatchToProps(dispatch){
 }
 function mapStateToProps(state) {
   return { storeLibrairy: state.storeLibrairy,
+          token: state.reducerToken
    }
 }
 export default withNavigation(connect(mapStateToProps,mapDispatchToProps)(Home))
