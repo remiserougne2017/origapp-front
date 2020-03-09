@@ -214,7 +214,7 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
 return { 
-    token: state.token,
+    token: state.reducerToken,
 }
 }
 

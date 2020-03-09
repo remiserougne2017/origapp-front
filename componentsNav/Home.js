@@ -89,8 +89,6 @@ function Home(props) {
     };
    rechercheText();
    },[textSearch])
-
-   // Chargement de la liste des livres mieux notés
  
 
   //RS creation du tableau de books pour afficher le catalogue
