@@ -6,7 +6,6 @@ import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
 import { withNavigationFocus } from 'react-navigation';
 import { Assets } from 'react-navigation-stack';
-import { withNavigationFocus } from 'react-navigation';
 import OverlayRating from './overlay-rating';
 import Ip from './Ip'; // A enlever en production !
 
