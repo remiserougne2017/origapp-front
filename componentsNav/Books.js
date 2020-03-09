@@ -14,7 +14,7 @@ const [isCheck, setIsCheck] = useState(props.inLibrairy)
 
 //Function appel route addLibrairy
 const addLibrairy = async (id,bool) => {
-    var responseFetch = await fetch(`http://10.2.3.37:3000/home/addLibrairy/${id}/${bool}/dTsvaJw2PQiOtTWxykt5KcWco87eeSp6`)
+    var responseFetch = await fetch(`http://10.2.3.37:3000/home/addLibrairy/${id}/${bool}/${props.token}`)
     var resp = await responseFetch.json();
     setIsCheck(bool)
     props.manageLibrairy(id,bool)
