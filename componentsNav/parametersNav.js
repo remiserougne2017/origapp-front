@@ -21,6 +21,7 @@ var clickLogOut = () => {
   console.log("func clickLogOUt")
   props.deleteToken()
   props.deletePrenom()
+  AsyncStorage.removeItem("token")
   props.navigation.navigate('SignIn') }
 
   useEffect(() => {

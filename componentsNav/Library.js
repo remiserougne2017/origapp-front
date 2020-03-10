@@ -47,18 +47,17 @@ function Library(props) {
   //// Initialisation Suggestions
   useEffect(()=>{
     const suggest = async() =>{
-      console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
       var suggestFetch = await fetch(`${Ip()}:3000/home/suggest/${props.token}`)
       var Suggestions = await suggestFetch.json();
       setSuggestBooks(Suggestions.mySuggest)
-      console.log("mySuggest", Suggestions.mySuggest)
+      //console.log("mySuggest", Suggestions.mySuggest)
       
     };
 
     suggest();
   },[])
 
-console.log("suggestBook", suggestBooks)
+//console.log("suggestBook", suggestBooks)
 
   //Création du tableau pour afficher la bibliothèque
   var Book = mesLivres.map((e,i)=>{
@@ -86,7 +85,7 @@ console.log("suggestBook", suggestBooks)
       rating:e.rating
     })
   })
-///////////////////////////////////////////////////////////////////              ///   mySuggest ou suggestBooks
+///////////////////////////////////////////////////////////////////  mySuggest ou suggestBooks
   var Suggest = suggestBooks.map((e,i)=>{
   
     return({
@@ -101,7 +100,7 @@ console.log("suggestBook", suggestBooks)
   })
 /////////////////////////////////////////////////////////
 
-console.log("Suggest,,,,,,,,,,,,,,,,,,,,,,", Suggest)
+//console.log("Suggest,,,,,,,,,,,,,,,,,,,,,,", Suggest)
   return (
      <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
        <View style={{ flexDirection:"row", marginTop:25}}>
