@@ -53,9 +53,9 @@ return (
           />
           </TouchableOpacity>
           <CheckBox 
-              onPress={() =>{addLibrairy(props.id,!props.inLibrairy);
+              onPress={() =>{addLibrairy(props.id,!isCheck);
                 console.log("ONPRESS",props.inLibrairy)}}
-              checked={isCheck}
+              checked={props.inLibrairy}
               checkedColor="#F9603E"
               containerStyle={{position: "absolute",
                               right: -30,

@@ -20,19 +20,25 @@ console.log("STORE-Librairy",props.storeLibrairy)
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
   const [tagsList,setTagsList]=useState([])
-  const [selectedTags,setSelectedTags]=useState([])
   const [errorMessage,setErrorMessage]=useState('')
   const [loader,setLoader]=useState(false)
   const [bestRated, setBestRated]=useState([])
   
   //pour charger le store Redux avec la biblio du user
-  const librairyToStore= ()=>{
-   var newCataList = cataList.map(e=>{
-     if(e.inLibrairy){
-       props.manageLibrairy(e.id,true)
-     }
-   })
-  }
+  useEffect(()=>{
+    const librairyToStore= ()=>{
+    var NewCatalist = cataList.map(e=>{
+       if(e.inLibrairy==true){
+        console.log("NewCatalist IF",e.inLibrairy)
+         props.manageLibrairy(e.id,true)
+       }else{
+         null
+       }
+     })
+    };
+    librairyToStore();
+  },[cataList,props.storeLibrairy])
+ 
   
    // Initialisation du composant
    useEffect(()=>{
@@ -46,6 +52,7 @@ console.log("STORE-Librairy",props.storeLibrairy)
       console.log("WELCOME HOME")
       var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
       var bookList = await responseFetch.json();
+      console.log('CATALISTE',bookList)
       setCataList(bookList.livreMin)
       
       // Chargement livres mieux notés
@@ -64,20 +71,20 @@ console.log("STORE-Librairy",props.storeLibrairy)
       //ferme le loader
       setLoader(false)
     };
-    catalogue();
-    librairyToStore();
+    catalogue();   
+    console.log('HEY CATLOGUE')
   },[props.storeLibrairy])//ou alors ? props.isFocused,props.storeLibrairy
 
-  // useEffect=(()=>{
-  //   const catalogue = async() =>{
-  //     // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
-  //     console.log("WELCOME HOME")
-  //     var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
-  //     var bookList = await responseFetch.json();
-  //     setCataList(bookList.livreMin)
-  //   };
-  //   catalogue();
-  // },[props.isFocused])
+  useEffect(()=>{
+    const catalogue = async() =>{
+      // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
+      console.log("WELCOME HOME")
+      var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
+      var bookList = await responseFetch.json();
+      setCataList(bookList.livreMin)
+    };
+    catalogue();
+  },[props.isFocused])
 
    useEffect(()=>{
      const rechercheText = async()=>{
@@ -99,7 +106,7 @@ console.log("STORE-Librairy",props.storeLibrairy)
 
   //RS creation du tableau de books pour afficher le catalogue
   var Book = cataList.map((e,i)=>{
-    console.log("cataListe MAP",e.inLibrairy)
+    // console.log("cataListe MAP",e.inLibrairy)
    return(
     <Books id={e.id} key={i} inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
    )
