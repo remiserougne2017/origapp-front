@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import {connect} from 'react-redux';
 import Loader from './loader';
 import Ip from './Ip' // A enlever en production !
@@ -16,53 +16,67 @@ function SignUp(props) {
   const [errorEmailInvalide, setErrorEmailInvalide] = useState('')
   const [errorPassword, setErrorPassword] = useState('')
   const [loader,setLoader]=useState(false);
+  const [tokenExists, setTokenExists]= useState('')
 
+  AsyncStorage.getItem("token", function(error, data) {
+    console.log(data)
+    setTokenExists(data)
+  })
 
-  var clickSignUp = async (a, b, c, d) => {
+  if(tokenExists){
+    props.addToken(tokenExists)
+    props.navigation.navigate('Home')
+  } else {
+    var clickSignUp = async (a, b, c, d) => {
 
-    setSignUpFirstName('')
-    setSignUpEmail('')
-    setSignUpPassword('')
-    setSignUpPasswordMatch('')
-
-    setLoader(true)
-    /* setTimeout(() => {
-     setLoader(false)
-   }, 2000 ); */
-
-    if(signUpPassword !== signUpPasswordMatch){
-      setErrorMatch("Les mots de passe ne sont pas identiques")
-
-    } else {
-      console.log('mdp ok')
-      const data = await fetch(`${Ip()}:3000/users/sign-up`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: `firstName=${signUpFirstName}&email=${signUpEmail}&password=${signUpPassword}`
-      })
-      console.log('envoyé')
-      const response = await data.json()
-      if(Object.keys(response).length != 0){
-        //Messages d'erreur depuis le Backend
-        setErrorEmailInvalide(response.error.emailNotValid)
-        setErrorUserExistant(response.error.email)
-        setErrorChampVide(response.error.emptyField)
-        setErrorPassword(response.error.passwordNotValid)
-        console.log(response)
-      }
-
-      if(response.result == true){
-        props.addToken(response.token)
-        props.addPrenom(response.prenom)
-        setLoader(false)
-        props.navigation.navigate('Home')
+      setSignUpFirstName('')
+      setSignUpEmail('')
+      setSignUpPassword('')
+      setSignUpPasswordMatch('')
+  
+      setLoader(true)
+      /* setTimeout(() => {
+       setLoader(false)
+     }, 2000 ); */
+  
+      if(signUpPassword !== signUpPasswordMatch){
+        setErrorMatch("Les mots de passe ne sont pas identiques")
+  
       } else {
-        console.log('pas de token')
+        //console.log('mdp ok')
+        const data = await fetch(`${Ip()}:3000/users/sign-up`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          body: `firstName=${signUpFirstName}&email=${signUpEmail}&password=${signUpPassword}`
+        })
+        //console.log('envoyé')
+        const response = await data.json()
+        if(Object.keys(response).length != 0){
+          //Messages d'erreur depuis le Backend
+          setErrorEmailInvalide(response.error.emailNotValid)
+          setErrorUserExistant(response.error.email)
+          setErrorChampVide(response.error.emptyField)
+          setErrorPassword(response.error.passwordNotValid)
+          //console.log(response)
+        }
+  
+        if(response.result == true){
+          AsyncStorage.setItem("token", response.token)
+          props.addToken(response.token)
+          props.addPrenom(response.prenom)
+          setLoader(false)
+          props.navigation.navigate('Home')
+        } else {
+          console.log('pas de token')
+        }
       }
     }
+    
+    //console.log(errorMatch, errorChampVide, errorEmailInvalide)
+    
   }
+
   
-  console.log(errorMatch, errorChampVide, errorEmailInvalide)
     return(
       <ImageBackground source={require('../assets/origami.png')} style={styles.container}>
         <Loader bool={loader} text="Chargement"/>

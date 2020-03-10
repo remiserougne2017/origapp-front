@@ -7,7 +7,8 @@ import { set, color } from 'react-native-reanimated';
 import { withNavigation,withNavigationFocus } from 'react-navigation';
 import OverlayRating from './overlay-rating';
 import Ip from './Ip'; // A enlever en production !
-import colorImport from './color'
+import colorImport from './color';
+import Comment from './comment'
 
 function BookContent(props) { 
     
@@ -18,11 +19,23 @@ function BookContent(props) {
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
     const [overlayRatingVisible, setOverlayRatingVisible]=useState(false)
     console.log("star this book",idBook, overlayRatingVisible);
+
+    const commentsData = [
+        {title:"titre du commentaire",userName:'Remi',text:'Blablabla BlablablaBlablabla Blablabla Blabl Blablabla Blablabla',avatar:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',rating:3},
+        {title:"titre du commentaire2",userName:'Juliette',text:'Blablabla BlablablaBlablabla Blablabla Blabl Blablabla',avatar:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',rating:3},
+        {title:"titre du commentaire3",userName:'Cilène',text:'Blablabla',avatar:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',rating:3}
+    
+    
+    ]
+
+
+
     const [commentBook, setCommentBook]=useState([]);
     
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
+            // recupere les infos d'un livre 
             var bookData = await fetch(`${Ip()}:3000/books/open-book`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -31,6 +44,7 @@ function BookContent(props) {
             );
             var bookDataJson = await bookData.json();
             setArrayDataBook(bookDataJson.dataBook);
+            // props.storeCommentInformation({idBook:idBook,commentsData:commentsData})
       }
         openBook();
       },[])
@@ -203,7 +217,8 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                             style={{fontStyle:"italic"}}
                             >Donnez votre avis...
                         </Text>
-                        </View>
+                        <Comment data = {commentsData}/>
+                    </View>
   
                 </View>
         </ScrollView>
@@ -221,6 +236,7 @@ function mapDispatchToProps(dispatch) {
                 contentData : obj 
               } ) 
         },
+
     }
   }
 

@@ -73,7 +73,7 @@ console.log("STORE-Librairy",props.storeLibrairy)
 
    useEffect(()=>{
      const rechercheText = async()=>{
-       console.log("recherche en cours",textSearch)
+       //console.log("recherche en cours",textSearch)
        var responseFetch = await fetch(`${Ip()}:3000/home/searchtext/${props.token}`,{
         method: 'POST',
        headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},
@@ -81,7 +81,7 @@ console.log("STORE-Librairy",props.storeLibrairy)
       })
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
        var resultatsearch = await responseFetch.json();
-      console.log("ok pr le search",resultatsearch)
+      //console.log("ok pr le search",resultatsearch)
       setCataList(resultatsearch.resultMin)
       
     };
@@ -110,7 +110,7 @@ const fetchTag = async (tags)=>{
     headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},    
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token=${props.token}`});
     var resultatSearch = await responseFetch.json();
-    console.log("TAGRESULT",await resultatSearch)
+    //console.log("TAGRESULT",await resultatSearch)
     if(resultatSearch.result == 'ok'){
       setErrorMessage('')
       setCataList(resultatSearch.resultMin)
@@ -142,7 +142,7 @@ const fetchTag = async (tags)=>{
 for (let i=0;i<tagsList.length;i++){
  Tags.push(
 <Badge key={i} 
-  onPress={()=>{console.log("onPress Tags");onPressTag(tagsList[i]._id)}}
+  onPress={()=>{onPressTag(tagsList[i]._id)}}
   value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12}}>{tagsList[i].name}</Text>}
   badgeStyle={{backgroundColor: tagsList[i].color, margin:3}}
 />
@@ -177,7 +177,7 @@ for (let i=0;i<tagsList.length;i++){
           onChangeText={(value)=> setTextSearch(value)}
           value={textSearch}
         />
-        <TouchableOpacity onPress={()=>{console.log("SCAN");props.navigation.navigate('Scan')}}>
+        <TouchableOpacity onPress={()=>{props.navigation.navigate('Scan')}}>
           <Image
            
             style={{width: 40, height: 40, marginLeft:10}}

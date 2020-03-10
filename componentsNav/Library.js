@@ -81,7 +81,7 @@ function Library(props) {
       rating:e.rating
     })
   })
-///////////////////////////////////////////////////////////////////              ///   mySuggest ou suggestBooks
+///////////////////////////////////////////////////////////////////  mySuggest ou suggestBooks
   var Suggest = suggestBooks.map((e,i)=>{
   
     return({
