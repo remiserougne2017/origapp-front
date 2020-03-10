@@ -14,9 +14,8 @@ import Loader from './loader';
 import Ip from './Ip';
 
 function Home(props) {
-  const ip="192.168.1.28"
-  //test d'apport de couleur en variable
-  console.log('COULEUr', color("red") )
+  
+console.log("STORE-Librairy",props.storeLibrairy)
   
 
   const [textSearch, setTextSearch] = useState("");
@@ -53,7 +52,6 @@ function Home(props) {
       // Chargement livres mieux notés
       var responseBestRated = await fetch(`${Ip()}:3000/lists/bestRated`)
       var bestRatedList = await responseBestRated.json();  
-      console.log(bestRatedList+'blu')
       setBestRated(bestRatedList)
 
       //recup tags
@@ -93,6 +91,7 @@ function Home(props) {
 
   //RS creation du tableau de books pour afficher le catalogue
   var Book = cataList.map((e,i)=>{
+    console.log("cataListe MAP",e.inLibrairy)
    return(
     <Books id={e.id} key={i}  inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
    )

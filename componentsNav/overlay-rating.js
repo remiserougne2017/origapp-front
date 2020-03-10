@@ -21,12 +21,12 @@ const RatingPage = (props) => {
      
     const sendComments = async ()=>{
       console.log("envoyer comment")
-    var comment =  await fetch(`http://${Ip()}:3000/books/comments`, {
+    var comment =  await fetch(`${Ip()}:3000/books/comments`, {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: `comment=${userComment}&token=${props.token}&idBook=${props.idBook}&rating=${userRating}`
           })
-          
+          setIsvisible(false)
         };
 
       const onClickCancel =()=>{

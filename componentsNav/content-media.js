@@ -1,7 +1,7 @@
 import React, {useState,useEffect,useRef} from 'react';
-import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity} from 'react-native';
+import { ScrollView,StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity} from 'react-native';
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
+// import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
 // import Video from 'react-native-video';

@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
-import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View,ScrollView,Image,TouchableOpacity} from 'react-native';
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
+// import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
 import { withNavigation,withNavigationFocus } from 'react-navigation';
@@ -37,17 +37,17 @@ function BookContent(props) {
 
 
 
-      useEffect( ()=> {
-          const comment = async () {
-              console.log("route comment ça passe")
-              var commentsData = await fetch(`${Ip()}:3000/home/comments-book/${params.id}`),
+    //   useEffect( ()=> {
+    //       const comment = async () {
+    //           console.log("route comment ça passe")
+    //           var commentsData = await fetch(`${Ip()}:3000/home/comments-book/${params.id}`),
 
-              var commentjson = await commentsData.json();
-              setCommentBook(commentjson)
-              console.log("comments")
-          };
+    //           var commentjson = await commentsData.json();
+    //           setCommentBook(commentjson)
+    //           console.log("comments")
+    //       };
 
-      },[])
+    //   },[])
 
     
 
@@ -157,8 +157,9 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
     }
 // RETURN GLOBAL DE LA PAGE
     return (
-    <ScrollView>     
-                <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'#D6D6D6',paddingBottom:20}}>
+    <ScrollView stickyHeaderIndices={[1]}>     
+                <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center', 
+                backgroundColor:'#D6D6D6',paddingBottom:20, marginBottom:30}}>
                     <View style = {{alignItems: 'center', justifyContent: 'center',marginTop:60}}>
                         <Text style={{fontSize:25,marginTop:20,marginBottom:10,textAlign:"center",
                             backgroundColor:colorImport('red'),paddingHorizontal:30,paddingBottom:5,color:"white", borderRadius:10}}>
@@ -179,12 +180,14 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                         </View>
                     </View>
                 </View>
-                <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
+              
+                <View style = {{marginRight:20,backgroundColor:"grey",width:"100%"}}>
                     <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les contenus à découvrir : </Text>
+                </View>
+                <ScrollView>
                     <View>
                         {cardDisplay}
                     </View>
-                </View>
                 {/* APPEL LE COMPOSANT OVERLAY */}
                 {/* <OverlayContent/> */}
                 <OverlayRating isVisible={overlayRatingVisible} idBook={idBook} parentRatingFunction={parentRatingFunction}/>
@@ -203,7 +206,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                         </View>
   
                 </View>
-
+        </ScrollView>
     </ScrollView>
 
     );

@@ -22,10 +22,10 @@ function Library(props) {
    useEffect(()=>{
     const maBibliotheque = async() =>{
       
-      //console.log("librairy")
       var responseFetch = await fetch(`${Ip()}:3000/home/myLibrary/${props.token}`)
       var responseLivres = await responseFetch.json();
-      setMesLivres(responseLivres)
+      console.log("REponse librairy",responseLivres)
+       setMesLivres(responseLivres)
     };  
     maBibliotheque();  
   },[props.storeLibrairy])
@@ -33,7 +33,7 @@ function Library(props) {
   // Initialisation Last Reads
   useEffect(()=>{
     const lastReads = async() =>{
-      
+
       //console.log("librairy")
       var responseFetch = await fetch(`${Ip()}:3000/lists/lastRead/${props.token}`)
       var responseLastReads = await responseFetch.json();
@@ -47,18 +47,13 @@ function Library(props) {
   //// Initialisation Suggestions
   useEffect(()=>{
     const suggest = async() =>{
-      console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
       var suggestFetch = await fetch(`${Ip()}:3000/home/suggest/${props.token}`)
       var Suggestions = await suggestFetch.json();
-      setSuggestBooks(Suggestions.mySuggest)
-      console.log("mySuggest", Suggestions.mySuggest)
-      
+      setSuggestBooks(Suggestions.mySuggest)      
     };
 
     suggest();
   },[])
-
-console.log("suggestBook", suggestBooks)
 
   //Création du tableau pour afficher la bibliothèque
   var Book = mesLivres.map((e,i)=>{
@@ -100,8 +95,6 @@ console.log("suggestBook", suggestBooks)
     })
   })
 /////////////////////////////////////////////////////////
-
-console.log("Suggest,,,,,,,,,,,,,,,,,,,,,,", Suggest)
   return (
      <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
        <View style={{ flexDirection:"row", marginTop:25}}>
