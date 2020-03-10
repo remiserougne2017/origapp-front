@@ -14,7 +14,6 @@ import Loader from './loader';
 import Ip from './Ip';
 
 function Home(props) {
-  const ip="192.168.1.28"
   //test d'apport de couleur en variable
   console.log('COULEUr', color("red") )
   
