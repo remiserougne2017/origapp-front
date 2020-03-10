@@ -9,7 +9,7 @@ import color from './color';
 import Ip from './Ip'; // A enlever en production !
 
 const Book = (props) => {
-  const ip="192.168.1.28"
+  
 
 //Function d'appel route lastRead
 

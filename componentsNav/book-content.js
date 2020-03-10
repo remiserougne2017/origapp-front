@@ -18,7 +18,8 @@ function BookContent(props) {
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
     const [overlayRatingVisible, setOverlayRatingVisible]=useState(false)
     console.log("star this book",idBook, overlayRatingVisible);
-
+    const [commentBook, setCommentBook]=useState([]);
+    
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
@@ -33,6 +34,22 @@ function BookContent(props) {
       }
         openBook();
       },[])
+
+
+
+      useEffect( ()=> {
+          const comment = async () {
+              console.log("route comment ça passe")
+              var commentsData = await fetch(`${Ip()}:3000/home/comments-book/${params.id}`),
+
+              var commentjson = await commentsData.json();
+              setCommentBook(commentjson)
+              console.log("comments")
+          };
+
+      },[])
+
+    
 
 // CARD CONTENT CREATION  
 let arrayColor = ['#a5af2a','#fda329','#24c6ae'];
@@ -51,6 +68,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
             badgeColor = '#24c6ae'
         }
 
+////   COMMENTAIRES SUR L'OUVRAGE
 
         return (
     <TouchableOpacity
