@@ -23,11 +23,13 @@ const [isCheck, setIsCheck] = useState(props.inLibrairy)
 
 //Function appel route addLibrairy
 const addLibrairy = async (id,bool) => {
-  
+  console.log("Fetch addlibrairy",bool)
     var responseFetch = await fetch(`${Ip()}:3000/home/addLibrairy/${id}/${bool}/${props.token}`)
     var resp = await responseFetch.json();
+    console.log("retour route librairy",resp)
     if(resp){
       setIsCheck(bool)
+      
       props.manageLibrairy(id,bool)
       showMessage({
           message: resp.mess,
@@ -36,7 +38,6 @@ const addLibrairy = async (id,bool) => {
           backgroundColor:"#8FB2C9"
         });
     }
-   
   }
 return (
       <Card 
@@ -52,9 +53,9 @@ return (
           />
           </TouchableOpacity>
           <CheckBox 
-              onPress={() =>{addLibrairy(props.id,!isCheck);
-                console.log("ONPRESS",props.id, typeof props.inLibrairy)}}
-              checked={props.inLibrairy}
+              onPress={() =>{addLibrairy(props.id,!props.inLibrairy);
+                console.log("ONPRESS",props.inLibrairy)}}
+              checked={isCheck}
               checkedColor="#F9603E"
               containerStyle={{position: "absolute",
                               right: -30,

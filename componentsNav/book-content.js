@@ -104,7 +104,8 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                         source= {{uri: urlImageContent}}
                         
                     />
-                <View style ={{width:'80%', position: 'absolute', bottom: 20, backgroundColor:badgeColor,height:30,alignItems:'center',justifyContent:'center',borderBottomRightRadius:10,borderTopRightRadius:10}}>
+                <View style ={{width:'80%', position: 'absolute', bottom: 20, backgroundColor:badgeColor,height:30,
+                alignItems:'center',justifyContent:'center',borderBottomRightRadius:30}}>
                 <Text style ={{fontSize:16,color:"white"}}>
                     {obj.title.toUpperCase()}
                 </Text>
@@ -173,21 +174,25 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
     return (
     <ScrollView stickyHeaderIndices={[1]}>     
                 <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center', 
-                backgroundColor:'#D6D6D6',paddingBottom:20, marginBottom:30}}>
+                backgroundColor:'#D6D6D6',paddingBottom:20}}>
                     <View style = {{alignItems: 'center', justifyContent: 'center',marginTop:60}}>
-                        <Text style={{fontSize:25,marginTop:20,marginBottom:10,textAlign:"center",
-                            backgroundColor:colorImport('red'),paddingHorizontal:30,paddingBottom:5,color:"white", borderRadius:10}}>
+                        {/* <Text style={{fontSize:25,marginTop:20,marginBottom:10,textAlign:"center",
+                            backgroundColor:colorImport('red'),paddingHorizontal:30,
+                            paddingBottom:5,color:"white", borderRadius:10}}>
                             {arrayDataBook.title}
-                        </Text>
+                        </Text> */}
                         <Image 
                             style={{width: 150, height: 150,borderRadius: 150,
                             marginTop:-15, borderStartWidth:1, borderEndWidth:1,borderRightWidth:1,
                             borderLeftWidth:1, borderColor:"black"}}
                             source= {{ uri: arrayDataBook.coverImage }}
                         />
+                          <Text style={{fontSize:15,textAlign:"center",paddingBottom:5, borderRadius:10}}>
+                            {arrayDataBook.title}
+                        </Text>
                         <View style={{alignItems:"flex-start"}}>
-                            <Text style ={{fontStyle:'italic'}}>{arrayDataBook.author}</Text>
-                            <Text style ={{fontStyle:'italic'}}>{publisher.publisher}</Text>  
+                            <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
+                            <Text style ={{fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
                         </View> 
                         <View>            
                             <Text style={{textAlign:'center',marginTop:10,fontSize:14}}>{arrayDataBook.description}</Text>         
@@ -195,8 +200,8 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                     </View>
                 </View>
               
-                <View style = {{marginRight:20,backgroundColor:"grey",width:"100%"}}>
-                    <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les contenus à découvrir : </Text>
+                <View style = {{marginRight:20,backgroundColor:"white",width:"100%"}}>
+                    <Text style={{fontSize:25,marginTop:20,marginBottom:10,paddingTop:30,paddingBottom:10}}>Les contenus à découvrir...</Text>
                 </View>
                 <ScrollView>
                     <View>

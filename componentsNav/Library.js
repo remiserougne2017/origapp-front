@@ -21,7 +21,6 @@ function Library(props) {
    // Initialisation du composant
    useEffect(()=>{
     const maBibliotheque = async() =>{
-      
       var responseFetch = await fetch(`${Ip()}:3000/home/myLibrary/${props.token}`)
       var responseLivres = await responseFetch.json();
       console.log("REponse librairy",responseLivres)
@@ -149,8 +148,7 @@ function Library(props) {
                 flexWrap: 'wrap',
                 margin:"auto"  
               }}>
-                {errorMessage!=""?<Text>{errorMessage}</Text>:null}
-                {Book}            
+                {mesLivres.length==0?(<Text>Aucun livre dans votre bibliothèque</Text>):Book}      
             </View>
 
             <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
@@ -180,6 +178,16 @@ function Library(props) {
     </View>    
   );
 }
+
+function mapDispatchToProps(dispatch){
+  return {
+    manageLibrairy: function(id,bool){
+      dispatch({type: 'manageLibrairy',
+      id: id,
+      bool:bool})
+    } 
+  }
+};
 
 function mapStateToProps(state) {
   return { storeLibrairy: state.storeLibrairy,

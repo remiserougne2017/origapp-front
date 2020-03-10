@@ -39,7 +39,6 @@ const RatingPage = (props) => {
 
  return (
          <Overlay isVisible={props.isVisible} fullScreen={true}>   
-      
           <View style={{flex:1, justifyContent:"center", alignItems:"center", width:"100%"}}>
           <Text style={{fontSize:20,marginTop:30, marginBottom:10, marginRight:40,marginLeft:40}}>Glissez votre note!</Text>
             <View style={{width:"90%",justifyContent:"center", backgroundColor:"white",borderRadius:10 }}>

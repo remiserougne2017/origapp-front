@@ -8,7 +8,7 @@ import {connect} from 'react-redux';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import FlashMessage from "react-native-flash-message";
 import Carrousel from './Carrousel';
-import { withNavigation } from 'react-navigation';
+import { withNavigationFocus } from 'react-navigation';
 import color from './color';
 import Loader from './loader';
 import Ip from './Ip';
@@ -16,7 +16,6 @@ import Ip from './Ip';
 function Home(props) {
   
 console.log("STORE-Librairy",props.storeLibrairy)
-  
 
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
@@ -41,7 +40,7 @@ console.log("STORE-Librairy",props.storeLibrairy)
      setLoader(true)
      setTimeout(() => {
       setLoader(false)
-    }, 4000);
+    }, 3000);
     const catalogue = async() =>{
       // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
       console.log("WELCOME HOME")
@@ -65,11 +64,20 @@ console.log("STORE-Librairy",props.storeLibrairy)
       //ferme le loader
       setLoader(false)
     };
-
     catalogue();
     librairyToStore();
-    
-  },[])
+  },[props.storeLibrairy])//ou alors ? props.isFocused,props.storeLibrairy
+
+  // useEffect=(()=>{
+  //   const catalogue = async() =>{
+  //     // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
+  //     console.log("WELCOME HOME")
+  //     var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
+  //     var bookList = await responseFetch.json();
+  //     setCataList(bookList.livreMin)
+  //   };
+  //   catalogue();
+  // },[props.isFocused])
 
    useEffect(()=>{
      const rechercheText = async()=>{
@@ -93,7 +101,7 @@ console.log("STORE-Librairy",props.storeLibrairy)
   var Book = cataList.map((e,i)=>{
     console.log("cataListe MAP",e.inLibrairy)
    return(
-    <Books id={e.id} key={i}  inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
+    <Books id={e.id} key={i} inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
    )
   })
 
@@ -159,7 +167,7 @@ for (let i=0;i<tagsList.length;i++){
   // })
   return (
     
-     <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
+     <View style={{ flex: 1, width:"100%", backgroundColor:'white'}}>
      <Loader bool={loader} text="Chargement du catalogue..."/> 
        <View style={{ flexDirection:"row", marginTop:25}}>
        <Image
@@ -170,7 +178,7 @@ for (let i=0;i<tagsList.length;i++){
        </View>
         <View style={{ flexDirection:"row",justifyContent:"center", alignItems:'center', marginTop:10}}>
           <SearchBar 
-          containerStyle={{width:'80%', borderRadius:20}}
+          containerStyle={{width:'80%', backgroundColor:"transparent"}}
          // inputContainerStyle={{backgroundColor:"none"}}
           lightTheme
           placeholder="Recherche..."
@@ -217,7 +225,7 @@ for (let i=0;i<tagsList.length;i++){
                         marginTop:10,
                         marginLeft:10,
                         paddingBottom:5, 
-                        backgroundColor:'#EEEEEE'}}>
+                        backgroundColor:'white'}}>
           <Text style={{color:"#F9603E"}}>Catalogue</Text>
           </View>   
           
@@ -254,4 +262,4 @@ function mapStateToProps(state) {
            token: state.reducerToken
    }
 }
-export default withNavigation(connect(mapStateToProps,mapDispatchToProps)(Home))
+export default withNavigationFocus(connect(mapStateToProps,mapDispatchToProps)(Home))
