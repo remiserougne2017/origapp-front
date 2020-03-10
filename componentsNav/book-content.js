@@ -18,7 +18,8 @@ function BookContent(props) {
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
     const [overlayRatingVisible, setOverlayRatingVisible]=useState(false)
     console.log("star this book",idBook, overlayRatingVisible);
-
+    const [commentBook, setCommentBook]=useState([]);
+    
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
@@ -34,12 +35,29 @@ function BookContent(props) {
         openBook();
       },[])
 
+
+
+      useEffect( ()=> {
+          const comment = async () {
+              console.log("route comment ça passe")
+              var commentsData = await fetch(`${Ip()}:3000/home/comments-book/${params.id}`),
+
+              var commentjson = await commentsData.json();
+              setCommentBook(commentjson)
+              console.log("comments")
+          };
+
+      },[])
+
+    
+
 // CARD CONTENT CREATION  
 let arrayColor = ['#a5af2a','#fda329','#24c6ae'];
-
+let listIdContentForSwipe = []
 let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.pageNum - objB.pageNum;}).map((obj,i) => {
+        listIdContentForSwipe.push(obj.idContent);
         let urlImageContent;
-        if(obj.imageContent == undefined) {
+        if((obj.imageContent == null)||(obj.imageContent == undefined)) {
                 urlImageContent = arrayDataBook.coverImage
         } else { urlImageContent = obj.imageContent}
         var badgeColor;
@@ -51,10 +69,11 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
             badgeColor = '#24c6ae'
         }
 
+////   COMMENTAIRES SUR L'OUVRAGE
 
         return (
     <TouchableOpacity
-        onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,idContent:obj.idContent});props.navigation.navigate('contentMediaPage');}}
+        onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,idContent:obj.idContent,listAllIdContent:listIdContentForSwipe,position:i});props.navigation.navigate('contentMediaPage');}}
         >
         <View
             style={{width:'100%',marginBottom:10,borderRadius:10, backgroundColor:'#FDFDFD'}}
@@ -139,7 +158,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
 // RETURN GLOBAL DE LA PAGE
     return (
     <ScrollView>     
-                <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',marginLeft:20, marginRight:20}}>
+                <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'#D6D6D6',paddingBottom:20}}>
                     <View style = {{alignItems: 'center', justifyContent: 'center',marginTop:60}}>
                         <Text style={{fontSize:25,marginTop:20,marginBottom:10,textAlign:"center",
                             backgroundColor:colorImport('red'),paddingHorizontal:30,paddingBottom:5,color:"white", borderRadius:10}}>
@@ -154,8 +173,10 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                         <View style={{alignItems:"flex-start"}}>
                             <Text style ={{fontStyle:'italic'}}>{arrayDataBook.author}</Text>
                             <Text style ={{fontStyle:'italic'}}>{publisher.publisher}</Text>  
-                        </View>             
-                        <Text style={{marginTop:10}}>{arrayDataBook.description}</Text>         
+                        </View> 
+                        <View>            
+                            <Text style={{textAlign:'center',marginTop:10,fontSize:14}}>{arrayDataBook.description}</Text>         
+                        </View>
                     </View>
                 </View>
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>

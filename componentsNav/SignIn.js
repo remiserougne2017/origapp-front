@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
 import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 import {connect} from 'react-redux';
+import Loader from './loader';
 import Ip from './Ip'; // a enlever en production !
 
 function SignIn(props) {
   
-  const ip="192.168.1.28"
+  
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
   const [errorChampVide, setErrorChampVide] = useState('')
   const [errorEmailInexistant, setErrorEmailInexistant] = useState('')
   const [errorPassword, setErrorPassword] = useState('')
+  const [loader,setLoader]=useState(false);
 
 
   var clickSignIn = async (a, b) => {
@@ -18,6 +20,11 @@ function SignIn(props) {
     //console.log("signin"+a,b)
     setSignInEmail('')
     setSignInPassword('')
+
+    setLoader(true)
+    /* setTimeout(() => {
+     setLoader(false)
+   }, 2000 ); */
 
     const data = await fetch(`${Ip()}:3000/users/sign-in`, {
       method: 'POST',
@@ -40,6 +47,7 @@ function SignIn(props) {
       props.addPrenom(response.prenom)
       setSignInPassword('')
       console.log(response.token)
+      setLoader(false)
       props.navigation.navigate('Home')
     } else {
       console.log('pas de token')

@@ -5,6 +5,7 @@ import { withNavigationFocus } from 'react-navigation';
 import { Button, Icon  } from 'react-native-elements';
 import color from './color';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
+import Modal from "react-native-modal";
 import Ip from './Ip'; // A enlever en production !;
 import Loader from './loader';
 
@@ -15,6 +16,7 @@ const [hasPermission, setHasPermission] = useState(null);
 const [type, setType] = useState(Camera.Constants.Type.back);
 const [flash, setFlash]=useState(Camera.Constants.FlashMode.off);
 const [loader,setLoader]=useState(false);
+const [isModalVisible, setIsModalVisible] = useState(false)
 
 
     //Permission demandée au click sur le bouton
@@ -29,7 +31,7 @@ const askPermission =async() => {
 
 const sendPicture = async (path)=>{
 
-    console.log('oi')
+    
     //affiche le loader et le coupe si chrgt > à 4 secondes
     setLoader(true)
     setTimeout(() => {
@@ -50,8 +52,14 @@ const sendPicture = async (path)=>{
     });  
      var responseAPI = await response.json()
      console.log(responseAPI)
-     setLoader(false)
-     props.navigation.navigate('BookContent',{idBook: responseAPI})
+     if(responseAPI != null){
+        setLoader(false)
+        props.navigation.navigate('BookContent',{idBook: responseAPI})
+     } else {
+        setLoader(false)
+        alert('Livre inexistant')
+     }
+    
 }
 
 if(props.isFocused && hasPermission) {
