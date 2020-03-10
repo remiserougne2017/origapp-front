@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState, AsyncStorage} from 'react';
 import { Icon } from 'react-native-elements';
-import {Image} from 'react-native'
+import {Image, ShadowPropTypesIOS} from 'react-native'
 import {createAppContainer } from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
@@ -31,7 +31,6 @@ import {createStore, combineReducers}  from 'redux';
 const store = createStore(combineReducers({reducerToken,storeLibrairy, reducerPrenom, overlayData,contentMediaData}),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 console.disableYellowBox = true;
-
 
 // COMMENT VINCENT : Pour ajouter un nouveau lien de navgivation :
   // 1) importer le components dans ce fichier app.js ex: import Library from "./componentsNav/libraryNav"
@@ -99,7 +98,8 @@ var BottomNavigator = createBottomTabNavigator(
     }     
   }
 );
- 
+
+
 // comment Vincent : stack navigator global
   var StackNavigator = createStackNavigator({
     SignUp: SignUp,
@@ -117,11 +117,24 @@ var BottomNavigator = createBottomTabNavigator(
   var NavigationVariable = createAppContainer(StackNavigator)
 
   function App() {
+/* 
+// Gérer le token dans le Local storage
+
+const [tokenExists, setTokenExists] = useState('')
+AsyncStorage.getItem("token", function(error, data) {
+  console.log(data)
+  setTokenExists(data)
+})
+
+if(tokenExists){
+  props.navigation.navigate('Home')
+} */
   
     return (
+    
       <Provider store={store}>
         <NavigationVariable/>
-        <FlashMessage position="top" /> 
+        <FlashMessage position="top"/>
       </Provider>
   
     );

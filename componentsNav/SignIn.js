@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
+import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import {connect} from 'react-redux';
 import Loader from './loader';
 import Ip from './Ip'; // a enlever en production !
@@ -13,46 +13,60 @@ function SignIn(props) {
   const [errorEmailInexistant, setErrorEmailInexistant] = useState('')
   const [errorPassword, setErrorPassword] = useState('')
   const [loader,setLoader]=useState(false);
+  const [tokenExists, setTokenExists]= useState('');
 
+  AsyncStorage.getItem("token", function(error, data) {
+    //console.log(data)
+    setTokenExists(data)
+  })
 
-  var clickSignIn = async (a, b) => {
+  if(tokenExists){
+    props.addToken(tokenExists)
+    props.navigation.navigate('Home')
+  } else {
 
-    //console.log("signin"+a,b)
-    setSignInEmail('')
-    setSignInPassword('')
+    var clickSignIn = async (a, b) => {
 
-    setLoader(true)
-    /* setTimeout(() => {
-     setLoader(false)
-   }, 2000 ); */
-
-    const data = await fetch(`${Ip()}:3000/users/sign-in`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      body: `email=${a}&password=${b}`
-    })
-
-    //console.log('envoyé')
-    const response = await data.json()
-    if(Object.keys(response).length != 0){
-      //Messages d'erreur depuis le Backend
-      setErrorEmailInexistant(response.error.email)
-      setErrorChampVide(response.error.emptyField)
-      setErrorPassword(response.error.password)
-      console.log(response.error)
-    }
-
-    if(response.result == true){
-      props.addToken(response.token)
-      props.addPrenom(response.prenom)
+      //console.log("signin"+a,b)
+      setSignInEmail('')
       setSignInPassword('')
-      console.log(response.token)
-      setLoader(false)
-      props.navigation.navigate('Home')
-    } else {
-      console.log('pas de token')
+  
+      setLoader(true)
+      /* setTimeout(() => {
+       setLoader(false)
+     }, 2000 ); */
+  
+      const data = await fetch(`${Ip()}:3000/users/sign-in`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `email=${a}&password=${b}`
+      })
+  
+      //console.log('envoyé')
+      const response = await data.json()
+      if(Object.keys(response).length != 0){
+        //Messages d'erreur depuis le Backend
+        setErrorEmailInexistant(response.error.email)
+        setErrorChampVide(response.error.emptyField)
+        setErrorPassword(response.error.password)
+        //console.log(response.error)
+      }
+  
+      if(response.result == true){
+        AsyncStorage.setItem("token", response.token)
+        props.addToken(response.token)
+        props.addPrenom(response.prenom)
+        setSignInPassword('')
+        //console.log(response.token)
+        setLoader(false)
+        props.navigation.navigate('Home')
+      } else {
+        //console.log('pas de token')
+      }
     }
+
   }
+
 
   
     return(
@@ -99,8 +113,7 @@ function SignIn(props) {
             <Button
              title='Connexion'
              color='#FF473A'
-             onPress={() => {clickSignIn(signInEmail, signInPassword);
-            console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^signin")}}
+             onPress={() => {clickSignIn(signInEmail, signInPassword)}}
             />
 
             <TouchableOpacity onPress={() => props.navigation.navigate('SignUp')}>
