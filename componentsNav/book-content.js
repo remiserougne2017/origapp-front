@@ -38,7 +38,7 @@ function BookContent(props) {
 
 
       useEffect( ()=> {
-          const comment = async () {
+          const comment = async () => {
               console.log("route comment ça passe")
               var commentsData = await fetch(`${Ip()}:3000/home/comments-book/${params.id}`),
 
