@@ -2,14 +2,19 @@ import React, {useState,useEffect,useRef} from 'react';
 import {StyleSheet, Text, View,Image,TouchableOpacity} from 'react-native';
 import { Button,Input,Card,Divider,Badge} from 'react-native-elements';
 import { Audio } from 'expo-av';
+import Ip from './Ip'
 // import TrackPlayer from 'react-native-track-player';
 
 const AudioPlay = (props) =>{
-    console.log("HEO AUDIO", props.title, props.duration)
-    const playAudio = async (bool,source) =>{
+    
+    const playAudio = async (bool) =>{
         const soundObject = new Audio.Sound();
+        
         try {
-            await soundObject.loadAsync(require('../assets/test.mp3'));
+            var uri= `${Ip()}:3000/${props.source}`
+            // console.log("HEO ",uri)
+            await soundObject.loadAsync({ uri: `${Ip()}:3000/${props.source}`});
+            console.log("HEO AUDIO", props.title, props.duration,uri)
             if(bool){
             await soundObject.playAsync();
             }else{
@@ -21,6 +26,7 @@ const AudioPlay = (props) =>{
         }    
     }
     
+
     var styles = StyleSheet.create({
             image: {
           width: 30,

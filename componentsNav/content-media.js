@@ -13,27 +13,32 @@ import { withNavigation } from 'react-navigation';
 import Ip from './Ip' // A enlever en production !
 import Audio from './audio'
 import colorImport from './color';
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 function contentMedia(props) { 
 
 //VARIABLES
 var player = useRef(null);  
 const [dataContent,setDataContent] = useState({content: {title:"",media:[{type:''}],title:""}})
-
+const [position,setPosition]=useState(props.contentMediaData.position);
+const [arrayIdContent,setArrayIdContent] = useState(props.contentMediaData.listAllIdContent);
 // LOAD MEDIA CONTENT FROM DB
     useEffect( ()=> {
         async function openContent() {
+
+            // console.log('OK Swipe is on, lets fetch ',props.contentMediaData.idContent,props.contentMediaData.idContent)
             var resContentData = await fetch(`${Ip()}:3000/books/open-content`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                    body: `idBook=${props.contentMediaData.idBook}&idContent=${props.contentMediaData.idContent}`
+                    body: `idBook=${props.contentMediaData.idBook}&idContent=${arrayIdContent[position]}`
                   }
             );
             var resContentDataJson = await resContentData.json();
-            setDataContent(resContentDataJson.returnedContent)       
+            setDataContent(resContentDataJson.returnedContent)  
+            // console.log("/////////////////////////////////////// DATA CONTENT",dataContent)     
       } 
         openContent();
-      },[])
+      },[position])
 
 
 //CREATION DES BLOCS JSX MEDIA  
@@ -52,12 +57,12 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                     // style={styles.backgroundVideo} 
                     />   */}
 
-                {/* <WebView
+                <WebView
                     style={ {margin: 20} }
                     source={{ uri: med.source }}
                     javaScriptEnabled={true}
                     domStorageEnabled={true}   
-                    /> */}
+                    />
                 <Text style = {{marginLeft:15,fontStyle:'italic'}}>Vidéo : {med.title}</Text>
 
             </View> 
@@ -66,7 +71,6 @@ var displayMedia = dataContent.content.media.map((med, k) => {
         case 'audio':    
         displayBlocMedia = <Audio duration={med.duration} title={med.title} source={med.source}/>
         break;
-
         case 'image': 
         // console.log(med.source);
         if(med.source.search('http') == -1) {
@@ -131,11 +135,47 @@ const [borderWidth,setBorderWidth] = useState(0);
 
 
 
+// Swipe
+function onSwipeLeft() {
+    if(position<props.contentMediaData.listAllIdContent.length-1){
+        setPosition(position+1);
+    }
+
+}
+
+function onSwipeRight() {
+    if(position>0) {
+        setPosition(position-1);
+    } else if (position == 0){
+        props.navigation.navigate('BookContent')
+        }
+
+}
+
+var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
+    var bulletSize = 5
+    if(j==position) {
+            bulletSize = 10
+    }
+    return (
+        <View style = {{height:bulletSize,width:bulletSize,backgroundColor:'grey',borderRadius:100,margin:10}}></View>
+        )
+
+    })
+
+
 // RETURN GLOBAL DE LA PAGE
 
     return (
-        <View>
-                <View style ={{marginTop:60, display:"flex", flexDirection:'row', alignItems:'center', height:50}}>
+        <GestureRecognizer
+            onSwipeLeft={onSwipeLeft}
+            onSwipeRight={onSwipeRight}
+            >
+            <View style = {{width:'100%'}}>
+                <View style = {{flexDirection:"row",justifyContent:'center',alignItems:'center',marginTop:40}}>
+                     {bulletBreadCrumb}
+                </View>
+                <View style ={{marginTop:10, display:"flex", flexDirection:'row', alignItems:'center', height:15}}>
                     <View style = {{flexDirection:'row', backgroundColor:'#fda329',position:'absolute',left:0,padding:5,borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15}}>
                         <Icon 
                                 name= 'back' type='antdesign'  size= {20} margin={5} marginLeft={20} color={'white'}
@@ -149,17 +189,19 @@ const [borderWidth,setBorderWidth] = useState(0);
                         page {dataContent.pageNum}
                     </Text>
                 </View>
-            <View>
-                    <Text style={{backgroundColor:colorImport('red'),padding:5,color:"white",fontSize:25,marginTop:40,marginLeft:10,marginRight:10,textAlign:'center',borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth,borderRadius:10,marginBottom:30}}>{dataContent.content.title}</Text>
-            </View>
-            <ScrollView
-                onScroll = {()=> setBorderWidth(2)}
-                style={{marginBottom:50}}
-            >
-                {displayMedia}
-            </ScrollView>
+                <View style = {{width:'100%'}}>
+                        <Text style={{
+                                padding:5,color:"black",marginBottom:10,fontSize:25,marginTop:20,marginLeft:10,marginRight:10,textAlign:'center',
+                                borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth,borderRadius:10, }}>{dataContent.content.title}</Text>
+                </View>
+                <ScrollView
+                    onScroll = {()=> setBorderWidth(2)}
+                    contentContainerStyle ={{height:3000}}>
+                    {displayMedia}
+                </ScrollView>
 
-        </View>
+            </View>
+        </GestureRecognizer>
 
     );
   }

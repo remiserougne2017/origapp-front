@@ -53,10 +53,11 @@ function BookContent(props) {
 
 // CARD CONTENT CREATION  
 let arrayColor = ['#a5af2a','#fda329','#24c6ae'];
-
+let listIdContentForSwipe = []
 let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.pageNum - objB.pageNum;}).map((obj,i) => {
+        listIdContentForSwipe.push(obj.idContent);
         let urlImageContent;
-        if(obj.imageContent == undefined) {
+        if((obj.imageContent == null)||(obj.imageContent == undefined)) {
                 urlImageContent = arrayDataBook.coverImage
         } else { urlImageContent = obj.imageContent}
         var badgeColor;
@@ -72,7 +73,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
 
         return (
     <TouchableOpacity
-        onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,idContent:obj.idContent});props.navigation.navigate('contentMediaPage');}}
+        onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,idContent:obj.idContent,listAllIdContent:listIdContentForSwipe,position:i});props.navigation.navigate('contentMediaPage');}}
         >
         <View
             style={{width:'100%',marginBottom:10,borderRadius:10, backgroundColor:'#FDFDFD'}}
@@ -157,26 +158,29 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
 // RETURN GLOBAL DE LA PAGE
     return (
     <ScrollView>     
-                <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',marginLeft:20, marginRight:20}}>
-                    <View style = {{marginTop:60}}>
-                    <Text onPress={() =>{setOverlayRatingVisible(true);
-                    }}
-                        style={{fontStyle:"italic"}}
-                        >Donnez votre avis...</Text>
+                <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor:'#D6D6D6',paddingBottom:20}}>
+                    <View style = {{alignItems: 'center', justifyContent: 'center',marginTop:60}}>
+                        <Text style={{fontSize:25,marginTop:20,marginBottom:10,textAlign:"center",
+                            backgroundColor:colorImport('red'),paddingHorizontal:30,paddingBottom:5,color:"white", borderRadius:10}}>
+                            {arrayDataBook.title}
+                        </Text>
                         <Image 
-                            style={{width: 250, height: 300, marginTop:20}}
+                            style={{width: 150, height: 150,borderRadius: 150,
+                            marginTop:-15, borderStartWidth:1, borderEndWidth:1,borderRightWidth:1,
+                            borderLeftWidth:1, borderColor:"black"}}
                             source= {{ uri: arrayDataBook.coverImage }}
                         />
-                        <Text style ={{fontStyle:'italic'}}>{arrayDataBook.author}</Text>
-                        <Text style ={{fontStyle:'italic'}}>{publisher.publisher}</Text>                        
-                    </View>
-                    <View style = {{alignItems:"center",justifyContent:"center"}}>
-                        <Text style={{fontSize:25,marginTop:20,marginBottom:10,backgroundColor:colorImport('red'),padding:5,color:"white"}}>{arrayDataBook.title}</Text>
-                        <Text>{arrayDataBook.description}</Text>
+                        <View style={{alignItems:"flex-start"}}>
+                            <Text style ={{fontStyle:'italic'}}>{arrayDataBook.author}</Text>
+                            <Text style ={{fontStyle:'italic'}}>{publisher.publisher}</Text>  
+                        </View> 
+                        <View>            
+                            <Text style={{textAlign:'center',marginTop:10,fontSize:14}}>{arrayDataBook.description}</Text>         
+                        </View>
                     </View>
                 </View>
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
-                    <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les contenus à découvrir</Text>
+                    <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les contenus à découvrir : </Text>
                     <View>
                         {cardDisplay}
                     </View>
@@ -191,6 +195,12 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                 </View>
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
                     <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les avis et commentaires</Text>
+                    <View>
+                        <Text onPress={() =>{setOverlayRatingVisible(true);}}
+                            style={{fontStyle:"italic"}}
+                            >Donnez votre avis...
+                        </Text>
+                        </View>
   
                 </View>
 

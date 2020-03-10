@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView } from 'react-native';
 import {connect} from 'react-redux';
+import Loader from './loader';
 import Ip from './Ip' // A enlever en production !
 
 function SignUp(props) {
-  const ip="192.168.1.28"
+  
   const [signUpFirstName, setSignUpFirstName] = useState('')
   const [signUpEmail, setSignUpEmail] = useState('')
   const [signUpPassword, setSignUpPassword] = useState('')
@@ -14,6 +15,7 @@ function SignUp(props) {
   const [errorChampVide, setErrorChampVide] = useState('')
   const [errorEmailInvalide, setErrorEmailInvalide] = useState('')
   const [errorPassword, setErrorPassword] = useState('')
+  const [loader,setLoader]=useState(false);
 
 
   var clickSignUp = async (a, b, c, d) => {
@@ -22,6 +24,11 @@ function SignUp(props) {
     setSignUpEmail('')
     setSignUpPassword('')
     setSignUpPasswordMatch('')
+
+    setLoader(true)
+    /* setTimeout(() => {
+     setLoader(false)
+   }, 2000 ); */
 
     if(signUpPassword !== signUpPasswordMatch){
       setErrorMatch("Les mots de passe ne sont pas identiques")
@@ -47,6 +54,7 @@ function SignUp(props) {
       if(response.result == true){
         props.addToken(response.token)
         props.addPrenom(response.prenom)
+        setLoader(false)
         props.navigation.navigate('Home')
       } else {
         console.log('pas de token')
@@ -57,6 +65,7 @@ function SignUp(props) {
   console.log(errorMatch, errorChampVide, errorEmailInvalide)
     return(
       <ImageBackground source={require('../assets/origami.png')} style={styles.container}>
+        <Loader bool={loader} text="Chargement"/>
         <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
           <View>
             <View style={{ flexDirection:"row", marginBottom:50}}>
