@@ -5,6 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
 // import Video from 'react-native-video';
+import { Video } from 'expo-av';
 import { WebView } from 'react-native-webview';
 // import WebView from 'react-native-android-fullscreen-webview-video';
 // import WebView from 'react-native-android-fullscreen-webview-video';
@@ -18,7 +19,6 @@ import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 function contentMedia(props) { 
 
 //VARIABLES
-var player = useRef(null);  
 const [dataContent,setDataContent] = useState({content: {title:"",media:[{type:''}],title:""}})
 const [position,setPosition]=useState(props.contentMediaData.position);
 const [arrayIdContent,setArrayIdContent] = useState(props.contentMediaData.listAllIdContent);
@@ -40,6 +40,7 @@ const [arrayIdContent,setArrayIdContent] = useState(props.contentMediaData.listA
         openContent();
       },[position])
 
+      console.log(position)
 
 //CREATION DES BLOCS JSX MEDIA  
 var displayMedia = dataContent.content.media.map((med, k) => {
@@ -47,29 +48,46 @@ var displayMedia = dataContent.content.media.map((med, k) => {
     var displayBlocMedia;    
     switch (med.type) {
         case 'video': 
-        // console.log("source", med.source)
+        var regExUrl = new RegExp("https?.*?\.mp4");
+        if(regExUrl.test(med.source)==true) {
         displayBlocMedia = 
-            <View style = {{height:280}}>
-                {/* <Video source={{uri: '../assets/testSample.mp4'}}   // Can be a URL or a local file.
-                    ref={ref => (player = ref)}                                      // Store reference
-                    // onBuffer={this.onBuffer}                // Callback when remote video is buffering
-                    // onError={this.videoError}               // Callback when video cannot be loaded
-                    // style={styles.backgroundVideo} 
-                    />   */}
-
-                <WebView
-                    style={ {margin: 20} }
-                    source={{ uri: med.source }}
-                    javaScriptEnabled={true}
-                    domStorageEnabled={true}   
+            <View style = {{flex:1,height:280}}>
+                {/* MODULE expo AV */}
+                 <Video
+                    source={{uri: med.source}}
+                    // source={require('../assets/testSample.mp4')}
+                    useNativeControls = {true}
+                    rate={1.0}
+                    volume={1.0}
+                    isMuted={false}
+                    resizeMode="cover"
+                    shouldPlay
+                    isLooping
+                    style={{ width: '100%', height: 300 }}
                     />
                 <Text style = {{marginLeft:15,fontStyle:'italic'}}>Vidéo : {med.title}</Text>
 
             </View> 
+            } else {
+                displayBlocMedia =
+                <View style = {{flex:1,height:300}}>
+                        <WebView
+                        style={ {margin: 20} }
+                        source={{ uri: med.source }}
+                        javaScriptEnabled={true}
+                        domStorageEnabled={true}   
+                        />
+                    <Text style = {{marginLeft:15,fontStyle:'italic'}}>Vidéo : {med.title}</Text>
+                </View>
+            }
+
         break; 
 
         case 'audio':    
-        displayBlocMedia = <Audio duration={med.duration} title={med.title} source={med.source}/>
+        displayBlocMedia = 
+        <View>
+        <Audio duration={med.duration} title={med.title} source={med.source}/>
+        </View>
         break;
         case 'image': 
         // console.log(med.source);
@@ -158,7 +176,7 @@ var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
             bulletSize = 10
     }
     return (
-        <View style = {{height:bulletSize,width:bulletSize,backgroundColor:'grey',borderRadius:100,margin:10}}></View>
+        <View style = {{height:bulletSize,width:bulletSize,backgroundColor:'#fda329',borderRadius:100,margin:15}}></View>
         )
 
     })
@@ -196,7 +214,9 @@ var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
                 </View>
                 <ScrollView
                     onScroll = {()=> setBorderWidth(2)}
-                    contentContainerStyle ={{height:3000}}>
+                    // contentContainerStyle ={{height:3000}}
+                    automaticallyAdjustContentInsets={true}
+                    >
                     {displayMedia}
                 </ScrollView>
 
