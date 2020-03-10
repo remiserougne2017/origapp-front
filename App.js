@@ -15,7 +15,7 @@ import SignIn from "./componentsNav/SignIn";
 import newPassword from "./componentsNav/newPassword";
 import contentMediaPage from "./componentsNav/content-media";
 import Rating from './componentsNav/overlay-rating';
-
+import FlashMessage from "react-native-flash-message";
 
 // comment Vincent : lignes pour REDUX
   // import MapLoc from './components/map';
@@ -121,6 +121,7 @@ var BottomNavigator = createBottomTabNavigator(
     return (
       <Provider store={store}>
         <NavigationVariable/>
+        <FlashMessage position="top" /> 
       </Provider>
   
     );

@@ -135,7 +135,8 @@ function SignUp(props) {
             <Button
              title='Paramètres'
              color='#FF473A'
-             onPress={() =>{ props.navigation.navigate('Parameters');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
+             onPress={() =>{ props.navigation.navigate('Parameters');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6");
+             props.addPrenom("Rémi")}}
             />  
 
                 <Button
