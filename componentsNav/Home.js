@@ -29,7 +29,7 @@ function Home(props) {
     const librairyToStore= ()=>{
     var NewCatalist = cataList.map(e=>{
        if(e.inLibrairy==true){
-        console.log("NewCatalist IF",e.inLibrairy)
+        // console.log("NewCatalist IF",e.inLibrairy)
          props.manageLibrairy(e.id,true)
        }else{
          null
@@ -52,7 +52,7 @@ function Home(props) {
       console.log("WELCOME HOME")
       var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
       var bookList = await responseFetch.json();
-      console.log('CATALISTE',bookList)
+      // console.log('CATALISTE',bookList)
       setCataList(bookList.livreMin)
       
       // Chargement livres mieux notés
