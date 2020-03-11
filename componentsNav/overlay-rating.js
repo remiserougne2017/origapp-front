@@ -26,7 +26,8 @@ const RatingPage = (props) => {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: `comment=${userComment}&token=${props.token}&idBook=${props.idBook}&rating=${userRating}`
           })
-          setIsvisible(false)
+          // setIsvisible(false);
+          props.parentRatingFunction(false)
         };
 
       const onClickCancel =()=>{

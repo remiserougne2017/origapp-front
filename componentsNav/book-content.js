@@ -216,7 +216,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                     <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les avis et commentaires</Text>
                     <View>
                         <Text onPress={() =>{setOverlayRatingVisible(true);}}
-                            style={{fontStyle:"italic"}}
+                            style={{fontStyle:"italic",paddingBottom:10}}
                             >Donnez votre avis...
                         </Text>
                         <Comment 

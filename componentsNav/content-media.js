@@ -25,7 +25,6 @@ const [arrayIdContent,setArrayIdContent] = useState(props.contentMediaData.listA
 // LOAD MEDIA CONTENT FROM DB
     useEffect( ()=> {
         async function openContent() {
-
             // console.log('OK Swipe is on, lets fetch ',props.contentMediaData.idContent,props.contentMediaData.idContent)
             var resContentData = await fetch(`${Ip()}:3000/books/open-content`, { 
                     method: 'POST',
@@ -34,8 +33,7 @@ const [arrayIdContent,setArrayIdContent] = useState(props.contentMediaData.listA
                   }
             );
             var resContentDataJson = await resContentData.json();
-            setDataContent(resContentDataJson.returnedContent)  
-            // console.log("/////////////////////////////////////// DATA CONTENT",dataContent)     
+            setDataContent(resContentDataJson.returnedContent);
       } 
         openContent();
       },[position])
@@ -80,9 +78,7 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                     <Text style = {{marginLeft:15,fontStyle:'italic'}}>Vidéo : {med.title}</Text>
                 </View>
             }
-
         break; 
-
         case 'audio':    
         displayBlocMedia = 
         <View>
