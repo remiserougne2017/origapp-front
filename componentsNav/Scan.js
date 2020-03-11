@@ -134,6 +134,7 @@ if(props.isFocused && hasPermission) {
                  
                 />        
             </View>
+            {/* Condition overlay: true && expression est toujours évalué à expression, et false && expression est toujours évalué à false. */}
             {(isVisible) && <Overlay height={200} width={350} containerStyle={{justifyContent:"center", alignItems:"center"}}>
                                 <View style={{flex:3,justifyContent:"flex-start",
                                 alignItems:"center",marginTop:50}}>
