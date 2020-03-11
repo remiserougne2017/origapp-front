@@ -7,15 +7,14 @@ import color from './color';
 import Ip from './Ip'; // A enlever en production !
 
 function Comments(props) { 
-
-    console.log("YOEY",props.data)
+    console.log('props', props.data)
     var displayComment = props.data.map((obj, k) => {
 
         return (
             <View style ={{backgroundColor:'white',marginBottom:5,borderRadius:10,flexDirection:'row',alignItems:'center'}}>
                 <Image 
                     style={{ height: 50,width:50,borderRadius:100,margin:20}}
-                    source= {{uri: obj.avatar}}       
+                    source= {{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg"}}       
                     />
                 <View style = {{width:'80%'}}>
                 <Text style = {{fontStyle:'italic'}}>{obj.userName}</Text>
@@ -25,7 +24,7 @@ function Comments(props) {
                     readonly
                     startingValue={obj.rating}
                         />
-                <Text style = {{width:'90%',marginBottom:10}}>{obj.text}</Text>
+                <Text style = {{width:'90%',marginBottom:10}}>{obj.com}</Text>
      
                 </View>
 

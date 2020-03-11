@@ -1,7 +1,7 @@
 import React, {useState,useEffect} from 'react';
-import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity,ScrollView} from 'react-native';
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
+// import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
 import { withNavigation,withNavigationFocus } from 'react-navigation';
@@ -17,20 +17,15 @@ function BookContent(props) {
     const publisher = {publisher: "Les Editions du Sabot Rouge"}
     const [idBook,setIdBook] = useState(props.navigation.state.params.idBook)
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
-    const [overlayRatingVisible, setOverlayRatingVisible]=useState(false)
+    const [overlayRatingVisible, setOverlayRatingVisible]=useState(false);
+    const [commentData, setCommentData]=useState([]);
+
+    
     console.log("star this book",idBook, overlayRatingVisible);
 
-    const commentsData = [
-        {title:"titre du commentaire",userName:'Remi',text:'Blablabla BlablablaBlablabla Blablabla Blabl Blablabla Blablabla',avatar:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',rating:3},
-        {title:"titre du commentaire2",userName:'Juliette',text:'Blablabla BlablablaBlablabla Blablabla Blabl Blablabla',avatar:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',rating:3},
-        {title:"titre du commentaire3",userName:'Cilène',text:'Blablabla',avatar:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',rating:3}
-    
-    
-    ]
 
 
 
-    const [commentBook, setCommentBook]=useState([]);
     
 // LOAD BOOK FROM DB
     useEffect( ()=> {
@@ -44,6 +39,8 @@ function BookContent(props) {
             );
             var bookDataJson = await bookData.json();
             setArrayDataBook(bookDataJson.dataBook);
+            setCommentData(bookDataJson.userCom);
+            // console.log("HELLO COMMENTS FROM BACK",userCom)
             // props.storeCommentInformation({idBook:idBook,commentsData:commentsData})
       }
         openBook();
@@ -214,7 +211,9 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                             style={{fontStyle:"italic"}}
                             >Donnez votre avis...
                         </Text>
-                        <Comment data = {commentsData}/>
+                        <Comment 
+                        data = {commentData}
+                        />
                     </View>
   
                 </View>
