@@ -1,5 +1,9 @@
 import React, {useState,useEffect} from 'react';
+<<<<<<< HEAD
+import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity,ScrollView} from 'react-native';
+=======
 import { StyleSheet, Text, View,ScrollView,Image,TouchableOpacity} from 'react-native';
+>>>>>>> 9a26e53e229089fdc337ee603a7135c5a7e1d557
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 // import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
@@ -17,20 +21,15 @@ function BookContent(props) {
     const publisher = {publisher: "Les Editions du Sabot Rouge"}
     const [idBook,setIdBook] = useState(props.navigation.state.params.idBook)
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
-    const [overlayRatingVisible, setOverlayRatingVisible]=useState(false)
+    const [overlayRatingVisible, setOverlayRatingVisible]=useState(false);
+    const [commentData, setCommentData]=useState([]);
+
+    
     console.log("star this book",idBook, overlayRatingVisible);
 
-    const commentsData = [
-        {title:"titre du commentaire",userName:'Remi',text:'Blablabla BlablablaBlablabla Blablabla Blabl Blablabla Blablabla',avatar:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',rating:3},
-        {title:"titre du commentaire2",userName:'Juliette',text:'Blablabla BlablablaBlablabla Blablabla Blabl Blablabla',avatar:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',rating:3},
-        {title:"titre du commentaire3",userName:'Cilène',text:'Blablabla',avatar:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',rating:3}
-    
-    
-    ]
 
 
 
-    const [commentBook, setCommentBook]=useState([]);
     
 // LOAD BOOK FROM DB
     useEffect( ()=> {
@@ -44,6 +43,8 @@ function BookContent(props) {
             );
             var bookDataJson = await bookData.json();
             setArrayDataBook(bookDataJson.dataBook);
+            setCommentData(bookDataJson.userCom);
+            // console.log("HELLO COMMENTS FROM BACK",userCom)
             // props.storeCommentInformation({idBook:idBook,commentsData:commentsData})
       }
         openBook();
@@ -104,7 +105,8 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                         source= {{uri: urlImageContent}}
                         
                     />
-                <View style ={{width:'80%', position: 'absolute', bottom: 20, backgroundColor:badgeColor,height:30,alignItems:'center',justifyContent:'center',borderBottomRightRadius:10,borderTopRightRadius:10}}>
+                <View style ={{width:'80%', position: 'absolute', bottom: 20, backgroundColor:badgeColor,height:30,
+                alignItems:'center',justifyContent:'center',borderBottomRightRadius:30}}>
                 <Text style ={{fontSize:16,color:"white"}}>
                     {obj.title.toUpperCase()}
                 </Text>
@@ -173,21 +175,25 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
     return (
     <ScrollView stickyHeaderIndices={[1]}>     
                 <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center', 
-                backgroundColor:'#D6D6D6',paddingBottom:20, marginBottom:30}}>
+                backgroundColor:'#D6D6D6',paddingBottom:20}}>
                     <View style = {{alignItems: 'center', justifyContent: 'center',marginTop:60}}>
-                        <Text style={{fontSize:25,marginTop:20,marginBottom:10,textAlign:"center",
-                            backgroundColor:colorImport('red'),paddingHorizontal:30,paddingBottom:5,color:"white", borderRadius:10}}>
+                        {/* <Text style={{fontSize:25,marginTop:20,marginBottom:10,textAlign:"center",
+                            backgroundColor:colorImport('red'),paddingHorizontal:30,
+                            paddingBottom:5,color:"white", borderRadius:10}}>
                             {arrayDataBook.title}
-                        </Text>
+                        </Text> */}
                         <Image 
                             style={{width: 150, height: 150,borderRadius: 150,
                             marginTop:-15, borderStartWidth:1, borderEndWidth:1,borderRightWidth:1,
                             borderLeftWidth:1, borderColor:"black"}}
                             source= {{ uri: arrayDataBook.coverImage }}
                         />
+                          <Text style={{fontSize:15,textAlign:"center",paddingBottom:5, borderRadius:10}}>
+                            {arrayDataBook.title}
+                        </Text>
                         <View style={{alignItems:"flex-start"}}>
-                            <Text style ={{fontStyle:'italic'}}>{arrayDataBook.author}</Text>
-                            <Text style ={{fontStyle:'italic'}}>{publisher.publisher}</Text>  
+                            <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
+                            <Text style ={{fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
                         </View> 
                         <View>            
                             <Text style={{textAlign:'center',marginTop:10,fontSize:14}}>{arrayDataBook.description}</Text>         
@@ -195,8 +201,8 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                     </View>
                 </View>
               
-                <View style = {{marginRight:20,backgroundColor:"grey",width:"100%"}}>
-                    <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les contenus à découvrir : </Text>
+                <View style = {{marginRight:20,backgroundColor:"white",width:"100%"}}>
+                    <Text style={{fontSize:25,marginTop:20,marginBottom:10,paddingTop:30,paddingBottom:10}}>Les contenus à découvrir...</Text>
                 </View>
                 <ScrollView>
                     <View>
@@ -217,7 +223,9 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                             style={{fontStyle:"italic"}}
                             >Donnez votre avis...
                         </Text>
-                        <Comment data = {commentsData}/>
+                        <Comment 
+                        data = {commentData}
+                        />
                     </View>
   
                 </View>
