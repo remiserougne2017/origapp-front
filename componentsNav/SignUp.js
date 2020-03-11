@@ -33,7 +33,15 @@ function SignUp(props) {
  var formSignUp;
  if(!tokenExists && loading){
   //<Loader bool={loader} text="Chargement"/>
- formSignUp = <View>
+ formSignUp = <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+ <View>
+   <View style={{ flexDirection:"row", marginBottom:50}}>
+     <Image
+         style={{width: 100, height: 100}}
+         source={require('../assets/logoOrigapp.png')}
+       />
+     <Text style={{ marginTop:25,marginLeft:5, fontSize:32, fontWeight:"500"}} >OrigApp</Text>
+   </View>
       
       <View style={{marginBottom:20}}>
         <TextInput
@@ -118,7 +126,7 @@ function SignUp(props) {
        onPress={() =>{props.navigation.navigate('RatingPage');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
       />
      </View>
-   
+     </KeyboardAvoidingView>
 } else if(loading) {
   formSignUp = <Text>Bienvenue !</Text>
   props.addToken(tokenExists)
@@ -180,18 +188,9 @@ function SignUp(props) {
   
     return(
       <ImageBackground source={require('../assets/origami.png')} style={styles.container}>
-        <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-          <View>
-            <View style={{ flexDirection:"row", marginBottom:50}}>
-              <Image
-                  style={{width: 100, height: 100}}
-                  source={require('../assets/logoOrigapp.png')}
-                />
-              <Text style={{ marginTop:25,marginLeft:5, fontSize:32, fontWeight:"500"}} >OrigApp</Text>
-            </View>
+        
               {formSignUp}
-            </View>
-        </KeyboardAvoidingView>
+            
       </ImageBackground>
     )
 
