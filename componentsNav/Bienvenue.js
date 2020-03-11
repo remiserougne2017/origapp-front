@@ -1,9 +1,16 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image } from 'react-native';
-//import {TextField, FilledTextField, OutlinedTextField} from 'react-native-material-textfield'; // Module pour gérer les inputs
-//import {Button, Input, Text} from 'react-native-elements';
+import {connect} from 'react-redux';
 
-export default function newPassword(props) {
+function Bienvenue(props) {
+
+  useEffect(() => {
+    AsyncStorage.getItem("token", function(error, data) {
+      console.log(data, 'bienvenue')
+      props.addToken(data)
+      props.navigation.navigate('Home')
+    })
+}, [])
   
     return(
        <ImageBackground source={require('../assets/origami.png')} style={styles.container}>
@@ -11,13 +18,13 @@ export default function newPassword(props) {
 
                 <View style={{ flexDirection:"row", marginBottom:50}}>
                     <Image
-                        style={{width: 100, height: 100}}
+                        style={{width: 80, height: 80}}
                         source={require('../assets/logoOrigapp.png')}
                         />
                     <Text style={{ marginTop:25,marginLeft:5, fontSize:32, fontWeight:"500"}} >OrigApp</Text>
                 </View>
                     
-                <Text>Bienvenue !</Text>
+                <Text style={{fontSize:28}}>Bienvenue!</Text>
             
             </View> 
         </ImageBackground>
@@ -33,3 +40,19 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
   });
+
+  function mapDispatchToProps(dispatch){
+    return {
+      addToken: function(token){
+        dispatch({type: 'addToken', token: token})
+      },
+      addPrenom: function(prenom){
+        dispatch({type: 'addPrenom', prenom: prenom})
+      }
+    }
+  }
+  
+  export default connect(
+    null,
+    mapDispatchToProps
+  )(Bienvenue)

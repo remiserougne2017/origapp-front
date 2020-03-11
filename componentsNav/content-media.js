@@ -33,7 +33,7 @@ const [arrayIdContent,setArrayIdContent] = useState(props.contentMediaData.listA
                   }
             );
             var resContentDataJson = await resContentData.json();
-            setDataContent(resContentDataJson.returnedContent)  
+            setDataContent(resContentDataJson.returnedContent);
       } 
         openContent();
       },[position])
@@ -72,7 +72,6 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                     <Text style = {{marginLeft:15,fontStyle:'italic'}}>Vidéo : {med.title}</Text>
                 </View>
             }
-
         break; 
         case 'audio':    
         displayBlocMedia = 
