@@ -2,10 +2,9 @@ import React, {useRef, useState, Component} from 'react';
 import {Text, View, ImageBackground,Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import { withNavigationFocus } from 'react-navigation';
-import { Button, Icon  } from 'react-native-elements';
+import { Button, Icon, Overlay  } from 'react-native-elements';
 import color from './color';
 import Icone from 'react-native-vector-icons/MaterialCommunityIcons';
-import Modal from "react-native-modal";
 import Ip from './Ip'; // A enlever en production !;
 import Loader from './loader';
 
@@ -16,7 +15,7 @@ const [hasPermission, setHasPermission] = useState(null);
 const [type, setType] = useState(Camera.Constants.Type.back);
 const [flash, setFlash]=useState(Camera.Constants.FlashMode.off);
 const [loader,setLoader]=useState(false);
-const [isModalVisible, setIsModalVisible] = useState(false)
+const [isVisible, setIsVisible] = useState(false)
 
 
     //Permission demandée au click sur le bouton
@@ -55,12 +54,28 @@ const sendPicture = async (path)=>{
      if(responseAPI != null){
         setLoader(false)
         props.navigation.navigate('BookContent',{idBook: responseAPI})
-     } else {
+     } else if (responseAPI == null){
         setLoader(false)
-        alert('Livre inexistant')
+        setIsVisible(true)
+        console.log('12')
+        console.log(isVisible)
+        console.log('34')
+        //alert('Livre inexistant')
      }
-    
 }
+
+/* const OverlayNoBook = (bool) => {
+    <Overlay height={170} isVisible={bool} containerStyle={{justifyContent:"center", alignItems:"center"}}>
+        <View style={{flex:3,justifyContent:"flex-start",
+         alignItems:"center",marginTop:50}}>
+            <Text>Aucune correspondance n'a été trouvée</Text>
+        </View>
+        <View style={{flex:1,flexDirection:"row", justifyContent:"space-around"}}>
+        <Button title="Reprendre une photo" onPress={()=>{setIsVisible(false)}}></Button>
+        </View> 
+    </Overlay>
+
+} */
 
 if(props.isFocused && hasPermission) {
     //console.log('CAMERA!')
@@ -119,7 +134,15 @@ if(props.isFocused && hasPermission) {
                  
                 />        
             </View>
-                  
+            {(isVisible) && <Overlay height={200} width={350} containerStyle={{justifyContent:"center", alignItems:"center"}}>
+                                <View style={{flex:3,justifyContent:"flex-start",
+                                alignItems:"center",marginTop:50}}>
+                                    <Text style={{fontSize:18}}>Aucune correspondance n'a été trouvée</Text>
+                                </View>
+                                <View style={{flex:1,flexDirection:"row", justifyContent:"space-around"}}>
+                                <Button title="Reprendre une photo" onPress={()=>{setIsVisible(false)}}></Button>
+                                </View> 
+                            </Overlay>}  
         </View>
     </View>
 );

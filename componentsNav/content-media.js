@@ -22,10 +22,10 @@ function contentMedia(props) {
 const [dataContent,setDataContent] = useState({content: {title:"",media:[{type:''}],title:""}})
 const [position,setPosition]=useState(props.contentMediaData.position);
 const [arrayIdContent,setArrayIdContent] = useState(props.contentMediaData.listAllIdContent);
+
 // LOAD MEDIA CONTENT FROM DB
     useEffect( ()=> {
         async function openContent() {
-            // console.log('OK Swipe is on, lets fetch ',props.contentMediaData.idContent,props.contentMediaData.idContent)
             var resContentData = await fetch(`${Ip()}:3000/books/open-content`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -38,20 +38,16 @@ const [arrayIdContent,setArrayIdContent] = useState(props.contentMediaData.listA
         openContent();
       },[position])
 
-      console.log(position)
-
 //CREATION DES BLOCS JSX MEDIA  
 var displayMedia = dataContent.content.media.map((med, k) => {
-    // console.log("med",med.type);
     var displayBlocMedia;    
     switch (med.type) {
         case 'video': 
         var regExUrl = new RegExp("https?.*?\.mp4");
         if(regExUrl.test(med.source)==true) {
         displayBlocMedia = 
-            <View style = {{flex:1,height:280}}>
-                {/* MODULE expo AV */}
-                 <Video
+            <View style={{marginTop:10,marginBottom:10}}>               
+                 <Video //module video AV
                     source={{uri: med.source}}
                     // source={require('../assets/testSample.mp4')}
                     useNativeControls = {true}
@@ -59,17 +55,15 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                     volume={1.0}
                     isMuted={false}
                     resizeMode="cover"
-                    shouldPlay
                     isLooping
                     style={{ width: '100%', height: 300 }}
                     />
                 <Text style = {{marginLeft:15,fontStyle:'italic'}}>Vidéo : {med.title}</Text>
-
             </View> 
             } else {
                 displayBlocMedia =
-                <View style = {{flex:1,height:300}}>
-                        <WebView
+                <View style = {{height:280,marginTop:10 ,marginBottom:10}}>
+                        <WebView //module webview
                         style={ {margin: 20} }
                         source={{ uri: med.source }}
                         javaScriptEnabled={true}
@@ -81,63 +75,54 @@ var displayMedia = dataContent.content.media.map((med, k) => {
         break; 
         case 'audio':    
         displayBlocMedia = 
-        <View>
-        <Audio duration={med.duration} title={med.title} source={med.source}/>
-        </View>
+            <View style={{flexDirection:"row",alignItems:"flex-start"}}>
+                <Audio duration={med.duration} title={med.title} source={med.source}/>
+            </View>        
         break;
         case 'image': 
-        // console.log(med.source);
         if(med.source.search('http') == -1) {
             med.source = `https://www.${med.source}`
         }
-        // console.log("after modify",med.source)
         displayBlocMedia = 
-            <View>
+            <View style={{marginTop:10 ,marginBottom:10}}>
                 <Image 
-                    style={{width: "100%", height: 300, marginTop:20}}
+                    style={{width: "100%", height: 400, marginTop:20}}
                     source= {{ uri: med.source }}
                 />
                 <Text style = {{marginLeft:15 ,fontStyle:'italic'}}>Image : {med.title}</Text>
-
             </View>
-        break;
-    
+        break;  
         case 'text':
         displayBlocMedia = 
-            <View style ={{marginTop:50}}>
-                <Text style={{fontSize:20,marginTop:20,marginLeft:25,marginRight:25,marginBottom:10,textAlign:'center',textAlign:'justify'}}>{med.title}</Text>
+            <View style ={{marginTop:10 ,marginBottom:10}}>
+                <Text style={{fontSize:20,marginTop:20,marginLeft:25,marginRight:25,
+                marginBottom:10,textAlign:'center',textAlign:'justify'}}>
+                    {med.title}
+                </Text>
                 <Text style={{marginLeft:25,marginRight:25,textAlign:'justify'}}>{med.texte}</Text>
             </View>
         break;
-    
         case 'quote':
         displayBlocMedia = 
-            <View style ={{marginTop:50}}>
-                <View style = {{flexDirection:'row',marginLeft:50,marginRight:50, justifyContent:'center'}}>
+            <View>
+                <View style = {{flexDirection:'row',marginLeft:50,marginRight:50,
+                 justifyContent:'center',marginTop:20}}>
                     <Icon name= 'quote' type='entypo'  size= {30} margin={5} color= '#F9603E'/>
                     <Text style={{fontSize:22,textAlign:'justify', color:'#F9603E'}}>{med.texte}</Text>
                 </View>
-                <Text style={{fontSize:12,marginTop:20,marginLeft:70,marginRight:25,marginBottom:10,textAlign:'center',textAlign:'justify'}}>{med.title}</Text>
+                <Text style={{fontSize:12,marginTop:20,marginLeft:70,marginRight:25,
+                    marginBottom:10,textAlign:'center',textAlign:'justify'}}>{med.title}</Text>
             </View>
         break;
         default:
         displayBlocMedia = <Text>Hello default</Text>
-
-
     }
-    return displayBlocMedia
+    return (
+        <View style = {{marginBottom:15}}>
+            {displayBlocMedia}
+        </View>
+    )
     })
-
-    var displayListMedia = 
-    <View 
-        style ={{height:'100%'}}>
-        <ScrollView
-            onScroll = {()=> setBorderWidth(2)}
-            automaticallyAdjustContentInsets={true}
-            >
-            <View style = {{height:'auto'}}>{displayMedia}</View>
-        </ScrollView>
-    </View>
 
 // Shorten title: 
 if(dataContent.title !== undefined) {
@@ -150,18 +135,14 @@ if(dataContent.title !== undefined) {
     }
 }
 
-
 // DISPLAY border TITLE ON SCROLL:
 const [borderWidth,setBorderWidth] = useState(0);
-
-
 
 // Swipe
 function onSwipeLeft() {
     if(position<props.contentMediaData.listAllIdContent.length-1){
         setPosition(position+1);
     }
-
 }
 
 function onSwipeRight() {
@@ -170,7 +151,6 @@ function onSwipeRight() {
     } else if (position == 0){
         props.navigation.navigate('BookContent')
         }
-
 }
 
 var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
@@ -189,14 +169,20 @@ var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
 
     return (
         <GestureRecognizer
+        style={{
+            flex: 1,
+          }}
             onSwipeLeft={onSwipeLeft}
             onSwipeRight={onSwipeRight}
             >
-            <View style = {{width:'100%'}}>
-                <View style = {{flexDirection:"row",justifyContent:'center',alignItems:'center',marginTop:40}}>
+                <View style = {{
+                    flexDirection:"row",
+                    justifyContent:'center',
+                    alignItems:'center',
+                    marginTop:40}}>
                      {bulletBreadCrumb}
                 </View>
-                <View style ={{marginTop:10, display:"flex", flexDirection:'row', alignItems:'center', height:15}}>
+               <View style ={{marginTop:10, display:"flex", flexDirection:'row', alignItems:'center', height:15}}>
                     <View style = {{flexDirection:'row', backgroundColor:'#fda329',position:'absolute',left:0,padding:5,borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15}}>
                         <Icon 
                                 name= 'back' type='antdesign'  size= {20} margin={5} marginLeft={20} color={'white'}
@@ -213,14 +199,15 @@ var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
                 <View style = {{width:'100%'}}>
                         <Text style={{
                                 padding:5,color:"black",marginBottom:10,fontSize:25,marginTop:20,marginLeft:10,marginRight:10,textAlign:'center',
-                                borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth,borderRadius:10, }}>{dataContent.content.title}</Text>
+                                borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth,borderRadius:10, }}>
+                            {dataContent.content.title}
+                        </Text>
                 </View>
-                <View>
-                    <ScrollView>                        
-                        {displayMedia}                 
-                    </ScrollView>
-                </View>                        
-            </View>
+                <View style = {{flex:1}}>
+                    <ScrollView>
+                        {displayMedia}             
+                    </ScrollView>    
+                </View>                                        
         </GestureRecognizer>
 
     );
