@@ -16,6 +16,22 @@ const [username, setUsername]= useState('')
 const [isVisible,setIsVisible] =useState(false)
 const [pwd1,setPwd1]=useState("")
 const [pwd2,setPwd2]=useState("")
+const [oContactVisible, setOContactVisible]=useState(false)
+
+
+//////////////////// CLICONTACT
+
+var clickContact = () => {setOContactVisible(!oContactVisible);
+  console.log("func clickContact")
+   }
+
+
+
+
+
+
+///////////////////////////////////
+
 console.log(pwd1)
 var clickLogOut = () => {
   console.log("func clickLogOUt")
@@ -92,7 +108,30 @@ console.log('Overlay updtae',bool)
   )
 }
 
+const OverlayContact = (bool)=>{
+  console.log('Overlay contact bool',bool)
+  return(
+    // <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
+      <Overlay height={170} isVisible={bool} containerStyle={{justifyContent:"center", alignItems:"center"}}>
+        <View style={{flex:1,justifyContent:"flex-start",
+         alignItems:"center",marginTop:50}}>
+           <Text style={{marginBottom : 15}}>
+             Contact : remiserougne@gmail.com
+           </Text>                                              
+           <Button
+            onPress={() => { clickContact() ; 
+                            console.log("bouton ok c'est noté, overlay set à not visble")}
+          }
+            
+            title="  C'est noté!"
+            type="outline"
+            titleStyle={{color: "black"}}
+            style={{marginRight: 0, marginLeft: "auto" }}
+           />
+         </View>
+      </Overlay>
 
+  )}
 // RETURN GLOBAL DE LA PAGE
 
     return (
@@ -129,7 +168,8 @@ console.log('Overlay updtae',bool)
             iconRight
             />
         </View>
-       {OverlayUpdatePwd(isVisible)}
+       {OverlayUpdatePwd(isVisible)}                              
+       {OverlayContact(oContactVisible)}
       <View style={{flex:2,flexDirection: 'row',justifyContent: "flex-start", alignItems:"center"}}>
       {/* <View style={{flexDirection: 'column', justifyContent: "flex-start", alignItems:"center"}}> */}
         <Icon 
@@ -180,18 +220,20 @@ console.log('Overlay updtae',bool)
             style={{marginRight: 0, marginLeft: "auto"}}
             
           /> 
+          
           <Button
           containerStyle={{marginRight:"auto"}}
             icon={   
                 <Icon 
                 iconStyle={{iconRight: "true"}}
                 name= "send" type='feather'  color= "black" size= {20}
-                onPress={() => console.log("contact")}
+                
                 />
           } 
             title="  Nous contacter"
             type="transparent"
-            titleStyle={{color: "black"}}            
+            titleStyle={{color: "black"}}   
+            onPress={() => { clickContact() ; console.log("contact")}}
           />
         </View>   
       </View>
