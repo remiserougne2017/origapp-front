@@ -24,8 +24,6 @@ function BookContent(props) {
         {title:"titre du commentaire",userName:'Remi',text:'Blablabla BlablablaBlablabla Blablabla Blabl Blablabla Blablabla',avatar:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',rating:3},
         {title:"titre du commentaire2",userName:'Juliette',text:'Blablabla BlablablaBlablabla Blablabla Blabl Blablabla',avatar:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',rating:3},
         {title:"titre du commentaire3",userName:'Cilène',text:'Blablabla',avatar:'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',rating:3}
-    
-    
     ]
 
 
@@ -35,6 +33,7 @@ function BookContent(props) {
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
+            console.log("BOOK DATA1",idBook)
             // recupere les infos d'un livre 
             var bookData = await fetch(`${Ip()}:3000/books/open-book`, { 
                     method: 'POST',
@@ -43,8 +42,11 @@ function BookContent(props) {
                   }
             );
             var bookDataJson = await bookData.json();
+            console.log("BOOK DATA2",idBook)
             setArrayDataBook(bookDataJson.dataBook);
-            // props.storeCommentInformation({idBook:idBook,commentsData:commentsData})
+            // props.storeCommentIn
+            
+            formation({idBook:idBook,commentsData:commentsData})
       }
         openBook();
       },[])
@@ -201,7 +203,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                 </View>
               
                 <View style = {{marginRight:20,backgroundColor:"white",width:"100%"}}>
-                    <Text style={{fontSize:25,marginTop:20,marginBottom:10,paddingTop:30,paddingBottom:10}}>Les contenus à découvrir...</Text>
+                    <Text style={{fontSize:25,marginTop:20,marginBottom:10,paddingTop:30,paddingBottom:10,paddingLeft:10}}>Les contenus à découvrir...</Text>
                 </View>
                 <ScrollView>
                     <View>

@@ -36,7 +36,7 @@ const AudioPlay = (props) =>{
       });
    
     return(
-        <View style={{flex:1,flexDirection:"row",justifyContent:"flex-start", alignItems:"center",width:"100%"}}>
+        // <View style={{flex:1,flexDirection:"row",justifyContent:"flex-start", alignItems:"center",width:"100%"}}>
             <View style={{flexDirection:"row",justifyContent:"center", alignItems:"center",flexWrap:"wrap"}}>
                 <TouchableOpacity onPress={()=>{playAudio(true);console.log('Lecture!')}}>
                     <Image source={require("../assets/icons/play-round-button.png")}
@@ -50,7 +50,7 @@ const AudioPlay = (props) =>{
                 <Text style={{marginRight:10}}>{props.title}</Text>
                 <Text>{props.duration}</Text>
             </View>
-        </View>
+        // </View>
         
     )
 
