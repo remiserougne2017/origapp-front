@@ -20,13 +20,23 @@ const RatingPage = (props) => {
       }
      
     const sendComments = async ()=>{
-      console.log("envoyer comment")
+<<<<<<< HEAD
+      console.log("envoyer comment 2",userComment,props.token,props.idBook,userRating)
     var comment =  await fetch(`http://${Ip()}:3000/books/comments`, {
+=======
+      console.log("envoyer comment")
+    var comment =  await fetch(`${Ip()}:3000/books/comments`, {
+>>>>>>> 9a26e53e229089fdc337ee603a7135c5a7e1d557
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: `comment=${userComment}&token=${props.token}&idBook=${props.idBook}&rating=${userRating}`
           })
-          
+<<<<<<< HEAD
+          setIsvisible(false);
+
+=======
+          setIsvisible(false)
+>>>>>>> 9a26e53e229089fdc337ee603a7135c5a7e1d557
         };
 
       const onClickCancel =()=>{
@@ -39,7 +49,6 @@ const RatingPage = (props) => {
 
  return (
          <Overlay isVisible={props.isVisible} fullScreen={true}>   
-      
           <View style={{flex:1, justifyContent:"center", alignItems:"center", width:"100%"}}>
           <Text style={{fontSize:20,marginTop:30, marginBottom:10, marginRight:40,marginLeft:40}}>Glissez votre note!</Text>
             <View style={{width:"90%",justifyContent:"center", backgroundColor:"white",borderRadius:10 }}>

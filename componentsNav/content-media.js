@@ -1,7 +1,13 @@
 import React, {useState,useEffect,useRef} from 'react';
-import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity} from 'react-native';
+<<<<<<< HEAD
+import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity,ScrollView} from 'react-native';
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
+// import {  } from 'react-native-gesture-handler';
+=======
+import {SafeAreaView , FlatList,ScrollView,StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity} from 'react-native';
+import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
+// import { ScrollView } from 'react-native-gesture-handler';
+>>>>>>> 9a26e53e229089fdc337ee603a7135c5a7e1d557
 import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
 // import Video from 'react-native-video';
@@ -111,7 +117,6 @@ var displayMedia = dataContent.content.media.map((med, k) => {
             <View style ={{marginTop:50}}>
                 <Text style={{fontSize:20,marginTop:20,marginLeft:25,marginRight:25,marginBottom:10,textAlign:'center',textAlign:'justify'}}>{med.title}</Text>
                 <Text style={{marginLeft:25,marginRight:25,textAlign:'justify'}}>{med.texte}</Text>
-
             </View>
         break;
     
@@ -130,17 +135,25 @@ var displayMedia = dataContent.content.media.map((med, k) => {
 
 
     }
-    return (
-        displayBlocMedia
-    )
-
+    return displayBlocMedia
     })
+
+    var displayListMedia = 
+    <View 
+        style ={{height:'100%'}}>
+        <ScrollView
+            onScroll = {()=> setBorderWidth(2)}
+            automaticallyAdjustContentInsets={true}
+            >
+            <View style = {{height:'auto'}}>{displayMedia}</View>
+        </ScrollView>
+    </View>
 
 // Shorten title: 
 if(dataContent.title !== undefined) {
     var titleShort
     if(dataContent.title.length>79) {
-        titleShort = `< ${dataContent.title.substring(0,80)}...`;
+        titleShort = `${dataContent.title.substring(0,80)}...`;
     } else 
     {
         titleShort = dataContent.title
@@ -212,14 +225,17 @@ var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
                                 padding:5,color:"black",marginBottom:10,fontSize:25,marginTop:20,marginLeft:10,marginRight:10,textAlign:'center',
                                 borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth,borderRadius:10, }}>{dataContent.content.title}</Text>
                 </View>
-                <ScrollView
-                    onScroll = {()=> setBorderWidth(2)}
-                    // contentContainerStyle ={{height:3000}}
-                    automaticallyAdjustContentInsets={true}
-                    >
-                    {displayMedia}
-                </ScrollView>
+<<<<<<< HEAD
 
+                {displayListMedia}
+
+=======
+                <View>
+                    <ScrollView>                        
+                        {displayMedia}                 
+                    </ScrollView>
+                </View>                        
+>>>>>>> 9a26e53e229089fdc337ee603a7135c5a7e1d557
             </View>
         </GestureRecognizer>
 
