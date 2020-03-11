@@ -16,6 +16,7 @@ import newPassword from "./componentsNav/newPassword";
 import contentMediaPage from "./componentsNav/content-media";
 import Rating from './componentsNav/overlay-rating';
 import FlashMessage from "react-native-flash-message";
+import Bienvenue from './componentsNav/Bienvenue';
 
 // comment Vincent : lignes pour REDUX
   // import MapLoc from './components/map';
@@ -107,6 +108,7 @@ var BottomNavigator = createBottomTabNavigator(
     newPassword: newPassword,
     // Home: Home,
     Bottom: BottomNavigator,
+    Bienvenue: Bienvenue
   }, {
     headerMode: 'none',
     
