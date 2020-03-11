@@ -105,7 +105,7 @@ function Library(props) {
        </View>
         <View style={{ flexDirection:"row",justifyContent:"center", alignItems:'center', marginTop:10}}>
           
-        <Text style={{fontSize:32, color:color("red")}}>Ma Bibliothèque</Text>
+        <Text style={{fontSize:32, color:color("red")}}>Bibliothèque</Text>
         
         </View>
 

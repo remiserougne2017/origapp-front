@@ -15,7 +15,7 @@ import Ip from './Ip';
 
 function Home(props) {
   
-console.log("STORE-Librairy",props.storeLibrairy)
+//console.log("STORE-Librairy",props.storeLibrairy)
 
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
