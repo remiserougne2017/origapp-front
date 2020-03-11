@@ -23,7 +23,7 @@ function Library(props) {
     const maBibliotheque = async() =>{
       var responseFetch = await fetch(`${Ip()}:3000/home/myLibrary/${props.token}`)
       var responseLivres = await responseFetch.json();
-      console.log("REponse librairy",responseLivres)
+      // console.log("REponse librairy",responseLivres)
        setMesLivres(responseLivres)
     };  
     maBibliotheque();  
@@ -33,7 +33,7 @@ function Library(props) {
   useEffect(()=>{
     const lastReads = async() =>{
 
-      //console.log("librairy")
+      console.log("librairy")
       var responseFetch = await fetch(`${Ip()}:3000/lists/lastRead/${props.token}`)
       var responseLastReads = await responseFetch.json();
       setLastRead(responseLastReads)
@@ -46,8 +46,11 @@ function Library(props) {
   //// Initialisation Suggestions
   useEffect(()=>{
     const suggest = async() =>{
+      console.log('INIT SUGGESTION')
+      console.log('props',props.token)
       var suggestFetch = await fetch(`${Ip()}:3000/home/suggest/${props.token}`)
       var Suggestions = await suggestFetch.json();
+      console.log("/////////////// SUGGEST",Suggestions);
       setSuggestBooks(Suggestions.mySuggest)      
     };
 
