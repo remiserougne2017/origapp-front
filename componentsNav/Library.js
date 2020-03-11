@@ -95,7 +95,7 @@ function Library(props) {
   })
 /////////////////////////////////////////////////////////
   return (
-     <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
+     <View style={{ flex: 1, width:"100%", backgroundColor:'white'}}>
        <View style={{ flexDirection:"row", marginTop:25}}>
        <Image
           style={{width: 40, height: 40, margin:5}}
@@ -136,7 +136,7 @@ function Library(props) {
                         marginTop:10,
                         marginLeft:10,
                         paddingBottom:5, 
-                        backgroundColor:'#EEEEEE'}}>
+                        backgroundColor:'white'}}>
           <Text style={{color:"#F9603E"}}>Mes livres</Text>
           </View>   
           
@@ -161,7 +161,7 @@ function Library(props) {
                         marginTop:10,
                         marginLeft:8,
                         //paddingBottom:5, 
-                        backgroundColor:'#EEEEEE'}}>
+                        backgroundColor:'white'}}>
           <Text style={{color:"#F9603E"}}>Vous devriez aimer</Text>
           </View>
 

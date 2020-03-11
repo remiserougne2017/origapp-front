@@ -1,9 +1,5 @@
 import React, {useState,useEffect} from 'react';
-<<<<<<< HEAD
-import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity,ScrollView} from 'react-native';
-=======
 import { StyleSheet, Text, View,ScrollView,Image,TouchableOpacity} from 'react-native';
->>>>>>> 9a26e53e229089fdc337ee603a7135c5a7e1d557
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 // import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
@@ -220,7 +216,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                     <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les avis et commentaires</Text>
                     <View>
                         <Text onPress={() =>{setOverlayRatingVisible(true);}}
-                            style={{fontStyle:"italic"}}
+                            style={{fontStyle:"italic",paddingBottom:10}}
                             >Donnez votre avis...
                         </Text>
                         <Comment 

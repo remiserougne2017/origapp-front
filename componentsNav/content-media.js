@@ -1,13 +1,7 @@
 import React, {useState,useEffect,useRef} from 'react';
-<<<<<<< HEAD
-import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity,ScrollView} from 'react-native';
-import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
-// import {  } from 'react-native-gesture-handler';
-=======
 import {SafeAreaView , FlatList,ScrollView,StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity} from 'react-native';
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 // import { ScrollView } from 'react-native-gesture-handler';
->>>>>>> 9a26e53e229089fdc337ee603a7135c5a7e1d557
 import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
 // import Video from 'react-native-video';
@@ -31,7 +25,6 @@ const [arrayIdContent,setArrayIdContent] = useState(props.contentMediaData.listA
 // LOAD MEDIA CONTENT FROM DB
     useEffect( ()=> {
         async function openContent() {
-
             // console.log('OK Swipe is on, lets fetch ',props.contentMediaData.idContent,props.contentMediaData.idContent)
             var resContentData = await fetch(`${Ip()}:3000/books/open-content`, { 
                     method: 'POST',
@@ -40,8 +33,7 @@ const [arrayIdContent,setArrayIdContent] = useState(props.contentMediaData.listA
                   }
             );
             var resContentDataJson = await resContentData.json();
-            setDataContent(resContentDataJson.returnedContent)  
-            // console.log("/////////////////////////////////////// DATA CONTENT",dataContent)     
+            setDataContent(resContentDataJson.returnedContent);
       } 
         openContent();
       },[position])
@@ -86,9 +78,7 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                     <Text style = {{marginLeft:15,fontStyle:'italic'}}>Vidéo : {med.title}</Text>
                 </View>
             }
-
         break; 
-
         case 'audio':    
         displayBlocMedia = 
         <View>
@@ -225,17 +215,11 @@ var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
                                 padding:5,color:"black",marginBottom:10,fontSize:25,marginTop:20,marginLeft:10,marginRight:10,textAlign:'center',
                                 borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth,borderRadius:10, }}>{dataContent.content.title}</Text>
                 </View>
-<<<<<<< HEAD
-
-                {displayListMedia}
-
-=======
                 <View>
                     <ScrollView>                        
                         {displayMedia}                 
                     </ScrollView>
                 </View>                        
->>>>>>> 9a26e53e229089fdc337ee603a7135c5a7e1d557
             </View>
         </GestureRecognizer>
 
