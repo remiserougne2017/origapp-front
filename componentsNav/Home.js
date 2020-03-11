@@ -8,32 +8,37 @@ import {connect} from 'react-redux';
 import { showMessage, hideMessage } from "react-native-flash-message";
 import FlashMessage from "react-native-flash-message";
 import Carrousel from './Carrousel';
-import { withNavigation } from 'react-navigation';
+import { withNavigationFocus } from 'react-navigation';
 import color from './color';
 import Loader from './loader';
 import Ip from './Ip';
 
 function Home(props) {
-  //test d'apport de couleur en variable
-  console.log('COULEUr', color("red") )
   
+console.log("STORE-Librairy",props.storeLibrairy)
 
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
   const [tagsList,setTagsList]=useState([])
-  const [selectedTags,setSelectedTags]=useState([])
   const [errorMessage,setErrorMessage]=useState('')
   const [loader,setLoader]=useState(false)
   const [bestRated, setBestRated]=useState([])
   
   //pour charger le store Redux avec la biblio du user
-  const librairyToStore= ()=>{
-   var newCataList = cataList.map(e=>{
-     if(e.inLibrairy){
-       props.manageLibrairy(e.id,true)
-     }
-   })
-  }
+  useEffect(()=>{
+    const librairyToStore= ()=>{
+    var NewCatalist = cataList.map(e=>{
+       if(e.inLibrairy==true){
+        console.log("NewCatalist IF",e.inLibrairy)
+         props.manageLibrairy(e.id,true)
+       }else{
+         null
+       }
+     })
+    };
+    librairyToStore();
+  },[cataList,props.storeLibrairy])
+ 
   
    // Initialisation du composant
    useEffect(()=>{
@@ -41,18 +46,18 @@ function Home(props) {
      setLoader(true)
      setTimeout(() => {
       setLoader(false)
-    }, 4000);
+    }, 3000);
     const catalogue = async() =>{
       // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
       console.log("WELCOME HOME")
       var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
       var bookList = await responseFetch.json();
+      console.log('CATALISTE',bookList)
       setCataList(bookList.livreMin)
       
       // Chargement livres mieux notés
       var responseBestRated = await fetch(`${Ip()}:3000/lists/bestRated`)
       var bestRatedList = await responseBestRated.json();  
-      console.log(bestRatedList+'blu')
       setBestRated(bestRatedList)
 
       //recup tags
@@ -66,15 +71,24 @@ function Home(props) {
       //ferme le loader
       setLoader(false)
     };
+    catalogue();   
+    console.log('HEY CATLOGUE')
+  },[props.storeLibrairy])//ou alors ? props.isFocused,props.storeLibrairy
 
+  useEffect(()=>{
+    const catalogue = async() =>{
+      // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
+      console.log("WELCOME HOME")
+      var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
+      var bookList = await responseFetch.json();
+      setCataList(bookList.livreMin)
+    };
     catalogue();
-    librairyToStore();
-    
-  },[])
+  },[props.isFocused])
 
    useEffect(()=>{
      const rechercheText = async()=>{
-       console.log("recherche en cours",textSearch)
+       //console.log("recherche en cours",textSearch)
        var responseFetch = await fetch(`${Ip()}:3000/home/searchtext/${props.token}`,{
         method: 'POST',
        headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},
@@ -82,7 +96,7 @@ function Home(props) {
       })
       //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
        var resultatsearch = await responseFetch.json();
-      console.log("ok pr le search",resultatsearch)
+      //console.log("ok pr le search",resultatsearch)
       setCataList(resultatsearch.resultMin)
       
     };
@@ -92,8 +106,9 @@ function Home(props) {
 
   //RS creation du tableau de books pour afficher le catalogue
   var Book = cataList.map((e,i)=>{
+    // console.log("cataListe MAP",e.inLibrairy)
    return(
-    <Books id={e.id} key={i}  inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
+    <Books id={e.id} key={i} inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
    )
   })
 
@@ -110,7 +125,7 @@ const fetchTag = async (tags)=>{
     headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},    
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token=${props.token}`});
     var resultatSearch = await responseFetch.json();
-    console.log("TAGRESULT",await resultatSearch)
+    //console.log("TAGRESULT",await resultatSearch)
     if(resultatSearch.result == 'ok'){
       setErrorMessage('')
       setCataList(resultatSearch.resultMin)
@@ -142,7 +157,7 @@ const fetchTag = async (tags)=>{
 for (let i=0;i<tagsList.length;i++){
  Tags.push(
 <Badge key={i} 
-  onPress={()=>{console.log("onPress Tags");onPressTag(tagsList[i]._id)}}
+  onPress={()=>{onPressTag(tagsList[i]._id)}}
   value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12}}>{tagsList[i].name}</Text>}
   badgeStyle={{backgroundColor: tagsList[i].color, margin:3}}
 />
@@ -159,7 +174,7 @@ for (let i=0;i<tagsList.length;i++){
   // })
   return (
     
-     <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
+     <View style={{ flex: 1, width:"100%", backgroundColor:'white'}}>
      <Loader bool={loader} text="Chargement du catalogue..."/> 
        <View style={{ flexDirection:"row", marginTop:25}}>
        <Image
@@ -170,14 +185,14 @@ for (let i=0;i<tagsList.length;i++){
        </View>
         <View style={{ flexDirection:"row",justifyContent:"center", alignItems:'center', marginTop:10}}>
           <SearchBar 
-          containerStyle={{width:'80%', borderRadius:20}}
+          containerStyle={{width:'80%', backgroundColor:"transparent"}}
          // inputContainerStyle={{backgroundColor:"none"}}
           lightTheme
           placeholder="Recherche..."
           onChangeText={(value)=> setTextSearch(value)}
           value={textSearch}
         />
-        <TouchableOpacity onPress={()=>{console.log("SCAN");props.navigation.navigate('Scan')}}>
+        <TouchableOpacity onPress={()=>{props.navigation.navigate('Scan')}}>
           <Image
            
             style={{width: 40, height: 40, marginLeft:10}}
@@ -217,7 +232,7 @@ for (let i=0;i<tagsList.length;i++){
                         marginTop:10,
                         marginLeft:10,
                         paddingBottom:5, 
-                        backgroundColor:'#EEEEEE'}}>
+                        backgroundColor:'white'}}>
           <Text style={{color:"#F9603E"}}>Catalogue</Text>
           </View>   
           
@@ -254,4 +269,4 @@ function mapStateToProps(state) {
            token: state.reducerToken
    }
 }
-export default withNavigation(connect(mapStateToProps,mapDispatchToProps)(Home))
+export default withNavigationFocus(connect(mapStateToProps,mapDispatchToProps)(Home))

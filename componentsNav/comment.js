@@ -7,7 +7,10 @@ import color from './color';
 import Ip from './Ip'; // A enlever en production !
 
 function Comments(props) { 
+<<<<<<< HEAD
     console.log('props', props.data)
+=======
+>>>>>>> 9a26e53e229089fdc337ee603a7135c5a7e1d557
     var displayComment = props.data.map((obj, k) => {
 
         return (

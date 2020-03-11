@@ -21,11 +21,10 @@ function Library(props) {
    // Initialisation du composant
    useEffect(()=>{
     const maBibliotheque = async() =>{
-      
-      //console.log("librairy")
       var responseFetch = await fetch(`${Ip()}:3000/home/myLibrary/${props.token}`)
       var responseLivres = await responseFetch.json();
-      setMesLivres(responseLivres)
+      console.log("REponse librairy",responseLivres)
+       setMesLivres(responseLivres)
     };  
     maBibliotheque();  
   },[props.storeLibrairy])
@@ -33,7 +32,7 @@ function Library(props) {
   // Initialisation Last Reads
   useEffect(()=>{
     const lastReads = async() =>{
-      
+
       //console.log("librairy")
       var responseFetch = await fetch(`${Ip()}:3000/lists/lastRead/${props.token}`)
       var responseLastReads = await responseFetch.json();
@@ -47,18 +46,13 @@ function Library(props) {
   //// Initialisation Suggestions
   useEffect(()=>{
     const suggest = async() =>{
-      console.log("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$")
       var suggestFetch = await fetch(`${Ip()}:3000/home/suggest/${props.token}`)
       var Suggestions = await suggestFetch.json();
-      setSuggestBooks(Suggestions.mySuggest)
-      console.log("mySuggest", Suggestions.mySuggest)
-      
+      setSuggestBooks(Suggestions.mySuggest)      
     };
 
     suggest();
   },[])
-
-console.log("suggestBook", suggestBooks)
 
   //Création du tableau pour afficher la bibliothèque
   var Book = mesLivres.map((e,i)=>{
@@ -86,7 +80,7 @@ console.log("suggestBook", suggestBooks)
       rating:e.rating
     })
   })
-///////////////////////////////////////////////////////////////////              ///   mySuggest ou suggestBooks
+///////////////////////////////////////////////////////////////////  mySuggest ou suggestBooks
   var Suggest = suggestBooks.map((e,i)=>{
   
     return({
@@ -100,8 +94,6 @@ console.log("suggestBook", suggestBooks)
     })
   })
 /////////////////////////////////////////////////////////
-
-console.log("Suggest,,,,,,,,,,,,,,,,,,,,,,", Suggest)
   return (
      <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
        <View style={{ flexDirection:"row", marginTop:25}}>
@@ -156,8 +148,7 @@ console.log("Suggest,,,,,,,,,,,,,,,,,,,,,,", Suggest)
                 flexWrap: 'wrap',
                 margin:"auto"  
               }}>
-                {errorMessage!=""?<Text>{errorMessage}</Text>:null}
-                {Book}            
+                {mesLivres.length==0?(<Text>Aucun livre dans votre bibliothèque</Text>):Book}      
             </View>
 
             <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
@@ -187,6 +178,16 @@ console.log("Suggest,,,,,,,,,,,,,,,,,,,,,,", Suggest)
     </View>    
   );
 }
+
+function mapDispatchToProps(dispatch){
+  return {
+    manageLibrairy: function(id,bool){
+      dispatch({type: 'manageLibrairy',
+      id: id,
+      bool:bool})
+    } 
+  }
+};
 
 function mapStateToProps(state) {
   return { storeLibrairy: state.storeLibrairy,
