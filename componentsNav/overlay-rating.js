@@ -18,6 +18,7 @@ const RatingPage = (props) => {
         console.log("Rating is: " + rating)
         setUserRating(rating)
       }
+     
     const sendComments = async ()=>{
       console.log("envoyer comment")
     var comment =  await fetch(`${Ip()}:3000/books/comments`, {
@@ -25,9 +26,10 @@ const RatingPage = (props) => {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: `comment=${userComment}&token=${props.token}&idBook=${props.idBook}&rating=${userRating}`
           })
-          // setIsvisible(false)
+          // setIsvisible(false);
           props.parentRatingFunction(false)
         };
+
       const onClickCancel =()=>{
         console.log("PRESS annuler");
         setIsvisible(false);
@@ -37,7 +39,7 @@ const RatingPage = (props) => {
       }
 
  return (
-         <Overlay isVisible={props.isVisible} >   
+         <Overlay isVisible={props.isVisible} fullScreen={true}>   
           <View style={{flex:1, justifyContent:"center", alignItems:"center", width:"100%"}}>
           <Text style={{fontSize:20,marginTop:30, marginBottom:10, marginRight:40,marginLeft:40}}>Glissez votre note!</Text>
             <View style={{width:"90%",justifyContent:"center", backgroundColor:"white",borderRadius:10 }}>
