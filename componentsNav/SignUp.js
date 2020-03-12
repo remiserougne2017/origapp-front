@@ -46,8 +46,9 @@ function SignUp(props) {
       
       <View style={{marginBottom:20}}>
         <TextInput
-        style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-        placeholder=' Prénom'
+        style = {{borderWidth : 1.0, borderColor: 'white',
+        borderRadius: 5, backgroundColor: 'white',paddingHorizontal:5}}
+        placeholder='Prénom'
         onChangeText={(val) => setSignUpFirstName(val)}
         value={signUpFirstName}
         />
@@ -56,9 +57,10 @@ function SignUp(props) {
 
       <View style={{marginBottom:20}}>
         <TextInput
-        style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-        placeholder=' Email'
-        onChangeText={(val) => setSignUpEmail(val)}
+        style = {{borderWidth : 1.0, borderColor: 'white',paddingHorizontal:5,
+         borderRadius: 5, backgroundColor: 'white'}}
+        placeholder='Email'
+        onChangeText={(val) => setSignUpEmail(val.toLowerCase())}
         value={signUpEmail}
         />
         { errorUserExistant ? <Text style={{fontSize:12,color:'red'}}>{errorUserExistant}</Text> : null }
@@ -68,8 +70,9 @@ function SignUp(props) {
 
       <View style={{marginBottom:20}}>
         <TextInput
-        style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-        placeholder=' Mot de passe'
+        style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5,
+         backgroundColor: 'white',paddingHorizontal:5}}
+        placeholder='Mot de passe'
         secureTextEntry={true}
         onChangeText={(val) => setSignUpPassword(val)}
         value={signUpPassword}
@@ -80,16 +83,18 @@ function SignUp(props) {
 
       <View >
         <TextInput
-        style = {{borderWidth : 1.0, borderColor: 'white',  borderRadius: 5, backgroundColor: 'white'}}
+        style = {{borderWidth : 1.0, borderColor: 'white',
+          borderRadius: 5, backgroundColor: 'white',paddingHorizontal:5}}
         secureTextEntry={true}
-        placeholder=' Confirmation de mot de passe '
+        placeholder='Confirmation de mot de passe '
         onChangeText={(val) => setSignUpPasswordMatch(val)}
         value={signUpPasswordMatch}
         />
         { errorMatch ? <Text style={{fontSize:12,color:'red'}}>{errorMatch}</Text> : null }
     
         <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
-        <Text style={{fontSize: 11, marginBottom: 18, textAlign: "right", fontStyle: "italic"}}>J'ai déjà un compte</Text>
+        <Text style={{fontSize: 11, marginBottom: 18, textAlign: "right", 
+        fontStyle: "italic"}}>J'ai déjà un compte</Text>
       </TouchableOpacity>
       </View>
 

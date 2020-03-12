@@ -19,10 +19,6 @@ function BookContent(props) {
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
     const [overlayRatingVisible, setOverlayRatingVisible]=useState(false);
     const [commentData, setCommentData]=useState([]);
-
-
-
-
     
 // LOAD BOOK FROM DB
     useEffect( ()=> {
@@ -40,7 +36,7 @@ function BookContent(props) {
             setCommentData(bookDataJson.userCom);
       }
         openBook();
-      },[])
+      },[overlayRatingVisible])
 
   
 
@@ -149,6 +145,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
     //Création d'une fonction parent pour gerer le booleen isVisible & overlayRating Visible 
     const parentRatingFunction = (bool)=>{
         setOverlayRatingVisible(bool)
+
     }
 // RETURN GLOBAL DE LA PAGE
     return (
