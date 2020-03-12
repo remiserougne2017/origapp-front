@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity,ScrollView} from 'react-native';
-import { Button,Input,Icon,Card,Divider,Badge, CheckBox} from 'react-native-elements';
+import { Button,Input,Icon,Card,Divider,Badge, CheckBox, Tile} from 'react-native-elements';
 // import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
@@ -179,14 +179,48 @@ console.log(idBook, '777')
     <ScrollView stickyHeaderIndices={[1,3]} style ={{backgroundColor:"white"}}>     
                 <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',paddingBottom:20,backgroundColor:"#d6d6d6"}}>
                     <View style = {{alignItems: 'center', justifyContent: 'center',marginTop:60}}>
-                        <Image 
+                    <Image 
+                            style={{width: 150, height: 150,borderRadius: 150,
+                            marginTop:-15, borderStartWidth:1, borderEndWidth:1,borderRightWidth:1,
+                            paddingBottom:0, marginBottom: 0,
+                            borderLeftWidth:1, borderColor:"black"}}
+                            source= {{ uri: arrayDataBook.coverImage }}
+                        />  
+
+                    <CheckBox
+                            title={arrayDataBook.title}
+                            iconRight
+                            center
+                            onPress={() =>{addLibrairy(idBook,!isChecked)}}
+                            checked={isChecked}
+                            checkedColor="#F9603E"
+                            containerStyle={{backgroundColor:'#d6d6d6', borderWidth:0}}
+                            />
+
+                            <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
+                            <Text style ={{fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
+                            <Text style={{marginBottom: 10}}>{arrayDataBook.description}</Text>       
+                        
+                   
+                            {/* <Card containerStyle={{marginTop:0}}>
+                            
+                           
+                            <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
+                            <Text style ={{fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
+                            <Text style={{marginBottom: 10}}>
+                            {arrayDataBook.description}
+                            </Text>
+                            </Card> */}
+                    
+
+                       {/* <Image 
                             style={{width: 150, height: 150,borderRadius: 150,
                             marginTop:-15, borderStartWidth:1, borderEndWidth:1,borderRightWidth:1,
                             borderLeftWidth:1, borderColor:"black"}}
                             source= {{ uri: arrayDataBook.coverImage }}
                         />
                         <View style={{flex:1, flexDirection: "row"}}>
-                        <Text style={{fontSize:15/* ,textAlign:"center",paddingBottom:5, borderRadius:10 */}}>
+                        <Text style={{fontSize:15/* ,textAlign:"center",paddingBottom:5, borderRadius:10 }}>
                             {arrayDataBook.title}
                         </Text>
                         <CheckBox 
@@ -204,8 +238,8 @@ console.log(idBook, '777')
                         
                         <View>            
                             <Text style={{textAlign:'center',marginTop:10,fontSize:14}}>{arrayDataBook.description}</Text>         
-                        </View>
-                    </View>
+                            </View>*/}
+                    </View> 
                 </View>
               
                 <View style = {{marginRight:20,backgroundColor:"white",width:"100%"}}>
