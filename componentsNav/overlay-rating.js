@@ -67,7 +67,7 @@ const RatingPage = (props) => {
               <Button 
                 buttonStyle={{backgroundColor:"transparent"}}
                 titleStyle={{color:"black",textDecorationLine:'underline', fontWeight:"300"}}
-                containerStyle={{marginRight:10,marginBottom:40,color:"red"}}
+                containerStyle={{marginRight:10,marginBottom:40}}
                 onPress={()=>{onClickCancel()}}
                 title="Annuler" />
               <Button 

@@ -21,8 +21,11 @@ function BookContent(props) {
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
     const [overlayRatingVisible, setOverlayRatingVisible]=useState(false);
     const [commentData, setCommentData]=useState([]);
+<<<<<<< HEAD
+=======
     const [isChecked, setIsChecked] = useState(false)
  
+>>>>>>> 808b6da552f7f97ddd6153b6a0569af130099976
     
 // LOAD BOOK FROM DB
     useEffect( ()=> {
@@ -48,6 +51,9 @@ function BookContent(props) {
         }
 
         openBook();
+<<<<<<< HEAD
+      },[overlayRatingVisible])
+=======
       },[props.storeLibrairy])
 
     //Function appel route addLibrairy
@@ -66,6 +72,7 @@ function BookContent(props) {
           });
       }
     }
+>>>>>>> 808b6da552f7f97ddd6153b6a0569af130099976
 
 
 // CARD CONTENT CREATION  
@@ -171,6 +178,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
     //Création d'une fonction parent pour gerer le booleen isVisible & overlayRating Visible 
     const parentRatingFunction = (bool)=>{
         setOverlayRatingVisible(bool)
+
     }
 // RETURN GLOBAL DE LA PAGE
     return (

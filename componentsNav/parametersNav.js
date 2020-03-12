@@ -1,16 +1,10 @@
 import React, {useState,useEffect} from 'react';
 import { StyleSheet, Text, View,TextInput, Image, ImageBackground,AsyncStorage,TouchableOpacity} from 'react-native';
 import { Button,Input, Avatar, Icon, Header,Overlay} from 'react-native-elements';
-
-/*  import Icon from 'react-native-vector-icons'; */
 import {connect} from 'react-redux';
-/* import { Ionicons } from '@expo/vector-icons'; */
 import color from './color';
 import Ip from './Ip'; // A enlever en production;
 import {showMessage, hideMessage } from "react-native-flash-message";
-
-// import { TouchableOpacity } from 'react-native-gesture-handler';
-
 
 function  Parameters(props) { 
   /// recup identité user du store
