@@ -24,15 +24,16 @@ function contentMedia(props) {
 //VARIABLES
 const [dataContent,setDataContent] = useState({content: {title:"",media:[{type:''}],title:""}})
 const [position,setPosition]=useState(props.contentMediaData.position);
-const [arrayIdContent,setArrayIdContent] = useState(props.contentMediaData.listAllIdContent);
-
+let arrayContent = props.contentMediaData.dataContentFromBook;
+console.log('/////////////// PROPS',props.contentMediaData.dataContentFromBook);
+let badgeColor = props.contentMediaData.dataContentFromBook[position].color
 // LOAD MEDIA CONTENT FROM DB
     useEffect( ()=> {
         async function openContent() {
             var resContentData = await fetch(`${Ip()}:3000/books/open-content`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                    body: `idBook=${props.contentMediaData.idBook}&idContent=${arrayIdContent[position]}`
+                    body: `idBook=${props.contentMediaData.idBook}&idContent=${arrayContent[position].idContent}`
                   }
             );
             var resContentDataJson = await resContentData.json();
@@ -143,7 +144,7 @@ const [borderWidth,setBorderWidth] = useState(0);
 
 // Swipe
 function onSwipeLeft() {
-    if(position<props.contentMediaData.listAllIdContent.length-1){
+    if(position<props.contentMediaData.dataContentFromBook.length-1){
         setPosition(position+1);
     }
 }
@@ -156,13 +157,13 @@ function onSwipeRight() {
         }
 }
 
-var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
+var bulletBreadCrumb = props.contentMediaData.dataContentFromBook.map((obj, j) => {
     var bulletSize = 5
     if(j==position) {
             bulletSize = 10
     }
     return (
-        <View style = {{height:bulletSize,width:bulletSize,backgroundColor:'#fda329',borderRadius:100,margin:15}}></View>
+        <View style = {{height:bulletSize,width:bulletSize,backgroundColor:badgeColor,borderRadius:100,margin:15}}></View>
         )
 
     })
@@ -186,7 +187,7 @@ var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
                      {bulletBreadCrumb}
                 </View>
                <View style ={{marginTop:10, display:"flex", flexDirection:'row', alignItems:'center', height:15}}>
-                    <View style = {{flexDirection:'row', backgroundColor:'#fda329',position:'absolute',left:0,padding:5,borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15}}>
+                    <View style = {{flexDirection:'row', backgroundColor:badgeColor,position:'absolute',left:0,padding:5,borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15}}>
                         <Icon 
                                 name= 'back' type='antdesign'  size= {20} margin={5} marginLeft={20} color={'white'}
                                 onPress={() => props.navigation.navigate('BookContent')}
@@ -195,7 +196,7 @@ var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
                             {titleShort}
                         </Text>
                     </View>
-                    <Text style = {{backgroundColor:'#fda329',position:'absolute',right:0,padding:5,borderTopLeftRadius:10,borderBottomLeftRadius:10,color:'white'}}>
+                    <Text style = {{backgroundColor:badgeColor,position:'absolute',right:0,padding:5,borderTopLeftRadius:10,borderBottomLeftRadius:10,color:'white'}}>
                         page {dataContent.pageNum}
                     </Text>
                 </View>

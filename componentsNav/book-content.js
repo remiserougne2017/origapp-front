@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity,ScrollView} from 'react-native';
-import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
+import { Button,Input,Icon,Card,Divider,Badge, CheckBox, Tile} from 'react-native-elements';
 // import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
@@ -19,6 +19,8 @@ function BookContent(props) {
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
     const [overlayRatingVisible, setOverlayRatingVisible]=useState(false);
     const [commentData, setCommentData]=useState([]);
+    const [isChecked, setIsChecked] = useState(false)
+ 
     
 // LOAD BOOK FROM DB
     useEffect( ()=> {
@@ -36,18 +38,30 @@ function BookContent(props) {
             setCommentData(bookDataJson.userCom);
       }
         openBook();
-      },[overlayRatingVisible])
+      },[overlayRatingVisible,props.storeLibrairy])
+
+    //Function appel route addLibrairy
+    const addLibrairy = async (id,bool) => {
+      var responseFetch = await fetch(`${Ip()}:3000/home/addLibrairy/${id}/${bool}/${props.token}`)
+      var resp = await responseFetch.json();
+      //console.log("retour route librairy",resp)
+      if(resp){
+        setIsChecked(bool)
+        props.manageLibrairy(id,bool)
+        showMessage({
+            message: resp.mess,
+            type: resp.type,
+            icon:"auto",
+            backgroundColor:"#8FB2C9"
+          });
+      }
+    }
+
 
   
 // CARD CONTENT CREATION  
-let arrayColor = ['#a5af2a','#fda329','#24c6ae'];
-let listIdContentForSwipe = []
+let dataContentToMediaPage = []
 let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.pageNum - objB.pageNum;}).map((obj,i) => {
-        listIdContentForSwipe.push(obj.idContent);
-        let urlImageContent;
-        if((obj.imageContent == null)||(obj.imageContent == undefined)) {
-                urlImageContent = arrayDataBook.coverImage
-        } else { urlImageContent = obj.imageContent}
         var badgeColor;
         if(i%3==0) {
             badgeColor = '#a5af2a'
@@ -56,12 +70,22 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
         } else if(i%2==0){
             badgeColor = '#24c6ae'
         }
+        dataContentToMediaPage.push({
+            idContent:obj.idContent,
+            color:badgeColor,
+        });
+        let urlImageContent;
+        if((obj.imageContent == null)||(obj.imageContent == undefined)) {
+                urlImageContent = arrayDataBook.coverImage
+        } else { urlImageContent = obj.imageContent}
+
 
 ////   COMMENTAIRES SUR L'OUVRAGE
 
         return (
     <TouchableOpacity
-        onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,idContent:obj.idContent,listAllIdContent:listIdContentForSwipe,position:i});props.navigation.navigate('contentMediaPage');}}
+        onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,dataContentFromBook:dataContentToMediaPage,position:i});props.navigation.navigate('contentMediaPage');}}
+        key = {i}
         >
         <View
             style={{width:'100%',marginBottom:10,paddingBottom:10,borderBottomWidth:1,borderBottomColor:'#EAEAEA',     
@@ -143,6 +167,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
 
     //Création d'une fonction parent pour gerer le booleen isVisible & overlayRating Visible 
     const parentRatingFunction = (bool)=>{
+        console.log("BOOOOOOL",bool)
         setOverlayRatingVisible(bool)
 
     }
@@ -151,23 +176,28 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
     <ScrollView stickyHeaderIndices={[1,3]} style ={{backgroundColor:"white"}}>     
                 <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',paddingBottom:20,backgroundColor:"#d6d6d6"}}>
                     <View style = {{alignItems: 'center', justifyContent: 'center',marginTop:60}}>
-                        <Image 
-                            style={{width: 150, height: 150,borderRadius: 150,
-                            marginTop:-15, borderStartWidth:1, borderEndWidth:1,borderRightWidth:1,
-                            borderLeftWidth:1, borderColor:"black"}}
-                            source= {{ uri: arrayDataBook.coverImage }}
+                    <Image 
+                        style={{width: 150, height: 150,borderRadius: 150,
+                        marginTop:-15, borderStartWidth:1, borderEndWidth:1,borderRightWidth:1,
+                        paddingBottom:0, marginBottom: 0,
+                        borderLeftWidth:1, borderColor:"black"}}
+                        source= {{ uri: arrayDataBook.coverImage }}
+                    />  
+
+                    <CheckBox
+                        title={arrayDataBook.title}
+                        iconRight
+                        center
+                        onPress={() =>{addLibrairy(idBook,!isChecked)}}
+                        checked={isChecked}
+                        checkedColor="#F9603E"
+                        containerStyle={{backgroundColor:'#d6d6d6', borderWidth:0}}
                         />
-                          <Text style={{fontSize:15,textAlign:"center",paddingBottom:5, borderRadius:10}}>
-                            {arrayDataBook.title}
-                        </Text>
-                        <View style={{alignItems:"flex-start"}}>
-                            <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
-                            <Text style ={{fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
-                        </View> 
-                        <View>            
-                            <Text style={{textAlign:'center',marginTop:10,fontSize:14}}>{arrayDataBook.description}</Text>         
-                        </View>
-                    </View>
+
+                        <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
+                        <Text style ={{fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
+                        <Text style={{marginBottom: 10}}>{arrayDataBook.description}</Text> 
+                    </View> 
                 </View>
               
                 <View style = {{marginRight:20,backgroundColor:"white",width:"100%"}}>
