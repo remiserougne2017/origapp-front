@@ -8,7 +8,7 @@ import Carrousel from './Carrousel';
 import { withNavigation } from 'react-navigation';
 import color from './color';
 import Ip from './Ip'; // A enlever en production !
-
+import style from '../stylesheet/stylesheet'
 
 
 function Library(props) {
@@ -108,7 +108,7 @@ function Library(props) {
        </View>
         <View style={{ flexDirection:"row",justifyContent:"center", alignItems:'center', marginTop:10}}>
           
-        <Text style={{fontSize:32, color:color("red")}}>Ma Bibliothèque</Text>
+        <Text style={{...style.mainTitle}}>Ma Bibliothèque</Text>
         
         </View>
 
@@ -119,7 +119,7 @@ function Library(props) {
                         alignItems:'center', 
                         marginTop:10, 
                         marginLeft:10}}>
-            <Text style={{color:"#F9603E"}}>Mes dernières lectures</Text>
+            <Text style={style.secondaryTitle}>Mes dernières lectures</Text>
          </View>
 
          <View style={{ flexDirection:"row",
@@ -140,7 +140,7 @@ function Library(props) {
                         marginLeft:10,
                         paddingBottom:5, 
                         backgroundColor:'white'}}>
-          <Text style={{color:"#F9603E"}}>Mes livres</Text>
+          <Text style={style.secondaryTitle}>Mes livres</Text>
           </View>   
           
           <ScrollView contentContainerStyle={{padding: 5}}>
@@ -165,7 +165,7 @@ function Library(props) {
                         marginLeft:8,
                         //paddingBottom:5, 
                         backgroundColor:'white'}}>
-          <Text style={{color:"#F9603E"}}>Vous devriez aimer</Text>
+          <Text style={style.secondaryTitle}>Vous devriez aimer</Text>
           </View>
 
             <View style={{ flexDirection:"row",

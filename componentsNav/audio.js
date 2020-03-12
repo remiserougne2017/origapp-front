@@ -11,10 +11,10 @@ const AudioPlay = (props) =>{
         const soundObject = new Audio.Sound();
         console.log('props',props.source);
         try {
-            var uri= `${Ip()}:3000/${props.source}`
-            console.log("HEO ",uri)
-            await soundObject.loadAsync({ uri: `${Ip()}:3000/${props.source}`});
-            console.log("HEO AUDIO", props.title, props.duration,uri)
+            var uriSound= `${Ip()}:3000/${props.source}`
+            console.log("HEO ",uriSound)
+            await soundObject.loadAsync({ uri: uriSound});
+            console.log("HEO AUDIO", props.title, props.duration,uriSound)
             if(bool){
             await soundObject.playAsync();
             }else{
