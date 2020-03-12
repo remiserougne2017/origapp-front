@@ -21,7 +21,7 @@ function BookContent(props) {
     const [commentData, setCommentData]=useState([]);
     const [isChecked, setIsChecked] = useState(false)
  
-    
+    console.log(idBook,"ContentBook")
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
@@ -38,7 +38,7 @@ function BookContent(props) {
             setCommentData(bookDataJson.userCom);
       }
         openBook();
-      },[overlayRatingVisible,props.storeLibrairy])
+      },[overlayRatingVisible,props.storeLibrairy,props.isFocused])
 
     //Function appel route addLibrairy
     const addLibrairy = async (id,bool) => {

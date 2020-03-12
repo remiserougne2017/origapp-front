@@ -6,22 +6,6 @@ import color from './color';
 import Ip from './Ip'; // A enlever en production;
 import {showMessage, hideMessage } from "react-native-flash-message";
 
-// import { TouchableOpacity } from 'react-native-gesture-handler';
-
-/* import FirstTabScreen from './FirstTabScreen';
-import SecondTabScreen from './SecondTabScreen';
-import PushedScreen from './PushedScreen';
-
-// register all screens of the app (including internal ones)
-export function registerScreens() {
-  Navigation.registerComponent('example.FirstTabScreen', () =>
-    gestureHandlerRootHOC(FirstTabScreen));
-  Navigation.registerComponent('example.SecondTabScreen', () =>
-    gestureHandlerRootHOC(SecondTabScreen));
-  Navigation.registerComponent('example.PushedScreen', () =>
-    gestureHandlerRootHOC(PushedScreen));
-}
- */
 
 function  Parameters(props) { 
   /// recup identité user du store
@@ -39,7 +23,7 @@ var clickContact = () => {setOContactVisible(!oContactVisible);
   console.log("func clickContact")
    }
 
-
+console.log("WHO",props.prenom,props.token)
 //Function SendNEwName
 const sendNewName = async ()=>{
   setEditableText(false)
@@ -77,16 +61,6 @@ var clickLogOut = () => {
   AsyncStorage.removeItem("token")
   props.navigation.navigate('SignIn') }
 
-/*   useEffect(() => {
-  const findUser = async () => {
-    const dataUser = await fetch (`${Ip()}:3000/users/logout/${props.token}`);
-    let resJson = await dataUser.json()
-    setUsername(resJson.user)
-  }
-findUser()
-console.log("useEffect")
-},[])
- */
 //Fetch update PWD
 const updatePwd= async () =>{
   const dataUser = await fetch (`${Ip()}:3000/users/update/${props.token}`,

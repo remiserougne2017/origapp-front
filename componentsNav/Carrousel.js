@@ -10,7 +10,7 @@ function Carrousel(props) {
     const[activeIndex, setActiveIndex] = useState('')
     const [carrouselList,setCarrouselList]=useState([]);
 
-
+    console.log("PROPS DATA",props.data)
     var carrousel = useRef(null)
     
   var _renderItem = ({item, index}) => {
@@ -33,7 +33,6 @@ function Carrousel(props) {
         );
     } 
 
-   
         return (
             <View style={{ flex: 1, justifyContent:'center', alignItems:'center'}}>
                 <Carousel

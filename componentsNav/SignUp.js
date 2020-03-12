@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
+import {View, TextInput, Text, Button, ImageBackground, StyleSheet,
+   TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import {Input} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Loader from './loader';
 import { withNavigation } from 'react-navigation';
-import Bienvenue from './Bienvenue';
 import Ip from './Ip' // A enlever en production !
+
 
 function SignUp(props) {
   
@@ -119,7 +120,15 @@ function SignUp(props) {
                 />
               </View>
 } else if(loading) {
-  formSignUp = <Text>Bienvenue !</Text>
+  formSignUp = 
+  <View style={{flexDirection:"row"}}>
+     <Button
+      title='Bienvenue !'
+      color='#FF473A'
+      onPress={() =>{props.navigation.navigate('Home')}}
+      />
+  </View>
+ 
   props.addToken(tokenExists)
   props.navigation.navigate('Home')
   
