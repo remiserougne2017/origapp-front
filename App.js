@@ -56,7 +56,7 @@ var StackNavigatorLibrary = createStackNavigator(
 var StackNavigatorHome = createStackNavigator(
   {
     Home:Home,
-    Book:Book,
+    // Book:Book, //Demander à Vincent ce que c'est
     BookContent:BookContent,
     contentMediaPage:contentMediaPage,
     Scan : Scan,
@@ -108,7 +108,6 @@ var BottomNavigator = createBottomTabNavigator(
   }
 );
 
-
 // comment Vincent : stack navigator global
   var StackNavigator = createStackNavigator({
     SignUp: SignUp,
@@ -118,14 +117,10 @@ var BottomNavigator = createBottomTabNavigator(
     Bottom: BottomNavigator,
   }, {
     headerMode: 'none',
-    
   });
-
 
   // comment Vincent : return global de app
   var NavigationVariable = createAppContainer(StackNavigator)
-
-   
 
   function App() {
 
@@ -153,8 +148,6 @@ if(tokenExists){
 } */
 
 if(fontLoaded==true) {
-
-
     return (
     
       <Provider store={store}>

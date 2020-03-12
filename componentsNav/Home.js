@@ -36,7 +36,7 @@ function Home(props) {
      })
     };
     librairyToStore();
-  },[cataList,props.storeLibrairy])
+  },[props.isFocused])
  
   
    // Initialisation du composant
@@ -69,7 +69,7 @@ function Home(props) {
       setLoader(false)
     };
     catalogue();   
-  },[props.storeLibrairy])//ou alors ? props.isFocused,props.storeLibrairy
+  },[props.isFocused,props.storeLibrairy])//ou alors ? props.isFocused,props.storeLibrairy
 
   useEffect(()=>{
     const catalogue = async() =>{
@@ -153,11 +153,11 @@ for (let i=0;i<tagsList.length;i++){
 />
  ) 
 }
-
+console.log('HOME isFOcused',props.isFocused)
   return (
     
      <View style={{ flex: 1, width:"100%", backgroundColor:'white'}}>
-     <Loader bool={loader} text="Chargement du catalogue..."/> 
+     {props.isFocused&&loader?<Loader bool={loader} text="Chargement en cours..."/>:null}
        <View style={{ flexDirection:"row", marginTop:25}}>
        <Image
           style={{width: 40, height: 40, margin:5}}

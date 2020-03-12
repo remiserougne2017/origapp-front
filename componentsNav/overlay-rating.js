@@ -8,7 +8,7 @@ import { withNavigation } from 'react-navigation';
 import Ip from './Ip'
 
 const RatingPage = (props) => {
-  console.log("IsVisible overlay component?",props.isVisible)
+  // console.log("IsVisible overlay component?",props.isVisible)
     const ip="192.168.1.28"
     const[userComment,setUserComment]=useState('')
     const [isVisible,setIsvisible]=useState(props.isVisible)

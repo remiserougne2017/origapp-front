@@ -28,15 +28,14 @@ const AudioPlay = (props) =>{
             await soundObject.playAsync();
 
             var init = await soundObject.getStatusAsync()
-            console.log("ETAT INIT",init)
-            // setPosition(init.positionMillis)
+            // console.log("ETAT INIT",init)
             setDuration(init.durationMillis)
             var inProgress = init.isPlaying
             do {
               var state = await soundObject.getStatusAsync()
               inProgress=state.isPlaying              
               setPosition(state.positionMillis)
-              console.log(state.isPlaying)
+              // console.log(state.isPlaying)
             } while (inProgress==true);
             }else{
               console.log('AUDIO false ELSE')

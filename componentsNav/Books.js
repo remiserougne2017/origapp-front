@@ -10,14 +10,6 @@ import Ip from './Ip'; // A enlever en production !
 
 const Book = (props) => {
   
-
-//Function d'appel route lastRead
-
-const lastRead = () => {
-
-  console.log('last read')
-}
-
 //booleen pour la checkBox d'ajout à la bibli
 const [isCheck, setIsCheck] = useState(props.inLibrairy)
 
@@ -45,7 +37,7 @@ return (
         containerStyle={{width:"45%",padding:2,backgroundColor:"white", marginLeft:"1%", marginRight:"1%"}}
         >
           <TouchableOpacity
-            onPress={() =>{props.navigation.navigate('BookContent',{idBook:props.id}); lastRead();console.log("BOOK",props.id)}}
+            onPress={() =>{props.navigation.navigate('BookContent',{idBook:props.id});console.log("BOOK",props.id)}}
                               >
           <Image
               style={{width:"100%",height:250}}
@@ -54,8 +46,8 @@ return (
           />
           </TouchableOpacity>
           <CheckBox 
-              onPress={() =>{addLibrairy(props.id,!isCheck);
-                console.log("ONPRESS",props.inLibrairy)}}
+              onPress={() =>{addLibrairy(props.id,!props.inLibrairy);
+                console.log("ONPRESS",props.inLibrairy,props.title)}}
               checked={props.inLibrairy}
               checkedColor="#F9603E"
               containerStyle={{position: "absolute",
@@ -64,6 +56,7 @@ return (
               />
 
       <View style={{flexDirection:"column", alignItems:"flex-start", padding:10}}>
+          <Text>{props.title}</Text>
           <Text>{props.editors}{props.years}</Text>
           <Text>{props.authors} {props.illustrators}</Text>
           <Rating
