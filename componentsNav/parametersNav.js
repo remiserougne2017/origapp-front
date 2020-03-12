@@ -17,10 +17,11 @@ const [oContactVisible, setOContactVisible]=useState(false)
 const [editableText, setEditableText] = useState(false)
 const [newName, setNewName]=useState(props.prenom)
 
-//////////////////// CLICONTACT
 
-var clickContact = () => {setOContactVisible(!oContactVisible);
-  console.log("func clickContact")
+console.log("PRenom",username,props.prenom)
+//////////////////// CLICONTACT
+var clickContact = () => {
+  setOContactVisible(!oContactVisible);
    }
 
 console.log("WHO",props.prenom,props.token)
@@ -39,6 +40,8 @@ const sendNewName = async ()=>{
     props.addPrenom(newName)
     //MAJ du hook
     setUsername(newName)
+    //MAJ localStorage
+    AsyncStorage.setItem("prenom",newName)
   }else{
     console.log("else")
   }
@@ -51,14 +54,12 @@ const sendNewName = async ()=>{
   
 }
 
-///////////////////////////////////
-
-console.log(pwd1)
 var clickLogOut = () => {
+  AsyncStorage.removeItem("token")
+  AsyncStorage.removeItem("prenom")
   console.log("func clickLogOUt")
   props.deleteToken()
   props.deletePrenom()
-  AsyncStorage.removeItem("token")
   props.navigation.navigate('SignIn') }
 
 //Fetch update PWD
@@ -205,7 +206,7 @@ const OverlayContact = (bool)=>{
             editable={editableText}
             style={{fontSize:20, fontWeight:"700", marginLeft:0,paddingHorizontal:10}}
             onChangeText={(value)=>{setNewName(value)}}
-            value={newName}
+            value={username}
             >
             </TextInput>
             </TouchableOpacity>
@@ -257,7 +258,7 @@ const OverlayContact = (bool)=>{
           containerStyle={{marginRight:"auto"}}
             icon={   
                 <Icon 
-                iconStyle={{iconRight: "true"}}
+                iconRight
                 name= "send" type='feather'  color= "black" size= {20}
                 
                 />

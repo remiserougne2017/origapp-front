@@ -46,6 +46,7 @@ function SignIn(props) {
   
       //console.log('envoyé')
       const response = await data.json()
+      console.log("RESPONSE",response)
       if(Object.keys(response).length != 0){
         //Messages d'erreur depuis le Backend
         setErrorEmailInexistant(response.error.email)
@@ -56,6 +57,7 @@ function SignIn(props) {
   
       if(response.result == true){
         AsyncStorage.setItem("token", response.token)
+        AsyncStorage.setItem("prenom", response.prenom)
         props.addToken(response.token)
         props.addPrenom(response.prenom)
         setSignInPassword('')
@@ -87,7 +89,7 @@ function SignIn(props) {
               <Input
               //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
               placeholder=' Email'
-              onChangeText={(val) => setSignInEmail(val)}
+              onChangeText={(val) => setSignInEmail(val.toLowerCase())}
               value={signInEmail}
               />
               { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
