@@ -8,7 +8,23 @@ import color from './color';
 import Ip from './Ip'; // A enlever en production;
 import {showMessage, hideMessage } from "react-native-flash-message";
 import { Value } from 'react-native-reanimated';
+import { gestureHandlerRootHOC } from 'react-native-gesture-handler'
+import { Navigation } from 'react-native-navigation';
 
+/* import FirstTabScreen from './FirstTabScreen';
+import SecondTabScreen from './SecondTabScreen';
+import PushedScreen from './PushedScreen';
+
+// register all screens of the app (including internal ones)
+export function registerScreens() {
+  Navigation.registerComponent('example.FirstTabScreen', () =>
+    gestureHandlerRootHOC(FirstTabScreen));
+  Navigation.registerComponent('example.SecondTabScreen', () =>
+    gestureHandlerRootHOC(SecondTabScreen));
+  Navigation.registerComponent('example.PushedScreen', () =>
+    gestureHandlerRootHOC(PushedScreen));
+}
+ */
 
 function  Parameters(props) { 
   /// recup identité user du store
@@ -79,6 +95,7 @@ const updatePwd= async () =>{
    setIsVisible(false)
 }
 //Overlay update PWd
+
 const OverlayUpdatePwd = (bool)=>{
 console.log('Overlay updtae',bool)
   return(
@@ -107,6 +124,10 @@ console.log('Overlay updtae',bool)
     // </View>
   )
 }
+
+
+
+
 
 const OverlayContact = (bool)=>{
   console.log('Overlay contact bool',bool)
@@ -156,7 +177,7 @@ const OverlayContact = (bool)=>{
             // titleStyle={{paddingHorizontal:10}}
             title="  Se déconnecter"
             type="clear"
-            titleStyle={{paddingRight:10}}
+            titleStyle={{paddingRight:10, color: "black"}}
             style={{marginRight: 5, marginLeft: "auto"}}
             onPress={() => {clickLogOut()}}
             icon={   
@@ -179,11 +200,17 @@ const OverlayContact = (bool)=>{
              containerStyle={{marginLeft:10,marginRight:10}}
         />
         <View style={{flexDirection: 'column', justifyContent: "center", marginTop:20}}>
-          <Text style={{fontSize:20, fontWeight:"700", marginLeft:0}}>{username}</Text>
+            {editableName(isVisible)}
+            {nameRow(isVisible)}
+          
+          
+          
           <Text style={{marginLeft: 0, fontSize:10}}
           onPress={()=>{console.log("chgt mdp R");setIsVisible(true)}}
-          title="e">Changer mon mot de passe</Text>
+          title="e">Changer mon mot de passe
+          </Text>
         </View>
+        
       </View> 
     {/* <View style={{flex:1,width:"100%"}}> */}
       <View style={{flex:3,flexDirection: 'column',width:"100%",height:"100%",flexWrap:"wrap",
@@ -209,7 +236,7 @@ const OverlayContact = (bool)=>{
             icon={   
                 <Icon 
                 iconStyle={{ color: "black"}}
-                name="group" type='fontawesome'  color= "black" size= {20}
+                name="group" type='fontawesome'  color={{ color: "black"}} size= {20}
                 onPress={() => console.log("voir les credits")}
                 />
           } 
