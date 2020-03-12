@@ -174,68 +174,66 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
 // RETURN GLOBAL DE LA PAGE
     return (
     <ScrollView stickyHeaderIndices={[1,3]} style ={{backgroundColor:"white"}}>     
-                <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',paddingBottom:20,backgroundColor:"#d6d6d6"}}>
-                    <View style = {{alignItems: 'center', justifyContent: 'center',marginTop:60}}>
-                    <Image 
-                        style={{width: 150, height: 150,borderRadius: 150,
-                        marginTop:-15, borderStartWidth:1, borderEndWidth:1,borderRightWidth:1,
-                        paddingBottom:0, marginBottom: 0,
-                        borderLeftWidth:1, borderColor:"black"}}
-                        source= {{ uri: arrayDataBook.coverImage }}
-                    />  
+        <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',paddingBottom:20,backgroundColor:"#d6d6d6"}}>
+            <View style = {{alignItems: 'center', justifyContent: 'center',marginTop:60}}>
+            <CheckBox
+                iconRight
+                center
+                onPress={() =>{addLibrairy(idBook,!isChecked)}}
+                checked={isChecked}
+                checkedColor="#F9603E"
+                containerStyle={{backgroundColor:'#d6d6d6', borderWidth:0,position:"absolute",
+                right:90,top:-30}}
+                />
+            <Image 
+                style={{width: 150, height: 150,borderRadius: 150,position:"relative",
+                marginTop:-15, borderStartWidth:1, borderEndWidth:1,borderRightWidth:1,
+                paddingBottom:0, marginBottom: 0,
+                borderLeftWidth:1, borderColor:"black"}}
+                source= {{ uri: arrayDataBook.coverImage }}
+            />  
+                <Text>{arrayDataBook.title}</Text>
+                <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
+                <Text style ={{fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
+                <Text style={{marginBottom: 5,textAlign:'center',marginTop:10}}>{arrayDataBook.description}</Text> 
+            </View> 
+        </View>
+        <View style = {{marginRight:20,backgroundColor:"white",width:"100%"}}>
+            <Text style={{fontSize:25,marginTop:20,marginBottom:10,paddingTop:30,paddingBottom:10,paddingLeft:10}}>Les contenus à découvrir...</Text>
+        </View>
 
-                    <CheckBox
-                        title={arrayDataBook.title}
-                        iconRight
-                        center
-                        onPress={() =>{addLibrairy(idBook,!isChecked)}}
-                        checked={isChecked}
-                        checkedColor="#F9603E"
-                        containerStyle={{backgroundColor:'#d6d6d6', borderWidth:0}}
-                        />
+        <ScrollView>
+            <View>
+                {cardDisplay}
+            </View>
+        {/* APPEL LE COMPOSANT OVERLAY */}
+        {/* <OverlayContent/> */}
+        <OverlayRating isVisible={overlayRatingVisible} idBook={idBook} parentRatingFunction={parentRatingFunction}/>
+        <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
+            <Divider 
+            style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15,marginBottom:15}} 
+            />
+        </View>
+        </ScrollView>
+        <View style = {{marginRight:20,backgroundColor:"white",width:"100%",paddingLeft:10}}>
+            <Text style={{fontSize:25,marginTop:20,paddingTop:30,paddingBottom:10}}>Les avis et commentaires</Text>
+            <View style = {{marginBottom:10,backgroundColor:colorImport('red'),width:140,borderRadius:10, marginLeft:'auto',marginRight:10}}>
+                    <Text onPress={() =>{setOverlayRatingVisible(true)}} style={{fontStyle:"italic", padding:5,color:"white",textAlign:'center'}}>Partagez votre avis
+                    </Text>    
+            </View>
+        </View>
+        <ScrollView>
 
-                        <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
-                        <Text style ={{fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
-                        <Text style={{marginBottom: 10}}>{arrayDataBook.description}</Text> 
-                    </View> 
-                </View>
-              
-                <View style = {{marginRight:20,backgroundColor:"white",width:"100%"}}>
-                    <Text style={{fontSize:25,marginTop:20,marginBottom:10,paddingTop:30,paddingBottom:10,paddingLeft:10}}>Les contenus à découvrir...</Text>
-                </View>
+        <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
+            <View >
 
-                <ScrollView>
-                    <View>
-                        {cardDisplay}
-                    </View>
-                {/* APPEL LE COMPOSANT OVERLAY */}
-                {/* <OverlayContent/> */}
-                <OverlayRating isVisible={overlayRatingVisible} idBook={idBook} parentRatingFunction={parentRatingFunction}/>
-                <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
-                    <Divider 
-                    style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15,marginBottom:15}} 
-                    />
-                </View>
-                </ScrollView>
-                <View style = {{marginRight:20,backgroundColor:"white",width:"100%",paddingLeft:10}}>
-                    <Text style={{fontSize:25,marginTop:20,paddingTop:30,paddingBottom:10}}>Les avis et commentaires</Text>
-                    <View style = {{marginBottom:10,backgroundColor:colorImport('red'),width:140,borderRadius:10, marginLeft:'auto',marginRight:10}}>
-                            <Text onPress={() =>{setOverlayRatingVisible(true)}} style={{fontStyle:"italic", padding:5,color:"white",textAlign:'center'}}>Partagez votre avis
-                            </Text>    
-                    </View>
-                </View>
-                <ScrollView>
+                <Comment 
+                data = {commentData}
+                />
+            </View>
 
-                <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
-                    <View >
-
-                        <Comment 
-                        data = {commentData}
-                        />
-                    </View>
-  
-                </View>
-                </ScrollView>
+        </View>
+        </ScrollView>
 
     </ScrollView>
 
@@ -251,8 +249,12 @@ function mapDispatchToProps(dispatch) {
                 contentData : obj 
               } ) 
         },
-
-    }
+        manageLibrairy: function(id,bool){
+        dispatch({type: 'manageLibrairy',
+        id: id,
+        bool:bool})
+            } 
+        }
   }
 
 function mapStateToProps(state) {
