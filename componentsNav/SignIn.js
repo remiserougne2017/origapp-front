@@ -1,7 +1,9 @@
 import React, {useState} from 'react';
-import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
+import {View, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import {connect} from 'react-redux';
+import {Input} from 'react-native-elements';
 import Loader from './loader';
+import color from './color';
 import Ip from './Ip'; // a enlever en production !
 
 function SignIn(props) {
@@ -70,7 +72,7 @@ function SignIn(props) {
 
   
     return(
-      <ImageBackground source={require('../assets/origami.png')} style={styles.container}>
+      <ImageBackground source={require('../assets/origami_background.jpg')} style={styles.container}>
         <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
           <View>
             <View style={{ flexDirection:"row", marginBottom:50}}>
@@ -82,8 +84,8 @@ function SignIn(props) {
             </View>
 
             <View style={{marginBottom: 25}}>
-              <TextInput
-              style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
+              <Input
+              //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
               placeholder=' Email'
               onChangeText={(val) => setSignInEmail(val)}
               value={signInEmail}
@@ -93,7 +95,7 @@ function SignIn(props) {
             </View>
 
             <View style={{marginBottom: 5}}>
-              <TextInput
+              <Input
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
               placeholder=' Mot de passe'
               secureTextEntry={true}
@@ -112,7 +114,7 @@ function SignIn(props) {
 
             <Button
              title='Connexion'
-             color='#FF473A'
+             color={color('red')}
              onPress={() => {clickSignIn(signInEmail, signInPassword)}}
             />
 

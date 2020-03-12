@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
+import {Input} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Loader from './loader';
 import { withNavigation } from 'react-navigation';
@@ -35,8 +36,8 @@ function SignUp(props) {
   //<Loader bool={loader} text="Chargement"/>
  formSignUp = <View>
                 <View style={{marginBottom:20}}>
-                  <TextInput
-                  style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
+                  <Input
+                  //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
                   placeholder=' Prénom'
                   onChangeText={(val) => setSignUpFirstName(val)}
                   value={signUpFirstName}
@@ -45,8 +46,8 @@ function SignUp(props) {
                 </View>
 
                 <View style={{marginBottom:20}}>
-                  <TextInput
-                  style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
+                  <Input
+                  //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
                   placeholder=' Email'
                   onChangeText={(val) => setSignUpEmail(val)}
                   value={signUpEmail}
@@ -57,8 +58,8 @@ function SignUp(props) {
                 </View>
 
                 <View style={{marginBottom:20}}>
-                  <TextInput
-                  style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
+                  <Input
+                  //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
                   placeholder=' Mot de passe'
                   secureTextEntry={true}
                   onChangeText={(val) => setSignUpPassword(val)}
@@ -69,8 +70,8 @@ function SignUp(props) {
                 </View>
 
                 <View >
-                  <TextInput
-                  style = {{borderWidth : 1.0, borderColor: 'white',  borderRadius: 5, backgroundColor: 'white'}}
+                  <Input
+                  //style = {{borderWidth : 1.0, borderColor: 'white',  borderRadius: 5, backgroundColor: 'white'}}
                   secureTextEntry={true}
                   placeholder=' Confirmation de mot de passe '
                   onChangeText={(val) => setSignUpPasswordMatch(val)}
@@ -164,7 +165,7 @@ function SignUp(props) {
 
   
     return(
-      <ImageBackground source={require('../assets/origami.png')} style={styles.container}>
+      <ImageBackground source={require('../assets/origami_background.jpg')} style={styles.container}>
         <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
           <View>
             <View style={{ flexDirection:"row", marginBottom:50}}>
