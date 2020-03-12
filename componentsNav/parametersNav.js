@@ -6,22 +6,6 @@ import color from './color';
 import Ip from './Ip'; // A enlever en production;
 import {showMessage, hideMessage } from "react-native-flash-message";
 
-// import { TouchableOpacity } from 'react-native-gesture-handler';
-
-/* import FirstTabScreen from './FirstTabScreen';
-import SecondTabScreen from './SecondTabScreen';
-import PushedScreen from './PushedScreen';
-
-// register all screens of the app (including internal ones)
-export function registerScreens() {
-  Navigation.registerComponent('example.FirstTabScreen', () =>
-    gestureHandlerRootHOC(FirstTabScreen));
-  Navigation.registerComponent('example.SecondTabScreen', () =>
-    gestureHandlerRootHOC(SecondTabScreen));
-  Navigation.registerComponent('example.PushedScreen', () =>
-    gestureHandlerRootHOC(PushedScreen));
-}
- */
 
 function  Parameters(props) { 
   /// recup identité user du store
@@ -33,10 +17,11 @@ const [oContactVisible, setOContactVisible]=useState(false)
 const [editableText, setEditableText] = useState(false)
 const [newName, setNewName]=useState(props.prenom)
 
-//////////////////// CLICONTACT
 
-var clickContact = () => {setOContactVisible(!oContactVisible);
-  console.log("func clickContact")
+console.log("PRenom",username,props.prenom)
+//////////////////// CLICONTACT
+var clickContact = () => {
+  setOContactVisible(!oContactVisible);
    }
 
 
@@ -55,6 +40,8 @@ const sendNewName = async ()=>{
     props.addPrenom(newName)
     //MAJ du hook
     setUsername(newName)
+    //MAJ localStorage
+    AsyncStorage.setItem("prenom",newName)
   }else{
     console.log("else")
   }
@@ -67,26 +54,14 @@ const sendNewName = async ()=>{
   
 }
 
-///////////////////////////////////
-
-console.log(pwd1)
 var clickLogOut = () => {
+  AsyncStorage.removeItem("token")
+  AsyncStorage.removeItem("prenom")
   console.log("func clickLogOUt")
   props.deleteToken()
   props.deletePrenom()
-  AsyncStorage.removeItem("token")
   props.navigation.navigate('SignIn') }
 
-/*   useEffect(() => {
-  const findUser = async () => {
-    const dataUser = await fetch (`${Ip()}:3000/users/logout/${props.token}`);
-    let resJson = await dataUser.json()
-    setUsername(resJson.user)
-  }
-findUser()
-console.log("useEffect")
-},[])
- */
 //Fetch update PWD
 const updatePwd= async () =>{
   const dataUser = await fetch (`${Ip()}:3000/users/update/${props.token}`,
@@ -231,7 +206,7 @@ const OverlayContact = (bool)=>{
             editable={editableText}
             style={{fontSize:20, fontWeight:"700", marginLeft:0,paddingHorizontal:10}}
             onChangeText={(value)=>{setNewName(value)}}
-            value={newName}
+            value={username}
             >
             </TextInput>
             </TouchableOpacity>
@@ -283,7 +258,7 @@ const OverlayContact = (bool)=>{
           containerStyle={{marginRight:"auto"}}
             icon={   
                 <Icon 
-                iconStyle={{iconRight: "true"}}
+                iconRight
                 name= "send" type='feather'  color= "black" size= {20}
                 
                 />
