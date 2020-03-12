@@ -1,15 +1,15 @@
 import React, {useState,useEffect} from 'react';
-import { StyleSheet, Text, View,TextInput, Image, ImageBackground,AsyncStorage } from 'react-native';
+import { StyleSheet, Text, View,TextInput, Image, ImageBackground,AsyncStorage,TouchableOpacity} from 'react-native';
 import { Button,Input, Avatar, Icon, Header,Overlay} from 'react-native-elements';
+
 /*  import Icon from 'react-native-vector-icons'; */
 import {connect} from 'react-redux';
 /* import { Ionicons } from '@expo/vector-icons'; */
 import color from './color';
 import Ip from './Ip'; // A enlever en production;
 import {showMessage, hideMessage } from "react-native-flash-message";
-import { Value } from 'react-native-reanimated';
-import { gestureHandlerRootHOC } from 'react-native-gesture-handler'
-import { Navigation } from 'react-native-navigation';
+
+// import { TouchableOpacity } from 'react-native-gesture-handler';
 
 /* import FirstTabScreen from './FirstTabScreen';
 import SecondTabScreen from './SecondTabScreen';
@@ -33,7 +33,8 @@ const [isVisible,setIsVisible] =useState(false)
 const [pwd1,setPwd1]=useState("")
 const [pwd2,setPwd2]=useState("")
 const [oContactVisible, setOContactVisible]=useState(false)
-
+const [editableText, setEditableText] = useState(false)
+const [newName, setNewName]=useState(props.prenom)
 
 //////////////////// CLICONTACT
 
@@ -42,9 +43,32 @@ var clickContact = () => {setOContactVisible(!oContactVisible);
    }
 
 
-
-
-
+//Function SendNEwName
+const sendNewName = async ()=>{
+  setEditableText(false)
+  var response = await fetch(`${Ip()}:3000/users/updateUser/${props.token}`,{
+    method: 'POST',
+    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    body: `name=${newName}`
+  })
+  var resp = await response.json()
+  console.log("HEHE",resp)
+  if(resp.result=='ok'){
+    //reducer
+    props.addPrenom(newName)
+    //MAJ du hook
+    setUsername(newName)
+  }else{
+    console.log("else")
+  }
+  showMessage({
+    message: resp.mess,
+    type: resp.type,
+    icon:"auto",
+    backgroundColor:"#8FB2C9"
+  });
+  
+}
 
 ///////////////////////////////////
 
@@ -61,7 +85,6 @@ var clickLogOut = () => {
     const dataUser = await fetch (`${Ip()}:3000/users/logout/${props.token}`);
     let resJson = await dataUser.json()
     setUsername(resJson.user)
-  
   }
 findUser()
 console.log("useEffect")
@@ -117,8 +140,10 @@ console.log('Overlay updtae',bool)
           borderBottomWidth: 1,}}/>
           </View>
         <View style={{flex:1,flexDirection:"row", justifyContent:"space-around"}}>
-          <Button title="Annuler" onPress={()=>{setIsVisible(false)}}></Button>
-          <Button title="Envoyer" onPress={()=>{updatePwd()}}></Button>
+          <Button buttonStyle={{backgroundColor:color("blue")}}
+          title="Annuler" onPress={()=>{setIsVisible(false)}}></Button>
+          <Button buttonStyle={{backgroundColor:color("blue")}}
+           title="Envoyer" onPress={()=>{updatePwd()}}></Button>
         </View>       
       </Overlay>
     // </View>
@@ -141,7 +166,7 @@ const OverlayContact = (bool)=>{
            </Text>                                              
            <Button
             onPress={() => { clickContact() ; 
-                            console.log("bouton ok c'est noté, overlay set à not visble")}
+              console.log("bouton ok c'est noté, overlay set à not visble")}
           }
             
             title="  C'est noté!"
@@ -156,7 +181,10 @@ const OverlayContact = (bool)=>{
 // RETURN GLOBAL DE LA PAGE
 
     return (
-<View style={{flex:1}}>
+      <TouchableOpacity style={{flex:1}}
+      onPress={()=>{editableText?(setEditableText(false),setNewName(props.prenom)):null}}>
+  <View style={{flex:1}}>
+  
  <View style={{flex:2,width:"100%", backgrounColor: "white"}}>
       <Header
           statusBarProps={{ barStyle: 'light-content' }}
@@ -200,6 +228,7 @@ const OverlayContact = (bool)=>{
              containerStyle={{marginLeft:10,marginRight:10}}
         />
         <View style={{flexDirection: 'column', justifyContent: "center", marginTop:20}}>
+<<<<<<< HEAD
             {editableName(isVisible)}
             {nameRow(isVisible)}
           
@@ -209,6 +238,26 @@ const OverlayContact = (bool)=>{
           onPress={()=>{console.log("chgt mdp R");setIsVisible(true)}}
           title="e">Changer mon mot de passe
           </Text>
+=======
+          <View style={{flexDirection:"row"}}>
+            <TouchableOpacity  onPress={()=>{console.log("onPressEdit");setEditableText(true)}}>
+            <TextInput 
+            editable={editableText}
+            style={{fontSize:20, fontWeight:"700", marginLeft:0,paddingHorizontal:10}}
+            onChangeText={(value)=>{setNewName(value)}}
+            value={newName}
+            >
+            </TextInput>
+            </TouchableOpacity>
+            {editableText==true?<Icon name="rightcircleo" type="antdesign"
+            containerStyle={{marginLeft:30}}
+            onPress={()=>{console.log('icon press');sendNewName()}}
+            />:null}
+          </View>         
+          <Text style={{marginLeft: 0, fontSize:12,marginTop:10}}
+          onPress={()=>{setIsVisible(true)}}
+          >Changer mon mot de passe</Text>
+>>>>>>> f068c368f56747d6f8e306845a2b56d47361bd36
         </View>
         
       </View> 
@@ -216,34 +265,36 @@ const OverlayContact = (bool)=>{
       <View style={{flex:3,flexDirection: 'column',width:"100%",height:"100%",flexWrap:"wrap",
        justifyContent:"flex-end",alignItems:"flex-start", marginTop: 100}}>     
         {/* <View style={{flexDirection:'row', justifyContent:"flex-start"}}> */}
-          <Button
+          <Button  onPress={() => console.log("demande d'aide")}
             icon={   
-                  <Icon 
-                  iconStyle={{ color: "black"}}
-                  name="help-circle" type='feather'  color= "black" size= {20}
-                  onPress={() => console.log("demande d'aide")}
+                  <Icon name="help-circle" type='feather'
+                  color= "black" size= {20}
                   />
             } 
-              title="  Aide"
-              type="transparent"
-              titleStyle={{color: "black"}}
-              style={{marginRight: 0, marginLeft: "auto"}}
-              
+              title="Aide"
+              titleStyle={{color:"black",paddingLeft:5}}
+              style={{marginRight: 0,marginLeft: "auto"}}
+              buttonStyle={{backgroundColor:"transparent"}}
             />
        
         <View style={{flexDirection:'row',justifyContent:"space-between"}}>
           <Button
             icon={   
                 <Icon 
+<<<<<<< HEAD
                 iconStyle={{ color: "black"}}
                 name="group" type='fontawesome'  color={{ color: "black"}} size= {20}
+=======
+                name="group" type='fontawesome' 
+                color= "black" size= {20}
+>>>>>>> f068c368f56747d6f8e306845a2b56d47361bd36
                 onPress={() => console.log("voir les credits")}
                 />
           } 
             
-            title="  Credits"
+            title="Crédits"
             type="transparent"
-            titleStyle={{color: "black"}}
+            titleStyle={{paddingLeft:5,color: "black"}}
             style={{marginRight: 0, marginLeft: "auto"}}
             
           /> 
@@ -257,15 +308,18 @@ const OverlayContact = (bool)=>{
                 
                 />
           } 
-            title="  Nous contacter"
+            title="Nous contacter"
             type="transparent"
-            titleStyle={{color: "black"}}   
+            titleStyle={{color: "black",paddingLeft:5}}   
             onPress={() => { clickContact() ; console.log("contact")}}
           />
         </View>   
       </View>
     </View>
-  </View> /// fin balise englobante
+    
+  </View> 
+  {/* fin balise englobante */}
+  </TouchableOpacity>
     );
   }
 
@@ -277,26 +331,15 @@ const OverlayContact = (bool)=>{
 
   function mapDispatchToProps(dispatch){
     return {
-
-
           deleteToken: function(){
-
             dispatch({type: 'deleteToken'})
           },
-
           deletePrenom: function(){
-
             dispatch({type: 'deletePrenom'})
           },
-
-
-
-
-
+          addPrenom: function(prenom){
+            dispatch({type: 'addPrenom', prenom: prenom})
        }
-  }
+  }};
   
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Parameters)
+export default connect(mapStateToProps,mapDispatchToProps)(Parameters)
