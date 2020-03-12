@@ -6,9 +6,10 @@ import color from './color';
 import Ip from './Ip'; // A enlever en production;
 import {showMessage, hideMessage } from "react-native-flash-message";
 
+
 function  Parameters(props) { 
   /// recup identité user du store
-const [username, setUsername]= useState('')
+const [username, setUsername]= useState(props.prenom)
 const [isVisible,setIsVisible] =useState(false)
 const [pwd1,setPwd1]=useState("")
 const [pwd2,setPwd2]=useState("")
@@ -16,13 +17,14 @@ const [oContactVisible, setOContactVisible]=useState(false)
 const [editableText, setEditableText] = useState(false)
 const [newName, setNewName]=useState(props.prenom)
 
-//////////////////// CLICONTACT
 
-var clickContact = () => {setOContactVisible(!oContactVisible);
-  console.log("func clickContact")
+console.log("PRenom",username,props.prenom)
+//////////////////// CLICONTACT
+var clickContact = () => {
+  setOContactVisible(!oContactVisible);
    }
 
-
+console.log("WHO",props.prenom,props.token)
 //Function SendNEwName
 const sendNewName = async ()=>{
   setEditableText(false)
@@ -38,6 +40,8 @@ const sendNewName = async ()=>{
     props.addPrenom(newName)
     //MAJ du hook
     setUsername(newName)
+    //MAJ localStorage
+    AsyncStorage.setItem("prenom",newName)
   }else{
     console.log("else")
   }
@@ -50,25 +54,13 @@ const sendNewName = async ()=>{
   
 }
 
-///////////////////////////////////
-
-console.log(pwd1)
 var clickLogOut = () => {
+  AsyncStorage.removeItem("token")
+  AsyncStorage.removeItem("prenom")
   console.log("func clickLogOUt")
   props.deleteToken()
   props.deletePrenom()
-  AsyncStorage.removeItem("token")
   props.navigation.navigate('SignIn') }
-
-  useEffect(() => {
-  const findUser = async () => {
-    const dataUser = await fetch (`${Ip()}:3000/users/logout/${props.token}`);
-    let resJson = await dataUser.json()
-    setUsername(resJson.user)
-  }
-findUser()
-console.log("useEffect")
-},[])
 
 //Fetch update PWD
 const updatePwd= async () =>{
@@ -98,6 +90,7 @@ const updatePwd= async () =>{
    setIsVisible(false)
 }
 //Overlay update PWd
+
 const OverlayUpdatePwd = (bool)=>{
 console.log('Overlay updtae',bool)
   return(
@@ -128,6 +121,10 @@ console.log('Overlay updtae',bool)
     // </View>
   )
 }
+
+
+
+
 
 const OverlayContact = (bool)=>{
   console.log('Overlay contact bool',bool)
@@ -180,7 +177,7 @@ const OverlayContact = (bool)=>{
             // titleStyle={{paddingHorizontal:10}}
             title="  Se déconnecter"
             type="clear"
-            titleStyle={{paddingRight:10}}
+            titleStyle={{paddingRight:10, color: "black"}}
             style={{marginRight: 5, marginLeft: "auto"}}
             onPress={() => {clickLogOut()}}
             icon={   
@@ -209,7 +206,7 @@ const OverlayContact = (bool)=>{
             editable={editableText}
             style={{fontSize:20, fontWeight:"700", marginLeft:0,paddingHorizontal:10}}
             onChangeText={(value)=>{setNewName(value)}}
-            value={newName}
+            value={username}
             >
             </TextInput>
             </TouchableOpacity>
@@ -222,6 +219,7 @@ const OverlayContact = (bool)=>{
           onPress={()=>{setIsVisible(true)}}
           >Changer mon mot de passe</Text>
         </View>
+        
       </View> 
     {/* <View style={{flex:1,width:"100%"}}> */}
       <View style={{flex:3,flexDirection: 'column',width:"100%",height:"100%",flexWrap:"wrap",
@@ -260,7 +258,7 @@ const OverlayContact = (bool)=>{
           containerStyle={{marginRight:"auto"}}
             icon={   
                 <Icon 
-                iconStyle={{iconRight: "true"}}
+                iconRight
                 name= "send" type='feather'  color= "black" size= {20}
                 
                 />
@@ -299,4 +297,6 @@ const OverlayContact = (bool)=>{
        }
   }};
   
+
+
 export default connect(mapStateToProps,mapDispatchToProps)(Parameters)

@@ -1,11 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
+import {View, TextInput, Text, Button, ImageBackground, StyleSheet,
+   TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import {Input} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Loader from './loader';
 import { withNavigation } from 'react-navigation';
-import Bienvenue from './Bienvenue';
 import Ip from './Ip' // A enlever en production !
+
 
 function SignUp(props) {
   
@@ -20,14 +21,23 @@ function SignUp(props) {
   const [errorPassword, setErrorPassword] = useState('')
   const [loader,setLoader]=useState(false);
   const [tokenExists, setTokenExists]= useState(null)
+  const [prenomExists, setPrenomExists]= useState(null)
   const [loading,setLoading]=useState(false);
 
   useEffect(() => {
     AsyncStorage.getItem("token", function(error, data) {
+
       console.log(data)
       setTokenExists(data)
       setLoading(true)
-    })
+    });
+    AsyncStorage.getItem("prenom", function(error, data) {
+
+      console.log(data)
+      setPrenomExists(data)
+      setLoading(true)
+    });
+
 }, [props.token])
 
  
@@ -49,7 +59,7 @@ function SignUp(props) {
                   <Input
                   //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
                   placeholder=' Email'
-                  onChangeText={(val) => setSignUpEmail(val)}
+                  onChangeText={(val) => setSignUpEmail(val.toLowerCase())}
                   value={signUpEmail}
                   />
                   { errorUserExistant ? <Text style={{fontSize:12,color:'red'}}>{errorUserExistant}</Text> : null }
@@ -119,10 +129,18 @@ function SignUp(props) {
                 />
               </View>
 } else if(loading) {
-  formSignUp = <Text>Bienvenue !</Text>
+  formSignUp = 
+  <View style={{flexDirection:"row"}}>
+     <Button
+      title='Bienvenue !'
+      color='#FF473A'
+      onPress={() =>{props.navigation.navigate('Home')}}
+      />
+  </View>
+ 
   props.addToken(tokenExists)
+  props.addPrenom(prenomExists)
   props.navigation.navigate('Home')
-  
 }
 
     var clickSignUp = async (a, b, c, d) => {
@@ -152,7 +170,9 @@ function SignUp(props) {
         }
   
         if(response.result == true){
+          console.log("??????",response.result)
           AsyncStorage.setItem("token", response.token)
+          AsyncStorage.setItem("prenom", response.prenom)
           props.addToken(response.token)
           props.addPrenom(response.prenom)
           setLoader(false)

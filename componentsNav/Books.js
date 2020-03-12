@@ -45,7 +45,7 @@ return (
         containerStyle={{width:"45%",padding:2,backgroundColor:"white", marginLeft:"1%", marginRight:"1%"}}
         >
           <TouchableOpacity
-            onPress={() =>{props.navigation.navigate('BookContent',{idBook:props.id}), lastRead()}}
+            onPress={() =>{props.navigation.navigate('BookContent',{idBook:props.id}); lastRead();console.log("BOOK",props.id)}}
                               >
           <Image
               style={{width:"100%",height:250}}
