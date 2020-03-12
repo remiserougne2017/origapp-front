@@ -17,38 +17,40 @@ function BookContent(props) {
 //VARIABLES
     var token = props.token //var token = props.token
     const publisher = {publisher: "Les Editions du Sabot Rouge"}
-    const [idBook,setIdBook] = useState(props.navigation.state.params.idBook)
+    // const [idBook,setIdBook] = useState(props.navigation.state.params.idBook)
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
     const [overlayRatingVisible, setOverlayRatingVisible]=useState(false);
     const [commentData, setCommentData]=useState([]);
     const [isChecked, setIsChecked] = useState(false)
  
-    
+    console.log("IS CHECKED ?????",isChecked,props.navigation.state.params.idBook)
 // LOAD BOOK FROM DB
+// console.log(' PROPS PARAMS///////////////////////////////////////////////////////////',props.navigation.state.params.idBook)
+// console.log(' ID BOOK ///////////////////////////////////////////////////////////',idBook)
     useEffect( ()=> {
         async function openBook() {
-            console.log("BOOK DATA1",idBook)
+            // console.log("BOOK DATA1",idBook)
             var bookData = await fetch(`${Ip()}:3000/books/open-book`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                    body: `idBook=${idBook}&token=${token}`
+                    body: `idBook=${props.navigation.state.params.idBook}&token=${token}`
                   }
             );
             var bookDataJson = await bookData.json();
-            console.log("BOOK DATA2",idBook)
+            // console.log("BOOK DATA2",idBook)
             setArrayDataBook(bookDataJson.dataBook);
             setCommentData(bookDataJson.userCom);
       }
 
       // Recherche du ID du livre dans Redux
-        var isBook = props.storeLibrairy.findIndex(book => book === idBook)
+        var isBook = props.storeLibrairy.findIndex(book => book === props.navigation.state.params.idBook)
         console.log(props.storeLibrairy[isBook])
         if(isBook != -1){
             setIsChecked(true)
         }
 
         openBook();
-      },[overlayRatingVisible,props.storeLibrairy])
+      },[overlayRatingVisible,props.storeLibrairy,props.navigation.state.params.idBook])
 
     //Function appel route addLibrairy
     const addLibrairy = async (id,bool) => {
@@ -193,7 +195,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                             {arrayDataBook.title}
                         </Text>
                         <CheckBox 
-                            onPress={() =>{addLibrairy(idBook,!isChecked)}}
+                            onPress={() =>{addLibrairy(props.navigation.state.params.idBook,!isChecked)}}
                             checked={isChecked}
                             checkedColor="#F9603E"
                         />
@@ -219,7 +221,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                     </View>
                 {/* APPEL LE COMPOSANT OVERLAY */}
                 {/* <OverlayContent/> */}
-                <OverlayRating isVisible={overlayRatingVisible} idBook={idBook} parentRatingFunction={parentRatingFunction}/>
+                <OverlayRating isVisible={overlayRatingVisible} idBook={props.navigation.state.params.idBook} parentRatingFunction={parentRatingFunction}/>
                 <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
                     <Divider 
                     style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15,marginBottom:15}} 

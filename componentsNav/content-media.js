@@ -25,7 +25,6 @@ function contentMedia(props) {
 const [dataContent,setDataContent] = useState({content: {title:"",media:[{type:''}],title:""}})
 const [position,setPosition]=useState(props.contentMediaData.position);
 let arrayContent = props.contentMediaData.dataContentFromBook;
-console.log('/////////////// PROPS',props.contentMediaData.dataContentFromBook);
 let badgeColor = props.contentMediaData.dataContentFromBook[position].color
 // LOAD MEDIA CONTENT FROM DB
     useEffect( ()=> {
@@ -157,6 +156,12 @@ function onSwipeRight() {
         }
 }
 
+
+const config = {
+    velocityThreshold: 0.3,
+    directionalOffsetThreshold: 80
+  }
+
 var bulletBreadCrumb = props.contentMediaData.dataContentFromBook.map((obj, j) => {
     var bulletSize = 5
     if(j==position) {
@@ -173,6 +178,7 @@ var bulletBreadCrumb = props.contentMediaData.dataContentFromBook.map((obj, j) =
 
     return (
         <GestureRecognizer
+        config={config}
         style={{
             flex: 1,
           }}

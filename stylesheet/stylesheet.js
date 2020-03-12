@@ -43,7 +43,13 @@ const style = StyleSheet.create({
         fontFamily:'Montserrat',
     },
 
-
+    logo: { 
+        marginTop:15,
+        fontSize:15,
+        color:color("red"),
+        fontFamily:'Montserrat',
+        fontWeight:"500"}
+    
 
 
 });

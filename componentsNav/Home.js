@@ -181,8 +181,9 @@ for (let i=0;i<tagsList.length;i++){
        <Image
           style={{width: 40, height: 40, margin:5}}
           source={require('../assets/logoOrigapp.png')}
-        />  
-        <Text style={{ marginTop:15,marginLeft:5, fontSize:15, fontWeight:"500"}}>OrigApp</Text>
+        /> 
+          <Text style={{...style.logo,marginLeft:5}}>OrigApp</Text>
+          <Text style={{...style.logo,marginLeft:'auto',marginRight:20}}>Hello {props.firstName}</Text>
        </View>
         <View style={{ flexDirection:"row",justifyContent:"center", alignItems:'center', marginTop:10}}>
           <SearchBar 
@@ -267,7 +268,8 @@ function mapDispatchToProps(dispatch){
 }
 function mapStateToProps(state) {
   return { storeLibrairy: state.storeLibrairy,
-           token: state.reducerToken
+           token: state.reducerToken,
+           firstName: state.reducerPrenom
    }
 }
 export default withNavigationFocus(connect(mapStateToProps,mapDispatchToProps)(Home))

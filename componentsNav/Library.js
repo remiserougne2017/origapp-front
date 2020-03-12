@@ -5,7 +5,8 @@ import Books from './Books'
 import {connect} from 'react-redux';
 import FlashMessage from "react-native-flash-message";
 import Carrousel from './Carrousel';
-import { withNavigation } from 'react-navigation';
+// import { withNavigation } from 'react-navigation';
+import { withNavigationFocus } from 'react-navigation';
 import color from './color';
 import Ip from './Ip'; // A enlever en production !
 import style from '../stylesheet/stylesheet'
@@ -13,6 +14,7 @@ import style from '../stylesheet/stylesheet'
 
 function Library(props) {
 
+  console.log("IS FOCUSED ? ",props.isFocused)
   const [mesLivres,setMesLivres]=useState([]);
   const [lastRead,setLastRead]=useState([]);
   const [errorMessage,setErrorMessage]=useState('')
@@ -27,35 +29,60 @@ function Library(props) {
        setMesLivres(responseLivres)
     };  
     maBibliotheque();  
-  },[props.storeLibrairy])
 
-  // Initialisation Last Reads
-  useEffect(()=>{
     const lastReads = async() =>{
 
-      console.log("librairy")
       var responseFetch = await fetch(`${Ip()}:3000/lists/lastRead/${props.token}`)
       var responseLastReads = await responseFetch.json();
       setLastRead(responseLastReads)
       
     };  
 
-    lastReads();  
-  },[])
+    lastReads();
 
-  //// Initialisation Suggestions
-  useEffect(()=>{
     const suggest = async() =>{
-      console.log('INIT SUGGESTION')
-      console.log('props',props.token)
+      // console.log('INIT SUGGESTION')
+      // console.log('props',props.token)
       var suggestFetch = await fetch(`${Ip()}:3000/home/suggest/${props.token}`)
       var Suggestions = await suggestFetch.json();
-      console.log("/////////////// SUGGEST",Suggestions);
+      // console.log("/////////////// SUGGEST",Suggestions);
       setSuggestBooks(Suggestions.mySuggest)      
     };
 
     suggest();
-  },[])
+
+  },[props.storeLibrairy,props.isFocused])
+
+  // Initialisation Last Reads
+  // useEffect(()=>{
+  //   const lastReads = async() =>{
+
+  //     var responseFetch = await fetch(`${Ip()}:3000/lists/lastRead/${props.token}`)
+  //     var responseLastReads = await responseFetch.json();
+  //     setLastRead(responseLastReads)
+      
+  //   };  
+
+  //   lastReads();  
+
+    
+  // },[])
+
+  // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!! LAST READ",lastRead)
+
+  //// Initialisation Suggestions
+  // useEffect(()=>{
+  //   const suggest = async() =>{
+  //     // console.log('INIT SUGGESTION')
+  //     // console.log('props',props.token)
+  //     var suggestFetch = await fetch(`${Ip()}:3000/home/suggest/${props.token}`)
+  //     var Suggestions = await suggestFetch.json();
+  //     console.log("/////////////// SUGGEST",Suggestions);
+  //     setSuggestBooks(Suggestions.mySuggest)      
+  //   };
+
+  //   suggest();
+  // },[])
 
   //Création du tableau pour afficher la bibliothèque
   var Book = mesLivres.map((e,i)=>{
@@ -73,7 +100,7 @@ function Library(props) {
   //Création du tableau pour afficher les dernières lectures
   var latestBooks = lastRead.map((e,i)=>{
     return({
-      id:e._id,
+      id:e.id,
       key:i,
       //inLibrairy={e.inLibrairy}
       title:e.title,
@@ -88,6 +115,7 @@ function Library(props) {
   
     return({
       //inLibrairy={e.inLibrairy}
+      id:e._id,
       key:i,
       title:e.title,
       image:e.image,
@@ -96,6 +124,8 @@ function Library(props) {
       rating:e.rating
     })
   })
+
+// console.log("Les suggest..................................",Suggest)
 /////////////////////////////////////////////////////////
   return (
      <View style={{ flex: 1, width:"100%", backgroundColor:'white'}}>
@@ -197,4 +227,4 @@ function mapStateToProps(state) {
           token: state.reducerToken
    }
 }
-export default withNavigation(connect(mapStateToProps)(Library))
+export default withNavigationFocus(connect(mapStateToProps)(Library))

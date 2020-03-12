@@ -9,15 +9,16 @@ function Carrousel(props) {
 
     const[activeIndex, setActiveIndex] = useState('')
     const [carrouselList,setCarrouselList]=useState([]);
-
+    // console.log("PROPS DATA SUGGEST BOOOK",props.data)
 
     var carrousel = useRef(null)
     
   var _renderItem = ({item, index}) => {
+    //   console.log('ITEEEEEEEEEEEM',item)
         return (
            <View style={{justifyContent:'center'}}>
                 <TouchableOpacity
-                  onPress={() =>props.navigation.navigate('BookContent',{idBook:item._id})}>    
+                  onPress={() =>{props.navigation.navigate('BookContent',{idBook:item.id});console.log("CARROUSSEUL SENDING ON PRESS",item.id)}}>    
                     <Image  style={{ width:"80%", height: 140}} source={{uri: item.image}}/> 
                     <Text style={{fontSize:11}}>{item.authors}</Text>
                     {/* <Text style={{fontSize:11}}>{item.publisher}</Text> */}
