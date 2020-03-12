@@ -185,23 +185,23 @@ console.log(idBook, '777')
                             borderLeftWidth:1, borderColor:"black"}}
                             source= {{ uri: arrayDataBook.coverImage }}
                         />
+                        <View style={{flex:1, flexDirection: "row"}}>
+                        <Text style={{fontSize:15/* ,textAlign:"center",paddingBottom:5, borderRadius:10 */}}>
+                            {arrayDataBook.title}
+                        </Text>
                         <CheckBox 
                             onPress={() =>{addLibrairy(idBook,!isChecked)}}
                             checked={isChecked}
                             checkedColor="#F9603E"
-                            containerStyle={{
-                                right:-70,
-                                top:-150,
-                            }}
                         />
-                          <Text style={{fontSize:15,textAlign:"center",paddingBottom:5, borderRadius:10}}>
-                            {arrayDataBook.title}
-                        </Text>
+                         
+                        </View>
                         
                         <View style={{alignItems:"flex-start"}}>
                             <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
                             <Text style ={{fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
-                        </View> 
+                        </View>
+                        
                         <View>            
                             <Text style={{textAlign:'center',marginTop:10,fontSize:14}}>{arrayDataBook.description}</Text>         
                         </View>
