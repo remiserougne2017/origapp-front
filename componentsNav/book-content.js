@@ -20,9 +20,6 @@ function BookContent(props) {
     const [overlayRatingVisible, setOverlayRatingVisible]=useState(false);
     const [commentData, setCommentData]=useState([]);
 
-    
-    console.log("star this book",idBook, overlayRatingVisible);
-
 
 
 
@@ -30,7 +27,7 @@ function BookContent(props) {
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
-            // recupere les infos d'un livre 
+            console.log("BOOK DATA1",idBook)
             var bookData = await fetch(`${Ip()}:3000/books/open-book`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -38,29 +35,14 @@ function BookContent(props) {
                   }
             );
             var bookDataJson = await bookData.json();
+            console.log("BOOK DATA2",idBook)
             setArrayDataBook(bookDataJson.dataBook);
             setCommentData(bookDataJson.userCom);
-            // console.log("HELLO COMMENTS FROM BACK",userCom)
-            // props.storeCommentInformation({idBook:idBook,commentsData:commentsData})
       }
         openBook();
       },[])
 
-
-
-    //   useEffect( ()=> {
-    //       const comment = async () {
-    //           console.log("route comment ça passe")
-    //           var commentsData = await fetch(`${Ip()}:3000/home/comments-book/${params.id}`),
-
-    //           var commentjson = await commentsData.json();
-    //           setCommentBook(commentjson)
-    //           console.log("comments")
-    //       };
-
-    //   },[])
-
-    
+  
 
 // CARD CONTENT CREATION  
 let arrayColor = ['#a5af2a','#fda329','#24c6ae'];
@@ -87,7 +69,9 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
         onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,idContent:obj.idContent,listAllIdContent:listIdContentForSwipe,position:i});props.navigation.navigate('contentMediaPage');}}
         >
         <View
-            style={{width:'100%',marginBottom:10,borderRadius:10, backgroundColor:'#FDFDFD'}}
+            style={{width:'100%',marginBottom:10,paddingBottom:10,borderBottomWidth:1,borderBottomColor:'#EAEAEA',     
+
+        }}
             >
 
             <View style ={{width:'100%'}}>
@@ -97,7 +81,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                 <View style ={{position: 'absolute',top:300,marginLeft:'auto',marginBottom:5}}>
                 </View>
                 <Image 
-                        style={{ height: 240,borderRadius:10}}
+                        style={{ height: 240}}
                         source= {{uri: urlImageContent}}
                         
                     />
@@ -108,7 +92,6 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                 </Text>
                 </View>
             </View>
-            {/* <Divider style={{ backgroundColor: '#6B6262', width:"100%", marginTop:15}} /> */}
             <View style = {{display:"flex",flexDirection:'row', marginTop:10}}>
                 <Icon 
                     name= 'download' type='antdesign'  size= {20} margin={5} marginRight='auto'
@@ -169,15 +152,9 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
     }
 // RETURN GLOBAL DE LA PAGE
     return (
-    <ScrollView stickyHeaderIndices={[1]}>     
-                <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center', 
-                backgroundColor:'#D6D6D6',paddingBottom:20}}>
+    <ScrollView stickyHeaderIndices={[1,3]} style ={{backgroundColor:"white"}}>     
+                <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',paddingBottom:20,backgroundColor:"#d6d6d6"}}>
                     <View style = {{alignItems: 'center', justifyContent: 'center',marginTop:60}}>
-                        {/* <Text style={{fontSize:25,marginTop:20,marginBottom:10,textAlign:"center",
-                            backgroundColor:colorImport('red'),paddingHorizontal:30,
-                            paddingBottom:5,color:"white", borderRadius:10}}>
-                            {arrayDataBook.title}
-                        </Text> */}
                         <Image 
                             style={{width: 150, height: 150,borderRadius: 150,
                             marginTop:-15, borderStartWidth:1, borderEndWidth:1,borderRightWidth:1,
@@ -198,8 +175,9 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                 </View>
               
                 <View style = {{marginRight:20,backgroundColor:"white",width:"100%"}}>
-                    <Text style={{fontSize:25,marginTop:20,marginBottom:10,paddingTop:30,paddingBottom:10}}>Les contenus à découvrir...</Text>
+                    <Text style={{fontSize:25,marginTop:20,marginBottom:10,paddingTop:30,paddingBottom:10,paddingLeft:10}}>Les contenus à découvrir...</Text>
                 </View>
+
                 <ScrollView>
                     <View>
                         {cardDisplay}
@@ -209,23 +187,30 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                 <OverlayRating isVisible={overlayRatingVisible} idBook={idBook} parentRatingFunction={parentRatingFunction}/>
                 <View  style={{ flexDirection:"row",justifyContent:"center", alignItems:'center'}}>
                     <Divider 
-                    style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15}} 
+                    style={{ backgroundColor: '#F9603E', width:"60%", marginTop:15,marginBottom:15}} 
                     />
                 </View>
+                </ScrollView>
+                <View style = {{marginRight:20,backgroundColor:"white",width:"100%",paddingLeft:10}}>
+                    <Text style={{fontSize:25,marginTop:20,paddingTop:30,paddingBottom:10}}>Les avis et commentaires</Text>
+                    <View style = {{marginBottom:10,backgroundColor:colorImport('red'),width:140,borderRadius:10, marginLeft:'auto',marginRight:10}}>
+                            <Text onPress={() =>{setOverlayRatingVisible(true)}} style={{fontStyle:"italic", padding:5,color:"white",textAlign:'center'}}>Partagez votre avis
+                            </Text>    
+                    </View>
+                </View>
+                <ScrollView>
+
                 <View style = {{marginTop:20,marginLeft:20, marginRight:20}}>
-                    <Text style={{fontSize:25,marginTop:20,marginBottom:10}}>Les avis et commentaires</Text>
-                    <View>
-                        <Text onPress={() =>{setOverlayRatingVisible(true);}}
-                            style={{fontStyle:"italic"}}
-                            >Donnez votre avis...
-                        </Text>
+                    <View >
+
                         <Comment 
                         data = {commentData}
                         />
                     </View>
   
                 </View>
-        </ScrollView>
+                </ScrollView>
+
     </ScrollView>
 
     );

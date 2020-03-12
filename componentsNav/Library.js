@@ -23,7 +23,7 @@ function Library(props) {
     const maBibliotheque = async() =>{
       var responseFetch = await fetch(`${Ip()}:3000/home/myLibrary/${props.token}`)
       var responseLivres = await responseFetch.json();
-      console.log("REponse librairy",responseLivres)
+      // console.log("REponse librairy",responseLivres)
        setMesLivres(responseLivres)
     };  
     maBibliotheque();  
@@ -33,7 +33,7 @@ function Library(props) {
   useEffect(()=>{
     const lastReads = async() =>{
 
-      //console.log("librairy")
+      console.log("librairy")
       var responseFetch = await fetch(`${Ip()}:3000/lists/lastRead/${props.token}`)
       var responseLastReads = await responseFetch.json();
       setLastRead(responseLastReads)
@@ -46,8 +46,11 @@ function Library(props) {
   //// Initialisation Suggestions
   useEffect(()=>{
     const suggest = async() =>{
+      console.log('INIT SUGGESTION')
+      console.log('props',props.token)
       var suggestFetch = await fetch(`${Ip()}:3000/home/suggest/${props.token}`)
       var Suggestions = await suggestFetch.json();
+      console.log("/////////////// SUGGEST",Suggestions);
       setSuggestBooks(Suggestions.mySuggest)      
     };
 
@@ -95,7 +98,7 @@ function Library(props) {
   })
 /////////////////////////////////////////////////////////
   return (
-     <View style={{ flex: 1, width:"100%", backgroundColor:'#EEEEEE'}}>
+     <View style={{ flex: 1, width:"100%", backgroundColor:'white'}}>
        <View style={{ flexDirection:"row", marginTop:25}}>
        <Image
           style={{width: 40, height: 40, margin:5}}
@@ -136,7 +139,7 @@ function Library(props) {
                         marginTop:10,
                         marginLeft:10,
                         paddingBottom:5, 
-                        backgroundColor:'#EEEEEE'}}>
+                        backgroundColor:'white'}}>
           <Text style={{color:"#F9603E"}}>Mes livres</Text>
           </View>   
           
@@ -161,7 +164,7 @@ function Library(props) {
                         marginTop:10,
                         marginLeft:8,
                         //paddingBottom:5, 
-                        backgroundColor:'#EEEEEE'}}>
+                        backgroundColor:'white'}}>
           <Text style={{color:"#F9603E"}}>Vous devriez aimer</Text>
           </View>
 

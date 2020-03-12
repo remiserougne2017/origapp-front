@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {View, TextInput, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import {connect} from 'react-redux';
 import Loader from './loader';
+import { withNavigation } from 'react-navigation';
+import Bienvenue from './Bienvenue';
 import Ip from './Ip' // A enlever en production !
 
 function SignUp(props) {
@@ -16,17 +18,125 @@ function SignUp(props) {
   const [errorEmailInvalide, setErrorEmailInvalide] = useState('')
   const [errorPassword, setErrorPassword] = useState('')
   const [loader,setLoader]=useState(false);
-  const [tokenExists, setTokenExists]= useState('')
+  const [tokenExists, setTokenExists]= useState(null)
+  const [loading,setLoading]=useState(false);
 
-  AsyncStorage.getItem("token", function(error, data) {
-    console.log(data)
-    setTokenExists(data)
-  })
+  useEffect(() => {
+    AsyncStorage.getItem("token", function(error, data) {
+      console.log(data)
+      setTokenExists(data)
+      setLoading(true)
+    })
+}, [props.token])
 
-  if(tokenExists){
+ 
+ var formSignUp;
+ if(!tokenExists && loading){
+  //<Loader bool={loader} text="Chargement"/>
+ formSignUp = <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+ <View>
+   <View style={{ flexDirection:"row", marginBottom:50}}>
+     <Image
+         style={{width: 100, height: 100}}
+         source={require('../assets/logoOrigapp.png')}
+       />
+     <Text style={{ marginTop:25,marginLeft:5, fontSize:32, fontWeight:"500"}} >OrigApp</Text>
+   </View>
+      
+      <View style={{marginBottom:20}}>
+        <TextInput
+        style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
+        placeholder=' Prénom'
+        onChangeText={(val) => setSignUpFirstName(val)}
+        value={signUpFirstName}
+        />
+       { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
+      </View>
+
+      <View style={{marginBottom:20}}>
+        <TextInput
+        style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
+        placeholder=' Email'
+        onChangeText={(val) => setSignUpEmail(val)}
+        value={signUpEmail}
+        />
+        { errorUserExistant ? <Text style={{fontSize:12,color:'red'}}>{errorUserExistant}</Text> : null }
+        { errorEmailInvalide ? <Text style={{fontSize:12,color:'red'}}>{errorEmailInvalide}</Text> : null}
+        { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
+      </View>
+
+      <View style={{marginBottom:20}}>
+        <TextInput
+        style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
+        placeholder=' Mot de passe'
+        secureTextEntry={true}
+        onChangeText={(val) => setSignUpPassword(val)}
+        value={signUpPassword}
+        />
+        { errorPassword ? <Text style={{fontSize:12,color:'red'}}>{errorPassword}</Text> : null }
+        { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
+      </View>
+
+      <View >
+        <TextInput
+        style = {{borderWidth : 1.0, borderColor: 'white',  borderRadius: 5, backgroundColor: 'white'}}
+        secureTextEntry={true}
+        placeholder=' Confirmation de mot de passe '
+        onChangeText={(val) => setSignUpPasswordMatch(val)}
+        value={signUpPasswordMatch}
+        />
+        { errorMatch ? <Text style={{fontSize:12,color:'red'}}>{errorMatch}</Text> : null }
+    
+        <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
+        <Text style={{fontSize: 11, marginBottom: 18, textAlign: "right", fontStyle: "italic"}}>J'ai déjà un compte</Text>
+      </TouchableOpacity>
+      </View>
+
+     
+      <Button
+       title='Inscription'
+       color='#FF473A'
+       onPress={() => clickSignUp(signUpFirstName, signUpEmail, signUpPassword, signUpPasswordMatch) }
+      />  
+          <Button
+       title='nav HomePage'
+       color='#FF473A'
+       onPress={() =>{props.navigation.navigate('Home');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
+      />
+          <Button
+       title='nav bookcontnt'
+       color='#FF473A'
+       onPress={() =>{props.navigation.navigate('BookContent');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
+      />
+      <Button
+       title='Paramètres'
+       color='#FF473A'
+       onPress={() =>{ props.navigation.navigate('Parameters');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6");
+       props.addPrenom("Rémi")}}
+      />  
+
+          <Button
+       title='nav mediapage'
+       color='#FF473A'
+       onPress={() =>{props.navigation.navigate('contentMediaPage');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
+      />
+       <Button
+       title='RATING'
+       color='#FF473A'
+       onPress={() =>{props.navigation.navigate('RatingPage');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
+      />
+     </View>
+     </KeyboardAvoidingView>
+} else if(loading) {
+  formSignUp = <Text>Bienvenue !</Text>
+  props.addToken(tokenExists)
+  props.navigation.navigate('Home')
+  
+}
+  /* if(tokenExists){
     props.addToken(tokenExists)
     props.navigation.navigate('Home')
-  } else {
+  } */
     var clickSignUp = async (a, b, c, d) => {
 
       setSignUpFirstName('')
@@ -70,7 +180,6 @@ function SignUp(props) {
           console.log('pas de token')
         }
       }
-    }
     
     //console.log(errorMatch, errorChampVide, errorEmailInvalide)
     
@@ -79,102 +188,9 @@ function SignUp(props) {
   
     return(
       <ImageBackground source={require('../assets/origami.png')} style={styles.container}>
-        <Loader bool={loader} text="Chargement"/>
-        <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
-          <View>
-            <View style={{ flexDirection:"row", marginBottom:50}}>
-              <Image
-                  style={{width: 100, height: 100}}
-                  source={require('../assets/logoOrigapp.png')}
-                />
-              <Text style={{ marginTop:25,marginLeft:5, fontSize:32, fontWeight:"500"}} >OrigApp</Text>
-            </View>
+        
+              {formSignUp}
             
-            <View style={{marginBottom:20}}>
-              <TextInput
-              style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-              placeholder=' Prénom'
-              onChangeText={(val) => setSignUpFirstName(val)}
-              value={signUpFirstName}
-              />
-             { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
-            </View>
-
-            <View style={{marginBottom:20}}>
-              <TextInput
-              style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-              placeholder=' Email'
-              onChangeText={(val) => setSignUpEmail(val)}
-              value={signUpEmail}
-              />
-              { errorUserExistant ? <Text style={{fontSize:12,color:'red'}}>{errorUserExistant}</Text> : null }
-              { errorEmailInvalide ? <Text style={{fontSize:12,color:'red'}}>{errorEmailInvalide}</Text> : null}
-              { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
-            </View>
-
-            <View style={{marginBottom:20}}>
-              <TextInput
-              style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
-              placeholder=' Mot de passe'
-              secureTextEntry={true}
-              onChangeText={(val) => setSignUpPassword(val)}
-              value={signUpPassword}
-              />
-              { errorPassword ? <Text style={{fontSize:12,color:'red'}}>{errorPassword}</Text> : null }
-              { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
-            </View>
-
-            <View >
-              <TextInput
-              style = {{borderWidth : 1.0, borderColor: 'white',  borderRadius: 5, backgroundColor: 'white'}}
-              secureTextEntry={true}
-              placeholder=' Confirmation de mot de passe '
-              onChangeText={(val) => setSignUpPasswordMatch(val)}
-              value={signUpPasswordMatch}
-              />
-              { errorMatch ? <Text style={{fontSize:12,color:'red'}}>{errorMatch}</Text> : null }
-          
-              <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
-              <Text style={{fontSize: 11, marginBottom: 18, textAlign: "right", fontStyle: "italic"}}>J'ai déjà un compte</Text>
-            </TouchableOpacity>
-            </View>
-
-           
-            <Button
-             title='Inscription'
-             color='#FF473A'
-             onPress={() => clickSignUp(signUpFirstName, signUpEmail, signUpPassword, signUpPasswordMatch) }
-            />  
-                <Button
-             title='nav HomePage'
-             color='#FF473A'
-             onPress={() =>{props.navigation.navigate('Home');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
-            />
-                <Button
-             title='nav bookcontnt'
-             color='#FF473A'
-             onPress={() =>{props.navigation.navigate('BookContent');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
-            />
-            <Button
-             title='Paramètres'
-             color='#FF473A'
-             onPress={() =>{ props.navigation.navigate('Parameters');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6");
-             props.addPrenom("Rémi")}}
-            />  
-
-                <Button
-             title='nav mediapage'
-             color='#FF473A'
-             onPress={() =>{props.navigation.navigate('contentMediaPage');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
-            />
-             <Button
-             title='RATING'
-             color='#FF473A'
-             onPress={() =>{props.navigation.navigate('RatingPage');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
-            />
-           
-           </View> 
-        </KeyboardAvoidingView> 
       </ImageBackground>
     )
 
@@ -199,8 +215,12 @@ function mapDispatchToProps(dispatch){
       }
     }
   }
+
+function mapStateToProps(state) {
+    return { storeLibrairy: state.storeLibrairy,
+             token: state.reducerToken
+     }
+  }
+  export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(SignUp))
   
-  export default connect(
-    null,
-    mapDispatchToProps
-  )(SignUp)
+ 

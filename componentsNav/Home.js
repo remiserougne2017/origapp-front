@@ -29,7 +29,7 @@ console.log("STORE-Librairy",props.storeLibrairy)
     const librairyToStore= ()=>{
     var NewCatalist = cataList.map(e=>{
        if(e.inLibrairy==true){
-        console.log("NewCatalist IF",e.inLibrairy)
+        // console.log("NewCatalist IF",e.inLibrairy)
          props.manageLibrairy(e.id,true)
        }else{
          null
@@ -52,7 +52,7 @@ console.log("STORE-Librairy",props.storeLibrairy)
       console.log("WELCOME HOME")
       var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
       var bookList = await responseFetch.json();
-      console.log('CATALISTE',bookList)
+      // console.log('CATALISTE',bookList)
       setCataList(bookList.livreMin)
       
       // Chargement livres mieux notés
@@ -125,7 +125,7 @@ const fetchTag = async (tags)=>{
     headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},    
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token=${props.token}`});
     var resultatSearch = await responseFetch.json();
-    //console.log("TAGRESULT",await resultatSearch)
+    console.log("TAGRESULT",await resultatSearch)
     if(resultatSearch.result == 'ok'){
       setErrorMessage('')
       setCataList(resultatSearch.resultMin)
