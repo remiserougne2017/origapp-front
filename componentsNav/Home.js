@@ -16,10 +16,7 @@ import style from '../stylesheet/stylesheet'
 
 function Home(props) {
   
-console.log("STORE-Librairy",props.storeLibrairy)
-// console.log("STYLING",style.container);
-
-
+//console.log("STORE-Librairy",props.storeLibrairy)
 
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);

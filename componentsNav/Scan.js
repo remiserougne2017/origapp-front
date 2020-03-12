@@ -29,7 +29,6 @@ const askPermission =async() => {
 
 const sendPicture = async (path)=>{
     //affiche le loader et le coupe si chrgt > à 4 secondes
-    setLoader(true)
     setTimeout(() => {
      setLoader(false)
    }, 4000);
@@ -103,9 +102,10 @@ if(props.isFocused && hasPermission) {
             </Image>      
             <Button 
                 buttonStyle={{width: "100%", justifyContent:"center",
-                position:"absolute",right:10,top:-30,backgroundColor:"transparent", padding:30}}
+                position:"absolute",right:10,top:-30,backgroundColor:"transparent",borderRadius:50, padding:30}}
                 // containerStyle={{position:"absolute"}} 
                 onPress={async () => {
+                setLoader(true)
                 if (camera) {
                     let photo = await camera.takePictureAsync({
                     quality : 0.7,
@@ -123,8 +123,8 @@ if(props.isFocused && hasPermission) {
     <View style={{ flex: 1, alignItems:'center'}}>
         <Loader bool={loader} text="Recherche du livre"/>
         <View style={{height:100,width:"100%",backgroundColor:color("red"),justifyContent:"center",alignItems:'center'}}>
-            <Text style={{marginTop:40, color:"white", fontSize:18,fontWeight:"700"}}>
-                Scannez l'image de couverture
+            <Text style={{marginTop:40, color:"white", fontSize:16,fontWeight:"700"}}>
+             Photograhiez la couverture de votre ouvrage
             </Text>
         </View>
        {/* <View style={{flex:1,width:"100%"}}> */}
@@ -134,29 +134,39 @@ if(props.isFocused && hasPermission) {
     
            
         
-        {(isVisible) && <Overlay height={200} width={350} containerStyle={{justifyContent:"center", alignItems:"center"}}>
-                            <View style={{flex:3,justifyContent:"flex-start",
-                            alignItems:"center",marginTop:50}}>
-                                <Text style={{fontSize:18}}>Aucune correspondance n'a été trouvée</Text>
+        <Overlay isVisible={isVisible} width="80%" height={250} containerStyle={{}}>
+                           <View style={{flex:5,justifyContent:"center",alignItems:"center"}}>
+                                <View style={{flex:1,justifyContent:"center",alignItems:"center",marginTop:50}}>
+                                    <Text style={{fontSize:16,textAlign:"center"}}>Aucune correspondance n'a été trouvée</Text>
+                                </View>
                             </View>
-                            <View style={{flex:1,flexDirection:"row", justifyContent:"space-around"}}>
-                            <Button title="Reprendre une photo" onPress={()=>{setIsVisible(false)}}></Button>
-                            </View> 
-                        </Overlay>}  
+                            <View style={{flex:1,flexDirection:"row",marginTop:"auto",
+                                justifyContent:"space-between"}}>
+                                <Button title="Retour au catalogue"
+                                buttonStyle={{backgroundColor:color("blue")}}
+                                titleStyle={{fontSize:12}}
+                                onPress={()=>{setIsVisible(false);props.navigation.navigate('Home')}}></Button>
+                                <Button 
+                                buttonStyle={{backgroundColor:color("blue")}}
+                                titleStyle={{fontSize:12}}
+                                title="Reprendre une photo" onPress={()=>{setIsVisible(false)}}></Button>
+                                </View> 
+                        </Overlay>
         {/* </View> */}
     </View>
 );
 }else{  
     return (
-    <ImageBackground source={require('../assets/origami.png')} style={{flex:1,width: '100%', height: '100%'}}>
+    <ImageBackground source={require('../assets/origami_background.jpg')} style={{flex:1,width: '100%', height: '100%'}}>
         <View style={{ flex: 1, alignItems:'center'}}>
             <View style={{height:100,width:"100%",backgroundColor:color("red"),justifyContent:"center",alignItems:'center'}}>
-                <Text style={{marginTop:40, color:"white", fontSize:18,fontWeight:"700"}}>
-                    Scannez l'image de couverture
+                <Text style={{marginTop:40, color:"white", fontSize:16,fontWeight:"700"}}>
+                    Photograhiez la couverture de votre ouvrage
                     </Text>
             </View>
             <View style={{ flex: 1, justifyContent:"center",alignItems:'center'}}>
-                <Button onPress={()=>askPermission()}title="Activer l'accès à la caméra" buttonStyle={{backgroundColor:color("blue")}}></Button>
+                <Button onPress={()=>askPermission()}title="Activer l'accès à la caméra"
+                 buttonStyle={{backgroundColor:color("blue")}}></Button>
             </View>
         </View>
     </ImageBackground>
