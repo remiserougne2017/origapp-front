@@ -71,11 +71,6 @@ function BookContent(props) {
 // CARD CONTENT CREATION  
 let listIdContentForSwipe = []
 let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.pageNum - objB.pageNum;}).map((obj,i) => {
-        listIdContentForSwipe.push(obj.idContent);
-        let urlImageContent;
-        if((obj.imageContent == null)||(obj.imageContent == undefined)) {
-                urlImageContent = arrayDataBook.coverImage
-        } else { urlImageContent = obj.imageContent}
         var badgeColor;
         if(i%3==0) {
             badgeColor = '#a5af2a'
@@ -84,6 +79,12 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
         } else if(i%2==0){
             badgeColor = '#24c6ae'
         }
+        listIdContentForSwipe.push({idContent:obj.idContent,color:badgeColor});
+        let urlImageContent;
+        if((obj.imageContent == null)||(obj.imageContent == undefined)) {
+                urlImageContent = arrayDataBook.coverImage
+        } else { urlImageContent = obj.imageContent}
+
 
         return (
     <TouchableOpacity
