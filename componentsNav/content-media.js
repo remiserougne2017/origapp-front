@@ -24,9 +24,9 @@ function contentMedia(props) {
 //VARIABLES
 const [dataContent,setDataContent] = useState({content: {title:"",media:[{type:''}],title:""}})
 const [position,setPosition]=useState(props.contentMediaData.position);
-const [arrayContent,setArrayContent] = useState(props.contentMediaData.listAllIdContent);
-console.log('/////////////// PROPS',props.contentMediaData.listAllIdContent[position].color)
-let badgeColor = props.contentMediaData.listAllIdContent[position].color
+let arrayContent = props.contentMediaData.dataContentFromBook;
+console.log('/////////////// PROPS',props.contentMediaData.dataContentFromBook);
+let badgeColor = props.contentMediaData.dataContentFromBook[position].color
 // LOAD MEDIA CONTENT FROM DB
     useEffect( ()=> {
         async function openContent() {
@@ -144,7 +144,7 @@ const [borderWidth,setBorderWidth] = useState(0);
 
 // Swipe
 function onSwipeLeft() {
-    if(position<props.contentMediaData.listAllIdContent.length-1){
+    if(position<props.contentMediaData.dataContentFromBook.length-1){
         setPosition(position+1);
     }
 }
@@ -157,7 +157,7 @@ function onSwipeRight() {
         }
 }
 
-var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
+var bulletBreadCrumb = props.contentMediaData.dataContentFromBook.map((obj, j) => {
     var bulletSize = 5
     if(j==position) {
             bulletSize = 10

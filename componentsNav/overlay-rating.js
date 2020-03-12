@@ -20,14 +20,15 @@ const RatingPage = (props) => {
       }
      
     const sendComments = async ()=>{
-      console.log("envoyer comment")
-    var comment =  await fetch(`${Ip()}:3000/books/comments`, {
+      console.log("envoyer comment",props.token,props.idBook,userRating)
+      var comment =  await fetch(`${Ip()}:3000/books/comments`, {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: `comment=${userComment}&token=${props.token}&idBook=${props.idBook}&rating=${userRating}`
           })
           // setIsvisible(false);
           props.parentRatingFunction(false)
+          console.log("")
         };
 
       const onClickCancel =()=>{

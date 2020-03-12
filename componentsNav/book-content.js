@@ -21,11 +21,8 @@ function BookContent(props) {
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
     const [overlayRatingVisible, setOverlayRatingVisible]=useState(false);
     const [commentData, setCommentData]=useState([]);
-<<<<<<< HEAD
-=======
     const [isChecked, setIsChecked] = useState(false)
  
->>>>>>> 808b6da552f7f97ddd6153b6a0569af130099976
     
 // LOAD BOOK FROM DB
     useEffect( ()=> {
@@ -51,10 +48,7 @@ function BookContent(props) {
         }
 
         openBook();
-<<<<<<< HEAD
-      },[overlayRatingVisible])
-=======
-      },[props.storeLibrairy])
+      },[overlayRatingVisible,props.storeLibrairy])
 
     //Function appel route addLibrairy
     const addLibrairy = async (id,bool) => {
@@ -72,11 +66,10 @@ function BookContent(props) {
           });
       }
     }
->>>>>>> 808b6da552f7f97ddd6153b6a0569af130099976
 
 
 // CARD CONTENT CREATION  
-let listIdContentForSwipe = []
+let dataContentToMediaPage = []
 let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.pageNum - objB.pageNum;}).map((obj,i) => {
         var badgeColor;
         if(i%3==0) {
@@ -86,7 +79,10 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
         } else if(i%2==0){
             badgeColor = '#24c6ae'
         }
-        listIdContentForSwipe.push({idContent:obj.idContent,color:badgeColor});
+        dataContentToMediaPage.push({
+            idContent:obj.idContent,
+            color:badgeColor,
+        });
         let urlImageContent;
         if((obj.imageContent == null)||(obj.imageContent == undefined)) {
                 urlImageContent = arrayDataBook.coverImage
@@ -95,7 +91,8 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
 
         return (
     <TouchableOpacity
-        onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,idContent:obj.idContent,listAllIdContent:listIdContentForSwipe,position:i});props.navigation.navigate('contentMediaPage');}}
+        onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,dataContentFromBook:dataContentToMediaPage,position:i});props.navigation.navigate('contentMediaPage');}}
+        key = {i}
         >
         <View
             style={{width:'100%',marginBottom:10,paddingBottom:10,borderBottomWidth:1,borderColor:'#EAEAEA',borderTopWidth:1
@@ -177,6 +174,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
 
     //Création d'une fonction parent pour gerer le booleen isVisible & overlayRating Visible 
     const parentRatingFunction = (bool)=>{
+        console.log("BOOOOOOL",bool)
         setOverlayRatingVisible(bool)
 
     }

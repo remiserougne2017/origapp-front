@@ -10,7 +10,7 @@ function Comments(props) {
     var displayComment = props.data.map((obj, k) => {
 
         return (
-            <View style ={{marginBottom:5,borderRadius:10,flexDirection:'row',alignItems:'center',borderColor:"#ECECEC",borderWidth:1}}>
+            <View key = {k} style ={{marginBottom:5,borderRadius:10,flexDirection:'row',alignItems:'center',borderColor:"#ECECEC",borderWidth:1}}>
                  <View style = {{borderColor:'grey',borderWidth:1,borderRadius:100,margin:10}}>
                     <Icon 
                         name= 'user'
