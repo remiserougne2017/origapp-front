@@ -6,9 +6,26 @@ import color from './color';
 import Ip from './Ip'; // A enlever en production;
 import {showMessage, hideMessage } from "react-native-flash-message";
 
+// import { TouchableOpacity } from 'react-native-gesture-handler';
+
+/* import FirstTabScreen from './FirstTabScreen';
+import SecondTabScreen from './SecondTabScreen';
+import PushedScreen from './PushedScreen';
+
+// register all screens of the app (including internal ones)
+export function registerScreens() {
+  Navigation.registerComponent('example.FirstTabScreen', () =>
+    gestureHandlerRootHOC(FirstTabScreen));
+  Navigation.registerComponent('example.SecondTabScreen', () =>
+    gestureHandlerRootHOC(SecondTabScreen));
+  Navigation.registerComponent('example.PushedScreen', () =>
+    gestureHandlerRootHOC(PushedScreen));
+}
+ */
+
 function  Parameters(props) { 
   /// recup identité user du store
-const [username, setUsername]= useState('')
+const [username, setUsername]= useState(props.prenom)
 const [isVisible,setIsVisible] =useState(false)
 const [pwd1,setPwd1]=useState("")
 const [pwd2,setPwd2]=useState("")
@@ -60,7 +77,7 @@ var clickLogOut = () => {
   AsyncStorage.removeItem("token")
   props.navigation.navigate('SignIn') }
 
-  useEffect(() => {
+/*   useEffect(() => {
   const findUser = async () => {
     const dataUser = await fetch (`${Ip()}:3000/users/logout/${props.token}`);
     let resJson = await dataUser.json()
@@ -69,7 +86,7 @@ var clickLogOut = () => {
 findUser()
 console.log("useEffect")
 },[])
-
+ */
 //Fetch update PWD
 const updatePwd= async () =>{
   const dataUser = await fetch (`${Ip()}:3000/users/update/${props.token}`,
@@ -98,6 +115,7 @@ const updatePwd= async () =>{
    setIsVisible(false)
 }
 //Overlay update PWd
+
 const OverlayUpdatePwd = (bool)=>{
 console.log('Overlay updtae',bool)
   return(
@@ -128,6 +146,10 @@ console.log('Overlay updtae',bool)
     // </View>
   )
 }
+
+
+
+
 
 const OverlayContact = (bool)=>{
   console.log('Overlay contact bool',bool)
@@ -180,7 +202,7 @@ const OverlayContact = (bool)=>{
             // titleStyle={{paddingHorizontal:10}}
             title="  Se déconnecter"
             type="clear"
-            titleStyle={{paddingRight:10}}
+            titleStyle={{paddingRight:10, color: "black"}}
             style={{marginRight: 5, marginLeft: "auto"}}
             onPress={() => {clickLogOut()}}
             icon={   
@@ -222,6 +244,7 @@ const OverlayContact = (bool)=>{
           onPress={()=>{setIsVisible(true)}}
           >Changer mon mot de passe</Text>
         </View>
+        
       </View> 
     {/* <View style={{flex:1,width:"100%"}}> */}
       <View style={{flex:3,flexDirection: 'column',width:"100%",height:"100%",flexWrap:"wrap",
@@ -299,4 +322,6 @@ const OverlayContact = (bool)=>{
        }
   }};
   
+
+
 export default connect(mapStateToProps,mapDispatchToProps)(Parameters)
