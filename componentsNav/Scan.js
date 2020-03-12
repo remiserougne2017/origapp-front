@@ -157,7 +157,7 @@ if(props.isFocused && hasPermission) {
 );
 }else{  
     return (
-    <ImageBackground source={require('../assets/origami.png')} style={{flex:1,width: '100%', height: '100%'}}>
+    <ImageBackground source={require('../assets/origami_background.jpg')} style={{flex:1,width: '100%', height: '100%'}}>
         <View style={{ flex: 1, alignItems:'center'}}>
             <View style={{height:100,width:"100%",backgroundColor:color("red"),justifyContent:"center",alignItems:'center'}}>
                 <Text style={{marginTop:40, color:"white", fontSize:16,fontWeight:"700"}}>

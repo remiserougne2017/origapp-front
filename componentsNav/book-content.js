@@ -1,6 +1,6 @@
 import React, {useState,useEffect} from 'react';
 import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity,ScrollView} from 'react-native';
-import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
+import { Button,Input,Icon,Card,Divider,Badge, CheckBox} from 'react-native-elements';
 // import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
@@ -8,7 +8,8 @@ import { withNavigation,withNavigationFocus } from 'react-navigation';
 import OverlayRating from './overlay-rating';
 import Ip from './Ip'; // A enlever en production !
 import colorImport from './color';
-import Comment from './comment'
+import Comment from './comment';
+import {showMessage, hideMessage } from "react-native-flash-message";
 
 function BookContent(props) { 
     
@@ -19,10 +20,8 @@ function BookContent(props) {
     const [arrayDataBook,setArrayDataBook]= useState({contents:[]});
     const [overlayRatingVisible, setOverlayRatingVisible]=useState(false);
     const [commentData, setCommentData]=useState([]);
-
-
-
-
+    const [isChecked, setIsChecked] = useState(false)
+ 
     
 // LOAD BOOK FROM DB
     useEffect( ()=> {
@@ -39,10 +38,34 @@ function BookContent(props) {
             setArrayDataBook(bookDataJson.dataBook);
             setCommentData(bookDataJson.userCom);
       }
-        openBook();
-      },[])
 
-  
+      // Recherche du ID du livre dans Redux
+        var isBook = props.storeLibrairy.findIndex(book => book === idBook)
+        console.log(props.storeLibrairy[isBook])
+        if(isBook != -1){
+            setIsChecked(true)
+        }
+
+        openBook();
+      },[props.storeLibrairy])
+
+    //Function appel route addLibrairy
+    const addLibrairy = async (id,bool) => {
+      var responseFetch = await fetch(`${Ip()}:3000/home/addLibrairy/${id}/${bool}/${props.token}`)
+      var resp = await responseFetch.json();
+      //console.log("retour route librairy",resp)
+      if(resp){
+        setIsChecked(bool)
+        props.manageLibrairy(id,bool)
+        showMessage({
+            message: resp.mess,
+            type: resp.type,
+            icon:"auto",
+            backgroundColor:"#8FB2C9"
+          });
+      }
+    }
+
 
 // CARD CONTENT CREATION  
 let arrayColor = ['#a5af2a','#fda329','#24c6ae'];
@@ -63,7 +86,8 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
         }
 
 ////   COMMENTAIRES SUR L'OUVRAGE
-
+console.log(isChecked, '666')
+console.log(idBook, '777')
         return (
     <TouchableOpacity
         onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,idContent:obj.idContent,listAllIdContent:listIdContentForSwipe,position:i});props.navigation.navigate('contentMediaPage');}}
@@ -161,13 +185,23 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                             borderLeftWidth:1, borderColor:"black"}}
                             source= {{ uri: arrayDataBook.coverImage }}
                         />
-                          <Text style={{fontSize:15,textAlign:"center",paddingBottom:5, borderRadius:10}}>
+                        <View style={{flex:1, flexDirection: "row"}}>
+                        <Text style={{fontSize:15/* ,textAlign:"center",paddingBottom:5, borderRadius:10 */}}>
                             {arrayDataBook.title}
                         </Text>
+                        <CheckBox 
+                            onPress={() =>{addLibrairy(idBook,!isChecked)}}
+                            checked={isChecked}
+                            checkedColor="#F9603E"
+                        />
+                         
+                        </View>
+                        
                         <View style={{alignItems:"flex-start"}}>
                             <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
                             <Text style ={{fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
-                        </View> 
+                        </View>
+                        
                         <View>            
                             <Text style={{textAlign:'center',marginTop:10,fontSize:14}}>{arrayDataBook.description}</Text>         
                         </View>
@@ -225,7 +259,11 @@ function mapDispatchToProps(dispatch) {
                 contentData : obj 
               } ) 
         },
-
+        manageLibrairy: function(id,bool){
+            dispatch({type: 'manageLibrairy',
+            id: id,
+            bool:bool})
+          } 
     }
   }
 
