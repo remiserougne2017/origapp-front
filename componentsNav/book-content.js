@@ -9,6 +9,8 @@ import OverlayRating from './overlay-rating';
 import Ip from './Ip'; // A enlever en production !
 import colorImport from './color';
 import Comment from './comment'
+import { showMessage} from "react-native-flash-message";
+
 
 function BookContent(props) { 
     
@@ -21,13 +23,9 @@ function BookContent(props) {
     const [commentData, setCommentData]=useState([]);
     const [isChecked, setIsChecked] = useState(false)
  
-    console.log("IS CHECKED ?????",isChecked,props.navigation.state.params.idBook)
 // LOAD BOOK FROM DB
-// console.log(' PROPS PARAMS///////////////////////////////////////////////////////////',props.navigation.state.params.idBook)
-// console.log(' ID BOOK ///////////////////////////////////////////////////////////',idBook)
     useEffect( ()=> {
         async function openBook() {
-            // console.log("BOOK DATA1",idBook)
             var bookData = await fetch(`${Ip()}:3000/books/open-book`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
@@ -35,14 +33,12 @@ function BookContent(props) {
                   }
             );
             var bookDataJson = await bookData.json();
-            // console.log("BOOK DATA2",idBook)
             setArrayDataBook(bookDataJson.dataBook);
             setCommentData(bookDataJson.userCom);
       }
 
       // Recherche du ID du livre dans Redux
         var isBook = props.storeLibrairy.findIndex(book => book === props.navigation.state.params.idBook)
-        console.log(props.storeLibrairy[isBook])
         if(isBook != -1){
             setIsChecked(true)
         }
@@ -54,9 +50,8 @@ function BookContent(props) {
     const addLibrairy = async (id,bool) => {
       var responseFetch = await fetch(`${Ip()}:3000/home/addLibrairy/${id}/${bool}/${props.token}`)
       var resp = await responseFetch.json();
-      //console.log("retour route librairy",resp)
       if(resp){
-        setIsChecked(bool)
+        setIsChecked(bool);
         props.manageLibrairy(id,bool)
         showMessage({
             message: resp.mess,
@@ -177,7 +172,6 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
 
     //Création d'une fonction parent pour gerer le booleen isVisible & overlayRating Visible 
     const parentRatingFunction = (bool)=>{
-        console.log("BOOOOOOL",bool)
         setOverlayRatingVisible(bool)
 
     }
@@ -189,11 +183,11 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
             <CheckBox
                 iconRight
                 center
-                onPress={() =>{addLibrairy(props.navigation.state.params.idBook,!isChecked)}}
+                onPress={() =>{console.log("Is checked on press",isChecked);addLibrairy(props.navigation.state.params.idBook,!isChecked)}}
                 checked={isChecked}
                 checkedColor="#F9603E"
                 containerStyle={{backgroundColor:'#d6d6d6', borderWidth:0,position:"absolute",
-                right:90,top:-30}}
+                right:90,top:-30,}}
                 />
             <Image 
                 style={{width: 150, height: 150,borderRadius: 150,position:"relative",

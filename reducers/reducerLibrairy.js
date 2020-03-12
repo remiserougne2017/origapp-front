@@ -1,5 +1,4 @@
 export default function(storeLibrairy =[], action){
-    // console.log('reducer Librairy',action)
     if(action.type == 'manageLibrairy' && action.bool==true){
         var index = storeLibrairy.findIndex(e=>e==action.id)
         if(index==-1){
@@ -11,7 +10,6 @@ export default function(storeLibrairy =[], action){
     } else {
         if(action.type == 'manageLibrairy' && action.bool==false){
             var newLibrairy = storeLibrairy.filter(e=>e!=action.id)
-            console.log("reducer remove librairy",newLibrairy)
             return newLibrairy
         }else{
             return storeLibrairy

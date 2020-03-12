@@ -16,7 +16,6 @@ import style from '../stylesheet/stylesheet'
 
 function Home(props) {
   
-//console.log("STORE-Librairy",props.storeLibrairy)
 
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
@@ -30,7 +29,6 @@ function Home(props) {
     const librairyToStore= ()=>{
     var NewCatalist = cataList.map(e=>{
        if(e.inLibrairy==true){
-        // console.log("NewCatalist IF",e.inLibrairy)
          props.manageLibrairy(e.id,true)
        }else{
          null
@@ -50,10 +48,8 @@ function Home(props) {
     }, 3000);
     const catalogue = async() =>{
       // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
-      console.log("WELCOME HOME")
       var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
       var bookList = await responseFetch.json();
-      // console.log('CATALISTE',bookList)
       setCataList(bookList.livreMin)
       
       // Chargement livres mieux notés
@@ -73,13 +69,11 @@ function Home(props) {
       setLoader(false)
     };
     catalogue();   
-    console.log('HEY CATLOGUE')
   },[props.storeLibrairy])//ou alors ? props.isFocused,props.storeLibrairy
 
   useEffect(()=>{
     const catalogue = async() =>{
       // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
-      console.log("WELCOME HOME")
       var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
@@ -89,15 +83,12 @@ function Home(props) {
 
    useEffect(()=>{
      const rechercheText = async()=>{
-       //console.log("recherche en cours",textSearch)
        var responseFetch = await fetch(`${Ip()}:3000/home/searchtext/${props.token}`,{
         method: 'POST',
        headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},
        body: `textSearch=${textSearch}`
       })
-      //  console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", "textSearch", textSearch)
        var resultatsearch = await responseFetch.json();
-      //console.log("ok pr le search",resultatsearch)
       setCataList(resultatsearch.resultMin)
       
     };
@@ -107,7 +98,6 @@ function Home(props) {
 
   //RS creation du tableau de books pour afficher le catalogue
   var Book = cataList.map((e,i)=>{
-    // console.log("cataListe MAP",e.inLibrairy)
    return(
     <Books id={e.id} key={i} inLibrairy={e.inLibrairy} title={e.title} image={e.image} authors={e.authors} illustrators={e.illustrator} rating={e.rating} />
    )
@@ -126,7 +116,6 @@ const fetchTag = async (tags)=>{
     headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},    
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token=${props.token}`});
     var resultatSearch = await responseFetch.json();
-    console.log("TAGRESULT",await resultatSearch)
     if(resultatSearch.result == 'ok'){
       setErrorMessage('')
       setCataList(resultatSearch.resultMin)
@@ -164,15 +153,7 @@ for (let i=0;i<tagsList.length;i++){
 />
  ) 
 }
-  // var Tags = tagsList.map((e,i)=>{
-  //   return (
-  //     <Badge key={i} 
-  //     onPress={()=>{console.log("onPress Tags");onPressTag(e._id)}}
-  //     value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12}}>{e.name}</Text>}
-  //     badgeStyle={{backgroundColor: e.color, margin:3}}
-  //   />
-  //   )
-  // })
+
   return (
     
      <View style={{ flex: 1, width:"100%", backgroundColor:'white'}}>

@@ -14,7 +14,6 @@ import style from '../stylesheet/stylesheet'
 
 function Library(props) {
 
-  console.log("IS FOCUSED ? ",props.isFocused)
   const [mesLivres,setMesLivres]=useState([]);
   const [lastRead,setLastRead]=useState([]);
   const [errorMessage,setErrorMessage]=useState('')
@@ -25,7 +24,6 @@ function Library(props) {
     const maBibliotheque = async() =>{
       var responseFetch = await fetch(`${Ip()}:3000/home/myLibrary/${props.token}`)
       var responseLivres = await responseFetch.json();
-      // console.log("REponse librairy",responseLivres)
        setMesLivres(responseLivres)
     };  
     maBibliotheque();  
@@ -41,11 +39,9 @@ function Library(props) {
     lastReads();
 
     const suggest = async() =>{
-      // console.log('INIT SUGGESTION')
-      // console.log('props',props.token)
+
       var suggestFetch = await fetch(`${Ip()}:3000/home/suggest/${props.token}`)
       var Suggestions = await suggestFetch.json();
-      // console.log("/////////////// SUGGEST",Suggestions);
       setSuggestBooks(Suggestions.mySuggest)      
     };
 
@@ -53,36 +49,7 @@ function Library(props) {
 
   },[props.storeLibrairy,props.isFocused])
 
-  // Initialisation Last Reads
-  // useEffect(()=>{
-  //   const lastReads = async() =>{
 
-  //     var responseFetch = await fetch(`${Ip()}:3000/lists/lastRead/${props.token}`)
-  //     var responseLastReads = await responseFetch.json();
-  //     setLastRead(responseLastReads)
-      
-  //   };  
-
-  //   lastReads();  
-
-    
-  // },[])
-
-  // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!! LAST READ",lastRead)
-
-  //// Initialisation Suggestions
-  // useEffect(()=>{
-  //   const suggest = async() =>{
-  //     // console.log('INIT SUGGESTION')
-  //     // console.log('props',props.token)
-  //     var suggestFetch = await fetch(`${Ip()}:3000/home/suggest/${props.token}`)
-  //     var Suggestions = await suggestFetch.json();
-  //     console.log("/////////////// SUGGEST",Suggestions);
-  //     setSuggestBooks(Suggestions.mySuggest)      
-  //   };
-
-  //   suggest();
-  // },[])
 
   //Création du tableau pour afficher la bibliothèque
   var Book = mesLivres.map((e,i)=>{
@@ -125,8 +92,7 @@ function Library(props) {
     })
   })
 
-// console.log("Les suggest..................................",Suggest)
-/////////////////////////////////////////////////////////
+
   return (
      <View style={{ flex: 1, width:"100%", backgroundColor:'white'}}>
        <View style={{ flexDirection:"row", marginTop:25}}>
