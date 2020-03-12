@@ -28,7 +28,7 @@ export function registerScreens() {
 
 function  Parameters(props) { 
   /// recup identité user du store
-const [username, setUsername]= useState('')
+const [username, setUsername]= useState(props.prenom)
 const [isVisible,setIsVisible] =useState(false)
 const [pwd1,setPwd1]=useState("")
 const [pwd2,setPwd2]=useState("")
@@ -80,7 +80,7 @@ var clickLogOut = () => {
   AsyncStorage.removeItem("token")
   props.navigation.navigate('SignIn') }
 
-  useEffect(() => {
+/*   useEffect(() => {
   const findUser = async () => {
     const dataUser = await fetch (`${Ip()}:3000/users/logout/${props.token}`);
     let resJson = await dataUser.json()
@@ -89,7 +89,7 @@ var clickLogOut = () => {
 findUser()
 console.log("useEffect")
 },[])
-
+ */
 //Fetch update PWD
 const updatePwd= async () =>{
   const dataUser = await fetch (`${Ip()}:3000/users/update/${props.token}`,
@@ -228,17 +228,6 @@ const OverlayContact = (bool)=>{
              containerStyle={{marginLeft:10,marginRight:10}}
         />
         <View style={{flexDirection: 'column', justifyContent: "center", marginTop:20}}>
-<<<<<<< HEAD
-            {editableName(isVisible)}
-            {nameRow(isVisible)}
-          
-          
-          
-          <Text style={{marginLeft: 0, fontSize:10}}
-          onPress={()=>{console.log("chgt mdp R");setIsVisible(true)}}
-          title="e">Changer mon mot de passe
-          </Text>
-=======
           <View style={{flexDirection:"row"}}>
             <TouchableOpacity  onPress={()=>{console.log("onPressEdit");setEditableText(true)}}>
             <TextInput 
@@ -257,7 +246,6 @@ const OverlayContact = (bool)=>{
           <Text style={{marginLeft: 0, fontSize:12,marginTop:10}}
           onPress={()=>{setIsVisible(true)}}
           >Changer mon mot de passe</Text>
->>>>>>> f068c368f56747d6f8e306845a2b56d47361bd36
         </View>
         
       </View> 
@@ -281,13 +269,8 @@ const OverlayContact = (bool)=>{
           <Button
             icon={   
                 <Icon 
-<<<<<<< HEAD
-                iconStyle={{ color: "black"}}
-                name="group" type='fontawesome'  color={{ color: "black"}} size= {20}
-=======
                 name="group" type='fontawesome' 
                 color= "black" size= {20}
->>>>>>> f068c368f56747d6f8e306845a2b56d47361bd36
                 onPress={() => console.log("voir les credits")}
                 />
           } 
@@ -342,4 +325,6 @@ const OverlayContact = (bool)=>{
        }
   }};
   
+
+
 export default connect(mapStateToProps,mapDispatchToProps)(Parameters)
