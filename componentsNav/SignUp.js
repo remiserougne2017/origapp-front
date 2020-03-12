@@ -34,13 +34,14 @@ function SignUp(props) {
  if(!tokenExists && loading){
   //<Loader bool={loader} text="Chargement"/>
  formSignUp = <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
- <View>
+ <View style={{marginTop:50}}>
    <View style={{ flexDirection:"row", marginBottom:50}}>
      <Image
          style={{width: 100, height: 100}}
          source={require('../assets/logoOrigapp.png')}
        />
-     <Text style={{ marginTop:25,marginLeft:5, fontSize:32, fontWeight:"500"}} >OrigApp</Text>
+     <Text style={{ marginTop:25,marginLeft:5,
+       fontSize:32, fontWeight:"500"}} >OrigApp</Text>
    </View>
       
       <View style={{marginBottom:20}}>
