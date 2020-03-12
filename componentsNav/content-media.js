@@ -219,17 +219,11 @@ var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
                                 padding:5,color:"black",marginBottom:10,fontSize:25,marginTop:20,marginLeft:10,marginRight:10,textAlign:'center',
                                 borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth,borderRadius:10, }}>{dataContent.content.title}</Text>
                 </View>
-<<<<<<< HEAD
-
-                {displayListMedia}
-
-=======
                 <View>
                     <ScrollView>                        
                         {displayMedia}                 
                     </ScrollView>
                 </View>                        
->>>>>>> 9a26e53e229089fdc337ee603a7135c5a7e1d557
             </View>
         </GestureRecognizer>
 

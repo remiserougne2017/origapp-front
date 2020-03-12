@@ -1,9 +1,5 @@
 import React, {useState,useEffect} from 'react';
-<<<<<<< HEAD
 import { StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity,ScrollView} from 'react-native';
-=======
-import { StyleSheet, Text, View,ScrollView,Image,TouchableOpacity} from 'react-native';
->>>>>>> 9a26e53e229089fdc337ee603a7135c5a7e1d557
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 // import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
