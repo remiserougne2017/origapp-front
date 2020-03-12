@@ -12,10 +12,11 @@ import { withNavigationFocus } from 'react-navigation';
 import color from './color';
 import Loader from './loader';
 import Ip from './Ip';
+import style from '../stylesheet/stylesheet'
 
 function Home(props) {
   
-console.log("STORE-Librairy",props.storeLibrairy)
+//console.log("STORE-Librairy",props.storeLibrairy)
 
   const [textSearch, setTextSearch] = useState("");
   const [cataList,setCataList]=useState([]);
@@ -158,7 +159,7 @@ for (let i=0;i<tagsList.length;i++){
  Tags.push(
 <Badge key={i} 
   onPress={()=>{onPressTag(tagsList[i]._id)}}
-  value={<Text style={{color: 'white', paddingLeft:7,paddingRight:7,paddingTop:9, paddingBottom:12}}>{tagsList[i].name}</Text>}
+  value={<Text style={style.badgeText}>{tagsList[i].name}</Text>}
   badgeStyle={{backgroundColor: tagsList[i].color, margin:3}}
 />
  ) 
@@ -215,7 +216,7 @@ for (let i=0;i<tagsList.length;i++){
                         alignItems:'center', 
                         marginTop:10, 
                         marginLeft:10}}>
-            <Text style={{color:"#F9603E"}}>Les mieux notés</Text>
+            <Text style={style.secondaryTitle}>Les mieux notés</Text>
             
           </View>
 
@@ -233,7 +234,7 @@ for (let i=0;i<tagsList.length;i++){
                         marginLeft:10,
                         paddingBottom:5, 
                         backgroundColor:'white'}}>
-          <Text style={{color:"#F9603E"}}>Catalogue</Text>
+          <Text style={style.secondaryTitle}>Catalogue</Text>
           </View>   
           
           <ScrollView contentContainerStyle={{padding: 5}}>

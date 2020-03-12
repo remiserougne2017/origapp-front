@@ -15,6 +15,9 @@ import Ip from './Ip' // A enlever en production !
 import Audio from './audio'
 import colorImport from './color';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import style from '../stylesheet/stylesheet';
+
+
 
 function contentMedia(props) { 
 
@@ -58,7 +61,7 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                     isLooping
                     style={{ width: '100%', height: 300 }}
                     />
-                <Text style = {{marginLeft:15,fontStyle:'italic'}}>Vidéo : {med.title}</Text>
+                <Text style = {{...style.mainParagraphText,marginLeft:15,fontStyle:'italic'}}>{med.title}</Text>
             </View> 
             } else {
                 displayBlocMedia =
@@ -69,7 +72,7 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                         javaScriptEnabled={true}
                         domStorageEnabled={true}   
                         />
-                    <Text style = {{marginLeft:15,fontStyle:'italic'}}>Vidéo : {med.title}</Text>
+                    <Text style = {{...style.mainParagraphText,marginLeft:15,fontStyle:'italic'}}>{med.title}</Text>
                 </View>
             }
         break; 
@@ -89,13 +92,13 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                     style={{width: "100%", height: 400, marginTop:20}}
                     source= {{ uri: med.source }}
                 />
-                <Text style = {{marginLeft:15 ,fontStyle:'italic'}}>Image : {med.title}</Text>
+                <Text style = {{...style.mainParagraphText,marginLeft:15 ,fontStyle:'italic'}}>{med.title}</Text>
             </View>
         break;  
         case 'text':
         displayBlocMedia = 
             <View style ={{marginTop:10 ,marginBottom:10}}>
-                <Text style={{fontSize:20,marginTop:20,marginLeft:25,marginRight:25,
+                <Text style={{...style.mainParagraphText,fontSize:20,marginTop:20,marginLeft:25,marginRight:25,
                 marginBottom:10,textAlign:'center',textAlign:'justify'}}>
                     {med.title}
                 </Text>
@@ -108,9 +111,9 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                 <View style = {{flexDirection:'row',marginLeft:50,marginRight:50,
                  justifyContent:'center',marginTop:20}}>
                     <Icon name= 'quote' type='entypo'  size= {30} margin={5} color= '#F9603E'/>
-                    <Text style={{fontSize:22,textAlign:'justify', color:'#F9603E'}}>{med.texte}</Text>
+                    <Text style={{...style.mainParagraphText,fontSize:22,textAlign:'justify', color:'#F9603E'}}>{med.texte}</Text>
                 </View>
-                <Text style={{fontSize:12,marginTop:20,marginLeft:70,marginRight:25,
+                <Text style={{...style.mainParagraphText,fontSize:12,marginTop:20,marginLeft:70,marginRight:25,
                     marginBottom:10,textAlign:'center',textAlign:'justify'}}>{med.title}</Text>
             </View>
         break;
