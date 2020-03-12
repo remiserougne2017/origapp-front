@@ -9,6 +9,7 @@ import OverlayRating from './overlay-rating';
 import Ip from './Ip'; // A enlever en production !
 import colorImport from './color';
 import Comment from './comment';
+import style from '../stylesheet/stylesheet';
 import {showMessage, hideMessage } from "react-native-flash-message";
 
 function BookContent(props) { 
@@ -47,7 +48,7 @@ function BookContent(props) {
         }
 
         openBook();
-      },[props.storeLibrairy])
+      },[overlayRatingVisible,props.storeLibrairy])
 
     //Function appel route addLibrairy
     const addLibrairy = async (id,bool) => {
@@ -68,14 +69,8 @@ function BookContent(props) {
 
 
 // CARD CONTENT CREATION  
-let arrayColor = ['#a5af2a','#fda329','#24c6ae'];
-let listIdContentForSwipe = []
+let dataContentToMediaPage = []
 let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.pageNum - objB.pageNum;}).map((obj,i) => {
-        listIdContentForSwipe.push(obj.idContent);
-        let urlImageContent;
-        if((obj.imageContent == null)||(obj.imageContent == undefined)) {
-                urlImageContent = arrayDataBook.coverImage
-        } else { urlImageContent = obj.imageContent}
         var badgeColor;
         if(i%3==0) {
             badgeColor = '#a5af2a'
@@ -84,16 +79,23 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
         } else if(i%2==0){
             badgeColor = '#24c6ae'
         }
+        dataContentToMediaPage.push({
+            idContent:obj.idContent,
+            color:badgeColor,
+        });
+        let urlImageContent;
+        if((obj.imageContent == null)||(obj.imageContent == undefined)) {
+                urlImageContent = arrayDataBook.coverImage
+        } else { urlImageContent = obj.imageContent}
 
-////   COMMENTAIRES SUR L'OUVRAGE
-console.log(isChecked, '666')
-console.log(idBook, '777')
+
         return (
     <TouchableOpacity
-        onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,idContent:obj.idContent,listAllIdContent:listIdContentForSwipe,position:i});props.navigation.navigate('contentMediaPage');}}
+        onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,dataContentFromBook:dataContentToMediaPage,position:i});props.navigation.navigate('contentMediaPage');}}
+        key = {i}
         >
         <View
-            style={{width:'100%',marginBottom:10,paddingBottom:10,borderBottomWidth:1,borderBottomColor:'#EAEAEA',     
+            style={{width:'100%',marginBottom:10,paddingBottom:10,borderBottomWidth:1,borderColor:'#EAEAEA',borderTopWidth:1
 
         }}
             >
@@ -172,7 +174,9 @@ console.log(idBook, '777')
 
     //Création d'une fonction parent pour gerer le booleen isVisible & overlayRating Visible 
     const parentRatingFunction = (bool)=>{
+        console.log("BOOOOOOL",bool)
         setOverlayRatingVisible(bool)
+
     }
 // RETURN GLOBAL DE LA PAGE
     return (
@@ -219,8 +223,12 @@ console.log(idBook, '777')
                             borderLeftWidth:1, borderColor:"black"}}
                             source= {{ uri: arrayDataBook.coverImage }}
                         />
+<<<<<<< HEAD
                         <View style={{flex:1, flexDirection: "row"}}>
                         <Text style={{fontSize:15/* ,textAlign:"center",paddingBottom:5, borderRadius:10 }}>
+=======
+                          <Text style={{...style.mainParagraphText,fontSize:15,textAlign:"center",paddingBottom:5, borderRadius:10}}>
+>>>>>>> 9b2688c8c5343ded9411768d4efb66df60ee440d
                             {arrayDataBook.title}
                         </Text>
                         <CheckBox 
@@ -229,13 +237,12 @@ console.log(idBook, '777')
                             checkedColor="#F9603E"
                         />
                          
-                        </View>
+                    </View>
                         
                         <View style={{alignItems:"flex-start"}}>
-                            <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
-                            <Text style ={{fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
-                        </View>
-                        
+                            <Text style ={{...style.mainParagraphText,fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
+                            <Text style ={{...style.mainParagraphText,fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
+                        </View> 
                         <View>            
                             <Text style={{textAlign:'center',marginTop:10,fontSize:14}}>{arrayDataBook.description}</Text>         
                             </View>*/}
@@ -243,7 +250,7 @@ console.log(idBook, '777')
                 </View>
               
                 <View style = {{marginRight:20,backgroundColor:"white",width:"100%"}}>
-                    <Text style={{fontSize:25,marginTop:20,marginBottom:10,paddingTop:30,paddingBottom:10,paddingLeft:10}}>Les contenus à découvrir...</Text>
+                    <Text style={style.bookPageSectionTitle}>Les contenus à découvrir...</Text>
                 </View>
 
                 <ScrollView>
@@ -260,7 +267,7 @@ console.log(idBook, '777')
                 </View>
                 </ScrollView>
                 <View style = {{marginRight:20,backgroundColor:"white",width:"100%",paddingLeft:10}}>
-                    <Text style={{fontSize:25,marginTop:20,paddingTop:30,paddingBottom:10}}>Les avis et commentaires</Text>
+                    <Text style={style.bookPageSectionTitle}>Les avis et commentaires</Text>
                     <View style = {{marginBottom:10,backgroundColor:colorImport('red'),width:140,borderRadius:10, marginLeft:'auto',marginRight:10}}>
                             <Text onPress={() =>{setOverlayRatingVisible(true)}} style={{fontStyle:"italic", padding:5,color:"white",textAlign:'center'}}>Partagez votre avis
                             </Text>    

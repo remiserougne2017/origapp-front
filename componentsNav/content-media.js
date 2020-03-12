@@ -15,21 +15,25 @@ import Ip from './Ip' // A enlever en production !
 import Audio from './audio'
 import colorImport from './color';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import style from '../stylesheet/stylesheet';
+
+
 
 function contentMedia(props) { 
 
 //VARIABLES
 const [dataContent,setDataContent] = useState({content: {title:"",media:[{type:''}],title:""}})
 const [position,setPosition]=useState(props.contentMediaData.position);
-const [arrayIdContent,setArrayIdContent] = useState(props.contentMediaData.listAllIdContent);
-
+let arrayContent = props.contentMediaData.dataContentFromBook;
+console.log('/////////////// PROPS',props.contentMediaData.dataContentFromBook);
+let badgeColor = props.contentMediaData.dataContentFromBook[position].color
 // LOAD MEDIA CONTENT FROM DB
     useEffect( ()=> {
         async function openContent() {
             var resContentData = await fetch(`${Ip()}:3000/books/open-content`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
-                    body: `idBook=${props.contentMediaData.idBook}&idContent=${arrayIdContent[position]}`
+                    body: `idBook=${props.contentMediaData.idBook}&idContent=${arrayContent[position].idContent}`
                   }
             );
             var resContentDataJson = await resContentData.json();
@@ -58,7 +62,7 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                     isLooping
                     style={{ width: '100%', height: 300 }}
                     />
-                <Text style = {{marginLeft:15,fontStyle:'italic'}}>Vidéo : {med.title}</Text>
+                <Text style = {{...style.mainParagraphText,marginLeft:15,fontStyle:'italic'}}>{med.title}</Text>
             </View> 
             } else {
                 displayBlocMedia =
@@ -69,7 +73,7 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                         javaScriptEnabled={true}
                         domStorageEnabled={true}   
                         />
-                    <Text style = {{marginLeft:15,fontStyle:'italic'}}>Vidéo : {med.title}</Text>
+                    <Text style = {{...style.mainParagraphText,marginLeft:15,fontStyle:'italic'}}>{med.title}</Text>
                 </View>
             }
         break; 
@@ -89,13 +93,13 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                     style={{width: "100%", height: 400, marginTop:20}}
                     source= {{ uri: med.source }}
                 />
-                <Text style = {{marginLeft:15 ,fontStyle:'italic'}}>Image : {med.title}</Text>
+                <Text style = {{...style.mainParagraphText,marginLeft:15 ,fontStyle:'italic'}}>{med.title}</Text>
             </View>
         break;  
         case 'text':
         displayBlocMedia = 
             <View style ={{marginTop:10 ,marginBottom:10}}>
-                <Text style={{fontSize:20,marginTop:20,marginLeft:25,marginRight:25,
+                <Text style={{...style.mainParagraphText,fontSize:20,marginTop:20,marginLeft:25,marginRight:25,
                 marginBottom:10,textAlign:'center',textAlign:'justify'}}>
                     {med.title}
                 </Text>
@@ -108,9 +112,9 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                 <View style = {{flexDirection:'row',marginLeft:50,marginRight:50,
                  justifyContent:'center',marginTop:20}}>
                     <Icon name= 'quote' type='entypo'  size= {30} margin={5} color= '#F9603E'/>
-                    <Text style={{fontSize:22,textAlign:'justify', color:'#F9603E'}}>{med.texte}</Text>
+                    <Text style={{...style.mainParagraphText,fontSize:22,textAlign:'justify', color:'#F9603E'}}>{med.texte}</Text>
                 </View>
-                <Text style={{fontSize:12,marginTop:20,marginLeft:70,marginRight:25,
+                <Text style={{...style.mainParagraphText,fontSize:12,marginTop:20,marginLeft:70,marginRight:25,
                     marginBottom:10,textAlign:'center',textAlign:'justify'}}>{med.title}</Text>
             </View>
         break;
@@ -140,7 +144,7 @@ const [borderWidth,setBorderWidth] = useState(0);
 
 // Swipe
 function onSwipeLeft() {
-    if(position<props.contentMediaData.listAllIdContent.length-1){
+    if(position<props.contentMediaData.dataContentFromBook.length-1){
         setPosition(position+1);
     }
 }
@@ -153,13 +157,13 @@ function onSwipeRight() {
         }
 }
 
-var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
+var bulletBreadCrumb = props.contentMediaData.dataContentFromBook.map((obj, j) => {
     var bulletSize = 5
     if(j==position) {
             bulletSize = 10
     }
     return (
-        <View style = {{height:bulletSize,width:bulletSize,backgroundColor:'#fda329',borderRadius:100,margin:15}}></View>
+        <View style = {{height:bulletSize,width:bulletSize,backgroundColor:badgeColor,borderRadius:100,margin:15}}></View>
         )
 
     })
@@ -183,7 +187,7 @@ var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
                      {bulletBreadCrumb}
                 </View>
                <View style ={{marginTop:10, display:"flex", flexDirection:'row', alignItems:'center', height:15}}>
-                    <View style = {{flexDirection:'row', backgroundColor:'#fda329',position:'absolute',left:0,padding:5,borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15}}>
+                    <View style = {{flexDirection:'row', backgroundColor:badgeColor,position:'absolute',left:0,padding:5,borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15}}>
                         <Icon 
                                 name= 'back' type='antdesign'  size= {20} margin={5} marginLeft={20} color={'white'}
                                 onPress={() => props.navigation.navigate('BookContent')}
@@ -192,7 +196,7 @@ var bulletBreadCrumb = props.contentMediaData.listAllIdContent.map((obj, j) => {
                             {titleShort}
                         </Text>
                     </View>
-                    <Text style = {{backgroundColor:'#fda329',position:'absolute',right:0,padding:5,borderTopLeftRadius:10,borderBottomLeftRadius:10,color:'white'}}>
+                    <Text style = {{backgroundColor:badgeColor,position:'absolute',right:0,padding:5,borderTopLeftRadius:10,borderBottomLeftRadius:10,color:'white'}}>
                         page {dataContent.pageNum}
                     </Text>
                 </View>

@@ -1,4 +1,4 @@
-import React, {useState, AsyncStorage} from 'react';
+import React, {useState, useEffect,AsyncStorage} from 'react';
 import { Icon } from 'react-native-elements';
 import {Image, ShadowPropTypesIOS} from 'react-native'
 import {createAppContainer } from 'react-navigation';
@@ -28,6 +28,9 @@ import {Provider} from 'react-redux';
 import reducerToken from './reducers/reducerToken';
 import reducerPrenom from './reducers/reducerPrenom';
 import {createStore, combineReducers}  from 'redux';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+
 
 const store = createStore(combineReducers({reducerToken,storeLibrairy, reducerPrenom, overlayData,contentMediaData}),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
@@ -40,6 +43,12 @@ console.disableYellowBox = true;
 
 
 // comment Vincent : 3 stack navigator interieurs
+
+
+// Use the font with the fontFamily property
+
+
+
 var StackNavigatorLibrary = createStackNavigator(
   {
     Library:Library,
@@ -118,7 +127,20 @@ var BottomNavigator = createBottomTabNavigator(
   // comment Vincent : return global de app
   var NavigationVariable = createAppContainer(StackNavigator)
 
+   
+
   function App() {
+
+  const [fontLoaded,setFontLoaded] = useState(false)
+  // useEffect(()=>{
+  const loadingFont= async ()=>{
+    await Font.loadAsync({
+      Montserrat: require('./assets/fonts/montserrat.ttf')
+    });
+  };
+  // setFontLoaded(true);
+  // loadingFont();
+// },[])
 /* 
 // Gérer le token dans le Local storage
 
@@ -131,7 +153,10 @@ AsyncStorage.getItem("token", function(error, data) {
 if(tokenExists){
   props.navigation.navigate('Home')
 } */
-  
+
+if(fontLoaded==true) {
+
+
     return (
     
       <Provider store={store}>
@@ -141,5 +166,15 @@ if(tokenExists){
   
     );
   }
-  
+
+else {
+  return (
+    <AppLoading
+    startAsync= {() => loadingFont()}
+    onFinish={() => setFontLoaded(true)}
+  />
+  )
+}
+
+}
   export default App;
