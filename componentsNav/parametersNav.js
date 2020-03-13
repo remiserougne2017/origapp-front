@@ -15,10 +15,10 @@ const [pwd1,setPwd1]=useState("")
 const [pwd2,setPwd2]=useState("")
 const [oContactVisible, setOContactVisible]=useState(false)
 const [editableText, setEditableText] = useState(false)
-const [newName, setNewName]=useState("")
+const [newName, setNewName]=useState(props.prenom)
 
 
-console.log("PRenom",username,props.prenom)
+console.log("PRenom",username,props.prenom,newName)
 //////////////////// CLICONTACT
 var clickContact = () => {
   setOContactVisible(!oContactVisible);
@@ -54,7 +54,7 @@ const sendNewName = async ()=>{
   
 }
 
-var clickLogOut = () => {
+const clickLogOut = () => {
   AsyncStorage.removeItem("token")
   AsyncStorage.removeItem("prenom")
   console.log("func clickLogOUt")
@@ -203,6 +203,7 @@ const OverlayContact = (bool)=>{
           <View style={{flexDirection:"row"}}>
             <TouchableOpacity  onPress={()=>{console.log("onPressEdit");setEditableText(true)}}>
             <TextInput 
+            // defaultValue={username}
             editable={editableText}
             style={{fontSize:20, fontWeight:"700", marginLeft:0,paddingHorizontal:10}}
             onChangeText={(value)=>{setNewName(value)}}
@@ -237,7 +238,7 @@ const OverlayContact = (bool)=>{
               buttonStyle={{backgroundColor:"transparent"}}
             />
        
-        <View style={{flexDirection:'row',justifyContent:"space-between"}}>
+        <View style={{flexDirection:'row',width:"100%",justifyContent:"space-evenly"}}>
           <Button
             icon={   
                 <Icon 
@@ -248,14 +249,14 @@ const OverlayContact = (bool)=>{
           } 
             
             title="Crédits"
-            type="transparent"
+            type="clear"
             titleStyle={{paddingLeft:5,color: "black"}}
             style={{marginRight: 0, marginLeft: "auto"}}
             
           /> 
           
           <Button
-          containerStyle={{marginRight:"auto"}}
+          containerStyle={{marginLeft:"auto"}}
             icon={   
                 <Icon 
                 iconRight
@@ -264,7 +265,7 @@ const OverlayContact = (bool)=>{
                 />
           } 
             title="Nous contacter"
-            type="transparent"
+            type="clear"
             titleStyle={{color: "black",paddingLeft:5}}   
             onPress={() => { clickContact() ; console.log("contact")}}
           />
