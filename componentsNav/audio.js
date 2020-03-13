@@ -22,7 +22,7 @@ const AudioPlay = (props) =>{
             var uriSound= `${Ip()}:3000/${props.source}`
 
             await soundObject.loadAsync({ uri: uriSound});
-            
+            console.log(uriSound)
             if(bool){
             // console.log("MEC",bool, uriSound)
             await soundObject.playAsync();

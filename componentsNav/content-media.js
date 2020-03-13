@@ -118,7 +118,7 @@ var displayMedia = dataContent.content.media.map((med, k) => {
             </View>
         break;
         default:
-        displayBlocMedia = <Text>Hello default</Text>
+        displayBlocMedia = <Text></Text>
     }
     return (
         <View key={k} style = {{marginBottom:15}}>

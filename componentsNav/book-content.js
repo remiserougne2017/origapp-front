@@ -10,6 +10,7 @@ import Ip from './Ip'; // A enlever en production !
 import colorImport from './color';
 import Comment from './comment'
 import { showMessage} from "react-native-flash-message";
+import style from '../stylesheet/stylesheet'
 
 
 function BookContent(props) { 
@@ -42,7 +43,7 @@ function BookContent(props) {
             setIsChecked(bookDataJson.inLibrairy)
                 }   
         openBook();
-      },[props.storeLibrairy,props.isFocused])
+      },[props.storeLibrairy,props.isFocused,overlayRatingVisible])
 
     //Function appel route addLibrairy
     const addLibrairy = async (id,bool) => {
@@ -200,8 +201,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
             </View> 
         </View>
         <View style = {{marginRight:20,backgroundColor:"white",width:"100%"}}>
-            <Text style={{fontSize:25,marginTop:20,marginBottom:10,
-                        paddingTop:30,paddingBottom:10,paddingLeft:10}}
+            <Text style={style.bookPageSectionTitle}
             >Les contenus à découvrir...</Text>
         </View>
 
@@ -218,8 +218,8 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
             />
         </View>
         </ScrollView>
-        <View style = {{marginRight:20,backgroundColor:"white",width:"100%",paddingLeft:10}}>
-            <Text style={{fontSize:25,marginTop:20,paddingTop:30,paddingBottom:10}}>Les avis et commentaires</Text>
+        <View style = {{marginRight:20,backgroundColor:"white",width:"100%"}}>
+            <Text style={style.bookPageSectionTitle}>Les avis et commentaires</Text>
             <View style = {{marginBottom:10,backgroundColor:colorImport('red'),width:140,borderRadius:10, marginLeft:'auto',marginRight:10}}>
                     <Text onPress={() =>{setOverlayRatingVisible(true)}} style={{fontStyle:"italic", padding:5,color:"white",textAlign:'center'}}>Partagez votre avis
                     </Text>    
