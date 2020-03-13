@@ -100,33 +100,6 @@ function SignUp(props) {
                 color='#FF473A'
                 onPress={() => clickSignUp(signUpFirstName, signUpEmail, signUpPassword, signUpPasswordMatch) }
                 />  
-                    <Button
-                title='nav HomePage'
-                color='#FF473A'
-                onPress={() =>{props.navigation.navigate('Home');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
-                />
-                    <Button
-                title='nav bookcontnt'
-                color='#FF473A'
-                onPress={() =>{props.navigation.navigate('BookContent');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
-                />
-                <Button
-                title='Paramètres'
-                color='#FF473A'
-                onPress={() =>{ props.navigation.navigate('Parameters');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6");
-                props.addPrenom("Rémi")}}
-                />  
-
-                    <Button
-                title='nav mediapage'
-                color='#FF473A'
-                onPress={() =>{props.navigation.navigate('contentMediaPage');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
-                />
-                <Button
-                title='RATING'
-                color='#FF473A'
-                onPress={() =>{props.navigation.navigate('RatingPage');props.addToken("dTsvaJw2PQiOtTWxykt5KcWco87eeSp6")}}
-                />
               </View>
 } else if(loading) {
   formSignUp = 

@@ -60,18 +60,6 @@ const sendPicture = async (path)=>{
      }
 }
 
-/* const OverlayNoBook = (bool) => {
-    <Overlay height={170} isVisible={bool} containerStyle={{justifyContent:"center", alignItems:"center"}}>
-        <View style={{flex:3,justifyContent:"flex-start",
-         alignItems:"center",marginTop:50}}>
-            <Text>Aucune correspondance n'a été trouvée</Text>
-        </View>
-        <View style={{flex:1,flexDirection:"row", justifyContent:"space-around"}}>
-        <Button title="Reprendre une photo" onPress={()=>{setIsVisible(false)}}></Button>
-        </View> 
-    </Overlay>
-
-} */
 
 if(props.isFocused && hasPermission) {
     //console.log('CAMERA!')
