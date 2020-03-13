@@ -15,7 +15,7 @@ const [pwd1,setPwd1]=useState("")
 const [pwd2,setPwd2]=useState("")
 const [oContactVisible, setOContactVisible]=useState(false)
 const [editableText, setEditableText] = useState(false)
-const [newName, setNewName]=useState(props.prenom)
+const [newName, setNewName]=useState("")
 
 
 console.log("PRenom",username,props.prenom)
@@ -206,7 +206,7 @@ const OverlayContact = (bool)=>{
             editable={editableText}
             style={{fontSize:20, fontWeight:"700", marginLeft:0,paddingHorizontal:10}}
             onChangeText={(value)=>{setNewName(value)}}
-            value={username}
+            value={newName}
             >
             </TextInput>
             </TouchableOpacity>
