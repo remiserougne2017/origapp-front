@@ -23,6 +23,7 @@ function BookContent(props) {
     const [commentData, setCommentData]=useState([]);
     const [isChecked, setIsChecked] = useState(false)
  
+    console.log("IS CHECKED IN COMPONENT", isChecked)
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         async function openBook() {
@@ -38,20 +39,24 @@ function BookContent(props) {
       }
 
       // Recherche du ID du livre dans Redux
-        var isBook = props.storeLibrairy.findIndex(book => book === props.navigation.state.params.idBook)
+        var isBook = props.storeLibrairy.findIndex(book => book == props.navigation.state.params.idBook)
+        console.log("id param",props.navigation.state.params.idBook)
+        console.log("IS BOOOOk",isBook)
         if(isBook != -1){
             setIsChecked(true)
         }
 
         openBook();
-      },[overlayRatingVisible,props.storeLibrairy,props.navigation.state.params.idBook,props.isFocused])
+      },[overlayRatingVisible,props.storeLibrairy,props.navigation.state.params.idBook])
 
     //Function appel route addLibrairy
     const addLibrairy = async (id,bool) => {
       var responseFetch = await fetch(`${Ip()}:3000/home/addLibrairy/${id}/${bool}/${props.token}`)
       var resp = await responseFetch.json();
       if(resp){
-        setIsChecked(bool);
+        // setIsChecked(bool);
+        console.log("IS CHECKED IN ADD LIBRAIRY FUNCTION", bool)
+
         props.manageLibrairy(id,bool)
         showMessage({
             message: resp.mess,
@@ -178,19 +183,19 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
 // RETURN GLOBAL DE LA PAGE
     return (
     <ScrollView stickyHeaderIndices={[1,3]} style ={{backgroundColor:"white"}}>     
-        <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',paddingBottom:20,backgroundColor:"#d6d6d6"}}>
+        <View  style = {{ flex: 1, position:"relative",alignItems: 'center', justifyContent: 'center',paddingBottom:20,backgroundColor:"#d6d6d6"}}>
             <View style = {{alignItems: 'center', justifyContent: 'center',marginTop:60}}>
             <CheckBox
                 iconRight
                 center
-                onPress={() =>{console.log("Is checked on press",isChecked);addLibrairy(props.navigation.state.params.idBook,!isChecked)}}
+                onPress={() =>{console.log("IS CHECKED ON PRESS",isChecked);addLibrairy(props.navigation.state.params.idBook,!isChecked)}}
                 checked={isChecked}
                 checkedColor="#F9603E"
                 containerStyle={{backgroundColor:'#d6d6d6', borderWidth:0,position:"absolute",
-                right:90,top:-30,}}
+                right:100,top:-30,}}
                 />
             <Image 
-                style={{width: 150, height: 150,borderRadius: 150,position:"relative",
+                style={{width: 150, height: 150,borderRadius: 150,
                 marginTop:-15, borderStartWidth:1, borderEndWidth:1,borderRightWidth:1,
                 paddingBottom:0, marginBottom: 0,
                 borderLeftWidth:1, borderColor:"black"}}
