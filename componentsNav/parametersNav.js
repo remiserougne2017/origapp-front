@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import color from './color';
 import Ip from './Ip'; // A enlever en production;
 import {showMessage, hideMessage } from "react-native-flash-message";
-
+import { withNavigationFocus } from 'react-navigation';
 
 function  Parameters(props) { 
   /// recup identité user du store
@@ -55,12 +55,13 @@ const sendNewName = async ()=>{
 }
 
 const clickLogOut = () => {
-  AsyncStorage.removeItem("token")
-  AsyncStorage.removeItem("prenom")
-  console.log("func clickLogOUt")
-  props.deleteToken()
-  props.deletePrenom()
-  props.navigation.navigate('SignIn') }
+  props.navigation.navigate('SignIn');
+  props.deleteToken();
+  props.deletePrenom();
+  AsyncStorage.removeItem("token");
+  AsyncStorage.removeItem("prenom");
+ 
+   }
 
 //Fetch update PWD
 const updatePwd= async () =>{
@@ -300,4 +301,4 @@ const OverlayContact = (bool)=>{
   
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(Parameters)
+export default withNavigationFocus(connect(mapStateToProps,mapDispatchToProps)(Parameters))
