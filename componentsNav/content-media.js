@@ -157,7 +157,6 @@ function onSwipeRight() {
         }
 }
 
-
 const config = {
     velocityThreshold: 0.3,
     directionalOffsetThreshold: 80
@@ -194,7 +193,8 @@ var bulletBreadCrumb = props.contentMediaData.dataContentFromBook.map((obj, j) =
                      {bulletBreadCrumb}
                 </View>
                <View style ={{marginTop:10, display:"flex", flexDirection:'row', alignItems:'center', height:15}}>
-                    <View style = {{flexDirection:'row', backgroundColor:badgeColor,position:'absolute',left:0,padding:5,borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15}}>
+                    <View style = {{flexDirection:'row', backgroundColor:badgeColor,position:'absolute',left:0,padding:5,
+                                    borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15}}>
                         <Icon 
                                 name= 'back' type='antdesign'  size= {20} margin={5} marginLeft={20} color={'white'}
                                 onPress={() => props.navigation.navigate('BookContent')}

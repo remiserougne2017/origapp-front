@@ -24,7 +24,7 @@ const askPermission =async() => {
           setHasPermission(status === 'granted');
         };
 //console.log("type?",type)
-//console.log("PERMISSION?",props.isFocused,hasPermission)
+console.log("PERMISSION?",props.isFocused,hasPermission)
 //Fonction fetch pour poster photo au backend
 
 const sendPicture = async (path)=>{
@@ -62,9 +62,8 @@ const sendPicture = async (path)=>{
 
 
 if(props.isFocused && hasPermission) {
-    //console.log('CAMERA!')
-    var Cam          
-        Cam = <Camera style={{flex:3,width:"100%"}}
+    //console.log('CAMERA!')   
+       var Cam = <Camera style={{flex:3,width:"100%"}}
             // ratio="16:9"
             ref={ref => (camera = ref)}
             type={type} flashMode={flash}
@@ -122,7 +121,7 @@ if(props.isFocused && hasPermission) {
     
            
         
-        <Overlay isVisible={isVisible} width="80%" height={250} containerStyle={{}}>
+        {/* <Overlay isVisible={isVisible} width="80%" height={250}>
                            <View style={{flex:5,justifyContent:"center",alignItems:"center"}}>
                                 <View style={{flex:1,justifyContent:"center",alignItems:"center",marginTop:50}}>
                                     <Text style={{fontSize:16,textAlign:"center"}}>Aucune correspondance n'a été trouvée</Text>
@@ -138,8 +137,8 @@ if(props.isFocused && hasPermission) {
                                 buttonStyle={{backgroundColor:color("blue")}}
                                 titleStyle={{fontSize:12}}
                                 title="Reprendre une photo" onPress={()=>{setIsVisible(false)}}></Button>
-                                </View> 
-                        </Overlay>
+                            </View> 
+                        </Overlay> */}
         {/* </View> */}
     </View>
 );

@@ -31,7 +31,7 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
 
-const store = createStore(combineReducers({reducerToken,storeLibrairy, reducerPrenom, overlayData,contentMediaData}),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStore(combineReducers({reducerToken,storeLibrairy, reducerPrenom, overlayData,contentMediaData}));
 
 console.disableYellowBox = true;
 
@@ -46,8 +46,6 @@ console.disableYellowBox = true;
 
 // Use the font with the fontFamily property
 
-
-
 var StackNavigatorLibrary = createStackNavigator(
   {
     Library:Library,
@@ -56,7 +54,6 @@ var StackNavigatorLibrary = createStackNavigator(
 var StackNavigatorHome = createStackNavigator(
   {
     Home:Home,
-    // Book:Book, //Demander à Vincent ce que c'est
     BookContent:BookContent,
     contentMediaPage:contentMediaPage,
     Scan : Scan,
@@ -66,6 +63,7 @@ var StackNavigatorHome = createStackNavigator(
  var StackNavigatorParameters = createStackNavigator(
   {
     Parameters:Parameters,
+    // SignIn : SignIn,
 }, {headerMode: 'none',});
 
 
@@ -113,40 +111,23 @@ var BottomNavigator = createBottomTabNavigator(
     SignUp: SignUp,
     SignIn: SignIn,
     newPassword: newPassword,
-    // Home: Home,
     Bottom: BottomNavigator,
   }, {
     headerMode: 'none',
   });
 
-  // comment Vincent : return global de app
+  // return global de app
   var NavigationVariable = createAppContainer(StackNavigator)
 
   function App() {
 
   const [fontLoaded,setFontLoaded] = useState(false)
-  // useEffect(()=>{
   const loadingFont= async ()=>{
     await Font.loadAsync({
       Montserrat: require('./assets/fonts/montserrat.ttf')
     });
   };
-  // setFontLoaded(true);
-  // loadingFont();
-// },[])
-/* 
-// Gérer le token dans le Local storage
-
-const [tokenExists, setTokenExists] = useState('')
-AsyncStorage.getItem("token", function(error, data) {
-  console.log(data)
-  setTokenExists(data)
-})
-
-if(tokenExists){
-  props.navigation.navigate('Home')
-} */
-
+ 
 if(fontLoaded==true) {
     return (
     
