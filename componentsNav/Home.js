@@ -26,6 +26,7 @@ function Home(props) {
   
   //pour charger le store Redux avec la biblio du user
   useEffect(()=>{
+    console.log("HOM TOKEN?",props.token)
     const librairyToStore= ()=>{
     var NewCatalist = cataList.map(e=>{
       console.log("count True",e.inLibrairy)

@@ -1,15 +1,13 @@
 export default function(token = '', action){
     if(action.type == 'addToken'){
-        console.log('reducer'+action.token)
+        console.log('reducer add TOKEn')
         return action.token
     } else if (action.type == 'deleteToken'){
-        console.log('reducer delete token');
-        let newToken = "";
-        token = newToken;
-        console.log('new token ?',token)
-        return token
+        console.log('reducer delete token SURE');
+        var newToken = "";
+        console.log('new token ?',newToken)
+        return newToken
     } else {
-
         return token
     }
 }

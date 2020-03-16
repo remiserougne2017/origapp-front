@@ -22,7 +22,6 @@ import FlashMessage from "react-native-flash-message";
 import storeLibrairy from './reducers/reducerLibrairy';
 import overlayData from './reducers/reducerOverlay';
 import contentMediaData from './reducers/reducerContent';
-
 import {Provider} from 'react-redux';
 import reducerToken from './reducers/reducerToken';
 import reducerPrenom from './reducers/reducerPrenom';
@@ -45,12 +44,10 @@ console.disableYellowBox = true;
 
 
 // Use the font with the fontFamily property
-
 var StackNavigatorLibrary = createStackNavigator(
   {
     Library:Library,
 }, { headerMode: 'none',});
-
 var StackNavigatorHome = createStackNavigator(
   {
     Home:Home,
@@ -59,13 +56,10 @@ var StackNavigatorHome = createStackNavigator(
     Scan : Scan,
     RatingPage : Rating,
 }, {headerMode: 'none',});
-
  var StackNavigatorParameters = createStackNavigator(
   {
     Parameters:Parameters,
-    // SignIn : SignIn,
 }, {headerMode: 'none',});
-
 
 // comment Vincent : bottom navigator
 var BottomNavigator = createBottomTabNavigator(
@@ -86,12 +80,9 @@ var BottomNavigator = createBottomTabNavigator(
         } else if (navigation.state.routeName == 'Library') {
           imageIcon = <Image source={require('./assets/icons/books-stack-of-three.png')} />
           // <Icon name= "book" type='entypo' color={tintColor}  size= {40}/> 
-
-          
         } else if (navigation.state.routeName == 'Parameters') {
           imageIcon = <Image source={require('./assets/icons/cogwheel.png')} />
           // imageIcon = <Icon name= "setting" type='antdesign' color={tintColor}  size= {40}/> 
-
         }        
         return imageIcon;
       },
@@ -105,7 +96,6 @@ var BottomNavigator = createBottomTabNavigator(
     }     
   }
 );
-
 // comment Vincent : stack navigator global
   var StackNavigator = createStackNavigator({
     SignUp: SignUp,
@@ -130,12 +120,10 @@ var BottomNavigator = createBottomTabNavigator(
  
 if(fontLoaded==true) {
     return (
-    
       <Provider store={store}>
         <NavigationVariable/>
         <FlashMessage position="top"/>
       </Provider>
-  
     );
   }
 

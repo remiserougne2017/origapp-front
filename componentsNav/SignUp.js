@@ -4,7 +4,7 @@ import {View, TextInput, Text, Button, ImageBackground, StyleSheet,
 import {Input} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Loader from './loader';
-import { withNavigation } from 'react-navigation';
+import { withNavigationFocus } from 'react-navigation';
 import Ip from './Ip' // A enlever en production !
 
 
@@ -20,29 +20,29 @@ function SignUp(props) {
   const [errorEmailInvalide, setErrorEmailInvalide] = useState('')
   const [errorPassword, setErrorPassword] = useState('')
   const [loader,setLoader]=useState(false);
-  const [tokenExists, setTokenExists]= useState(null)
+  
   const [prenomExists, setPrenomExists]= useState(null)
   const [loading,setLoading]=useState(false);
+
+  var tokenExists
 
   useEffect(() => {
     AsyncStorage.getItem("token", function(error, data) {
 
-      console.log(data)
-      setTokenExists(data)
+      tokenExists = data
       setLoading(true)
     });
     AsyncStorage.getItem("prenom", function(error, data) {
-
       console.log(data)
       setPrenomExists(data)
-      setLoading(true)
-    });
 
-}, [props.token])
+    });
+}, [props.isFocused])
 
  
- var formSignUp;
- if(!tokenExists && loading){
+ var formSignUp
+ console.log("TOKEN??",tokenExists)
+ if(tokenExists == undefined){
   //<Loader bool={loader} text="Chargement"/>
  formSignUp = <View>
                 <View style={{marginBottom:20}}>
@@ -101,7 +101,8 @@ function SignUp(props) {
                 onPress={() => clickSignUp(signUpFirstName, signUpEmail, signUpPassword, signUpPasswordMatch) }
                 />  
               </View>
-} else if(loading) {
+} else{
+  console.log("ELSE!!!",tokenExists)
   formSignUp = 
   <View style={{flexDirection:"row"}}>
      <Button
@@ -202,6 +203,6 @@ function mapStateToProps(state) {
              token: state.reducerToken
      }
   }
-  export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(SignUp))
+  export default withNavigationFocus(connect(mapStateToProps, mapDispatchToProps)(SignUp))
   
  
