@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
-import {ProgressBarAndroid, StyleSheet, View} from 'react-native';
+import React, {Component,useState} from 'react';
+import {ProgressBarAndroid, StyleSheet, View, ShadowPropTypesIOS} from 'react-native';
 
 const audioBar = (props) =>{
+
 
 const styles = StyleSheet.create({
   container: {
@@ -17,7 +18,8 @@ return (
       <ProgressBarAndroid styleAttr="Horizontal" color="#2196F3"
          styleAttr="Horizontal"
          indeterminate={false}
-         progress={props.progress} />
+        progress={props.progress}
+         />
     </View>
   )
 }
