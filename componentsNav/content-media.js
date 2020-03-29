@@ -1,4 +1,4 @@
-import React, {useState,useEffect,useRef} from 'react';
+import React, {useState,useEffect,useRef, createContext} from 'react';
 import {SafeAreaView , FlatList,ScrollView,StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity} from 'react-native';
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 // import { ScrollView } from 'react-native-gesture-handler';
@@ -77,9 +77,10 @@ var displayMedia = dataContent.content.media.map((med, k) => {
             }
         break; 
         case 'audio':    
+        console.log("AUDIO CASE",med)
         displayBlocMedia = 
             <View style={{flexDirection:"row",alignItems:"flex-start"}}>
-                <Audio duration={med.duration} title={med.title} source={med.source}/>
+                <Audio /*duration={med.duration}*/ title={med.title} source={med.source}/>
             </View>        
         break;
         case 'image': 

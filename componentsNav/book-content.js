@@ -157,7 +157,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                                 type = 'antdesign'
                             }
                             return (
-                                <Icon name= {iconType} type={type}  size= {20} margin={5}/>
+                                <Icon key={k} name= {iconType} type={type}  size= {20} margin={5}/>
                         );
                     })
                 }

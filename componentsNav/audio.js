@@ -10,61 +10,70 @@ import { set } from 'react-native-reanimated';
 
 const AudioPlay = (props) =>{
 
-  console.log("AUDIO ISFOCUSED?",props.isFocused)
-
-  const [position,setPosition]= useState(0)
+  const [position,setPosition]= useState(1)
   const [duration,setDuration] = useState(1)
   const[isPlaying,setIsPlaying] = useState(false)
-  var progress=position/duration
+ var progress = 0
   var source = {uri:props.source}
 
- 
-  const soundObject = new Audio.Sound();
-  
-  if(soundObject && props.isFocused){
-    const loadSound = async () => {
-      await soundObject.loadAsync(source);
-      var state =  await soundObject.getStatusAsync()
-      console.log("ETAT SOUND",state)
-      soundObject.setOnPlaybackStatusUpdate(_onPlaybackStatusUpdate);
-    }
-    loadSound()
-  }
-  console.log("PROGRESS?",progress)
-  if(props.isFocused==false || progress==1){
- 
+  const playbackObject = new Audio.Sound();
+  const loadSound = async () => {
+    await playbackObject.loadAsync(source);
+    var state =  await playbackObject.getStatusAsync()
+    console.log("loadSound?",state)
+    setDuration(state.durationMillis)
+  } 
+  loadSound()
+
+    // //fonction pour récuperer la position de l'objet audio toutes les 500ms (par défaut)
+    // const _onPlaybackStatusUpdate = async (e)=>{
+    //   // console.log("update STATUT",e)
+    //   console.log("ETAT INIT",init)
+    //   setPosition(e.positionMillis)
+    // };
+
+    // //function ecouter statut media son > progress bar
+    // var myVar 
+    // const stateSound =async ()=>{
+    //   var state =  await playbackObject.getStatusAsync()
+    //   console.log("stateSound?",state.isPlaying)
+    //   setPosition(state.positionMillis)
+    //   // setDuration(state.durationMillis)
+
+    //   setIsPlaying(state.isPlaying)
+    // } 
+
+  if(props.isFocused==false){
     const unloadSound = async () => {
-      await soundObject.unloadAsync();
-    var state =  await soundObject.getStatusAsync()
-    console.log("ETAT SOUND",state)
+      await playbackObject.unloadAsync();
+    var state =  await playbackObject.getStatusAsync()
+    console.log("unloadSound?",state)
     }
     unloadSound()
   }
-
-  //fonction pour récuperer la position de l'objet audio toutes les 500ms (par défaut)
-  soundObject.setStatusAsync({ progressUpdateIntervalMillis: 1000 })
-  const _onPlaybackStatusUpdate = async (e)=>{
-    console.log("update STATUT",e)
-    // console.log("ETAT INIT",init)
-    setPosition(e.positionMillis)
-    setDuration(e.durationMillis)
-    // //stopper le son si le user change de page
-    // props.isFocused==false? await soundObject.unloadAsync() :null
-    // console.log("ISFOCUed",props.isFocused)
-  };
- 
- 
-
-  const playSound = ()=>{
-    soundObject.playAsync();
+  
+  // myVar  = setInterval(stateSound, 500);
+  const playPauseSound = (bool)=>{
+    progress=position/duration
+    console.log("PLAY ??",bool)
+    if(bool){
+      playbackObject.playAsync();
    
+    }else{
+      playbackObject.setStatusAsync({ shouldPlay: false })
+      setIsPlaying(false)
+      // clearInterval(stateSound)
+    }
+    // playbackObject.setOnPlaybackStatusUpdate(_onPlaybackStatusUpdate) 
+  //  myVar()
   }     
 
-  const pauseSound = ()=>{
-    // soundObject.pauseAsync();
-    soundObject.setStatusAsync({ shouldPlay: false })
-  }               
-  
+  // const pauseSound = ()=>{
+  //   // playbackObject.pauseAsync();
+  //   // playbackObject.setStatusAsync({ shouldPlay: false })
+  //   // clearInterval(myVar)
+  // }               
+
     var styles = StyleSheet.create({
             image: {
           width: 30,
@@ -78,16 +87,16 @@ const AudioPlay = (props) =>{
            <View  style={{flex:1,flexDirection:"column",justifyContent:"center", alignItems:"flex-start",
                           marginHorizontal:10,marginBottom:10}}>
            <View style={{flexDirection:"row",justifyContent:"center", alignItems:"center",flexWrap:"wrap"}}>
-                <TouchableOpacity onPress={()=>{playSound();console.log('Lecture!')}}>
+                <TouchableOpacity onPress={()=>{playPauseSound(true); setIsPlaying(true)}}>
                     <Image source={require("../assets/icons/play-round-button.png")}
                     style={styles.image}
                     />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{pauseSound();console.log('Stop!')}}> 
+                <TouchableOpacity onPress={()=>{playPauseSound(false); setIsPlaying(false)}}> 
                     <Image source={require('../assets/icons/pause.png')}
                     style={styles.image}/>
                 </TouchableOpacity>
-                <AudioBar progress={duration!=undefined?progress:0}/>
+                {/* <AudioBar progress={progress!=undefined?progress:0}/> */}
             </View>
             <Text style={{marginHorizontal:5,fontStyle:"italic",fontSize:14}}>{props.title}</Text>
          </View>   
