@@ -31,9 +31,9 @@ const style = StyleSheet.create({
     },
     bookPageSectionTitle: {
         fontSize:25,
-        marginTop:20,
-        marginBottom:10,
-        paddingTop:30,
+        marginTop:10,
+        marginBottom:5,
+        paddingTop:25,
         paddingBottom:10,
         paddingLeft:10,
         fontFamily:'Montserrat',

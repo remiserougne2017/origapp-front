@@ -4,12 +4,13 @@ import { Button,Input,Icon,Card,Divider,Badge, CheckBox, Tile} from 'react-nativ
 // import { ScrollView } from 'react-native-gesture-handler';
 import {connect} from 'react-redux';
 import { set, color } from 'react-native-reanimated';
-import { withNavigation,withNavigationFocus } from 'react-navigation';
+import { withNavigation,withNavigationFocus, useTheme } from 'react-navigation';
 import OverlayRating from './overlay-rating';
 import Ip from './Ip'; // A enlever en production !
 import colorImport from './color';
 import Comment from './comment'
 import { showMessage} from "react-native-flash-message";
+import style from '../stylesheet/stylesheet'
 
 
 function BookContent(props) { 
@@ -22,10 +23,13 @@ function BookContent(props) {
     const [overlayRatingVisible, setOverlayRatingVisible]=useState(false);
     const [commentData, setCommentData]=useState([]);
     const [isChecked, setIsChecked] = useState(false)
- 
-    console.log("IS CHECKED IN COMPONENT", isChecked)
+    const [idBook,setIdBook]=useState(props.navigation.state.params.idBook)
+
+
+ console.log("IDBOOK PARAM",idBook)
 // LOAD BOOK FROM DB
     useEffect( ()=> {
+        setIdBook(props.navigation.state.params.idBook)
         async function openBook() {
             var bookData = await fetch(`${Ip()}:3000/books/open-book`, { 
                     method: 'POST',
@@ -36,21 +40,15 @@ function BookContent(props) {
             var bookDataJson = await bookData.json();
             setArrayDataBook(bookDataJson.dataBook);
             setCommentData(bookDataJson.userCom);
-      }
-
-      // Recherche du ID du livre dans Redux
-        var isBook = props.storeLibrairy.findIndex(book => book == props.navigation.state.params.idBook)
-        console.log("id param",props.navigation.state.params.idBook)
-        console.log("IS BOOOOk",isBook)
-        if(isBook != -1){
-            setIsChecked(true)
-        }
-
+            setIsChecked(bookDataJson.inLibrairy)
+                }   
         openBook();
-      },[overlayRatingVisible,props.storeLibrairy,props.navigation.state.params.idBook])
+      },[props.storeLibrairy,props.isFocused,overlayRatingVisible])
 
     //Function appel route addLibrairy
     const addLibrairy = async (id,bool) => {
+        console.log("STORE addLib!",props.storeLibrairy,"vs",props.navigation.state.params.idBook)
+    
       var responseFetch = await fetch(`${Ip()}:3000/home/addLibrairy/${id}/${bool}/${props.token}`)
       var resp = await responseFetch.json();
       if(resp){
@@ -65,8 +63,8 @@ function BookContent(props) {
             backgroundColor:"#8FB2C9"
           });
       }
+      console.log("STORE!",props.storeLibrairy)
     }
-
 
   
 // CARD CONTENT CREATION  
@@ -98,11 +96,8 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
         key = {i}
         >
         <View
-            style={{width:'100%',marginBottom:10,paddingBottom:10,borderBottomWidth:1,borderBottomColor:'#EAEAEA',     
-
-        }}
-            >
-
+            style={{width:'100%',marginBottom:10,paddingBottom:10,borderBottomWidth:1,borderBottomColor:'#EAEAEA',
+        }}>
             <View style ={{width:'100%'}}>
                 <View style = {{backgroundColor:badgeColor, position:'absolute', top:20, width:60,zIndex:7,left:0,justifyContent:'center',alignItems:'center',height:30,borderBottomRightRadius:10,borderTopRightRadius:10}}>
                     <Text style ={{color:'white'}}>page {obj.pageNum}</Text>
@@ -183,32 +178,33 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
 // RETURN GLOBAL DE LA PAGE
     return (
     <ScrollView stickyHeaderIndices={[1,3]} style ={{backgroundColor:"white"}}>     
-        <View  style = {{ flex: 1, position:"relative",alignItems: 'center', justifyContent: 'center',paddingBottom:20,backgroundColor:"#d6d6d6"}}>
-            <View style = {{alignItems: 'center', justifyContent: 'center',marginTop:60}}>
-            <CheckBox
-                iconRight
-                center
-                onPress={() =>{console.log("IS CHECKED ON PRESS",isChecked);addLibrairy(props.navigation.state.params.idBook,!isChecked)}}
-                checked={isChecked}
-                checkedColor="#F9603E"
-                containerStyle={{backgroundColor:'#d6d6d6', borderWidth:0,position:"absolute",
-                right:100,top:-30,}}
+        <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',paddingBottom:20,backgroundColor:"#d6d6d6"}}>
+            <View style = {{width:"100%",alignItems: 'center', justifyContent: 'center',marginTop:60}}>
+                 <View style={{width:"100%",alignItems:"flex-start",justifyContent:"flex-start"}}>   
+                <Button
+                    containerStyle={{marginLeft:10,margin:0}}
+                    onPress={() =>{console.log("PRESS BOUTON",isChecked);addLibrairy(props.navigation.state.params.idBook,!isChecked)}}
+                    buttonStyle={{backgroundColor:colorImport("red"), borderWidth:0,borderRadius:20,margin:0}}
+                    titleStyle={{fontSize:10}}
+                    title={!isChecked?"Ajouter à mes favoris":"Supprimer de mes favoris"}
                 />
-            <Image 
-                style={{width: 150, height: 150,borderRadius: 150,
-                marginTop:-15, borderStartWidth:1, borderEndWidth:1,borderRightWidth:1,
-                paddingBottom:0, marginBottom: 0,
-                borderLeftWidth:1, borderColor:"black"}}
-                source= {{ uri: arrayDataBook.coverImage }}
-            />  
-                <Text>{arrayDataBook.title}</Text>
+                </View>
+                <Image 
+                    style={{width: 150, height: 150,borderRadius: 150,position:"relative",
+                    marginTop:-15, borderStartWidth:1, borderEndWidth:1,borderRightWidth:1,
+                    paddingBottom:0, marginBottom: 0,
+                    borderLeftWidth:1, borderColor:"black"}}
+                    source= {{ uri: arrayDataBook.coverImage }}
+                 />  
+                <Text style={{marginTop:10}}>{arrayDataBook.title}</Text>
                 <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
                 <Text style ={{fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
                 <Text style={{marginBottom: 5,textAlign:'center',marginTop:10}}>{arrayDataBook.description}</Text> 
             </View> 
         </View>
         <View style = {{marginRight:20,backgroundColor:"white",width:"100%"}}>
-            <Text style={{fontSize:25,marginTop:20,marginBottom:10,paddingTop:30,paddingBottom:10,paddingLeft:10}}>Les contenus à découvrir...</Text>
+            <Text style={style.bookPageSectionTitle}
+            >Les contenus à découvrir...</Text>
         </View>
 
         <ScrollView>
@@ -224,8 +220,8 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
             />
         </View>
         </ScrollView>
-        <View style = {{marginRight:20,backgroundColor:"white",width:"100%",paddingLeft:10}}>
-            <Text style={{fontSize:25,marginTop:20,paddingTop:30,paddingBottom:10}}>Les avis et commentaires</Text>
+        <View style = {{marginRight:20,backgroundColor:"white",width:"100%"}}>
+            <Text style={style.bookPageSectionTitle}>Les avis et commentaires</Text>
             <View style = {{marginBottom:10,backgroundColor:colorImport('red'),width:140,borderRadius:10, marginLeft:'auto',marginRight:10}}>
                     <Text onPress={() =>{setOverlayRatingVisible(true)}} style={{fontStyle:"italic", padding:5,color:"white",textAlign:'center'}}>Partagez votre avis
                     </Text>    
