@@ -1,4 +1,4 @@
-import React, {useState,useEffect,useRef} from 'react';
+import React, {useState,useEffect,useRef, createContext} from 'react';
 import {SafeAreaView , FlatList,ScrollView,StyleSheet, Text, View,TextInput, ImageBackground,AsyncStorage,Image,TouchableOpacity} from 'react-native';
 import { Button,Input,Icon,Card,Divider,Badge} from 'react-native-elements';
 // import { ScrollView } from 'react-native-gesture-handler';
@@ -77,9 +77,10 @@ var displayMedia = dataContent.content.media.map((med, k) => {
             }
         break; 
         case 'audio':    
+        console.log("AUDIO CASE",med)
         displayBlocMedia = 
             <View style={{flexDirection:"row",alignItems:"flex-start"}}>
-                <Audio duration={med.duration} title={med.title} source={med.source}/>
+                <Audio /*duration={med.duration}*/ title={med.title} source={med.source}/>
             </View>        
         break;
         case 'image': 
@@ -157,7 +158,6 @@ function onSwipeRight() {
         }
 }
 
-
 const config = {
     velocityThreshold: 0.3,
     directionalOffsetThreshold: 80
@@ -169,7 +169,7 @@ var bulletBreadCrumb = props.contentMediaData.dataContentFromBook.map((obj, j) =
             bulletSize = 10
     }
     return (
-        <View style = {{height:bulletSize,width:bulletSize,backgroundColor:badgeColor,borderRadius:100,margin:15}}></View>
+        <View key = {j} style = {{height:bulletSize,width:bulletSize,backgroundColor:badgeColor,borderRadius:100,margin:15}}></View>
         )
 
     })
@@ -194,7 +194,8 @@ var bulletBreadCrumb = props.contentMediaData.dataContentFromBook.map((obj, j) =
                      {bulletBreadCrumb}
                 </View>
                <View style ={{marginTop:10, display:"flex", flexDirection:'row', alignItems:'center', height:15}}>
-                    <View style = {{flexDirection:'row', backgroundColor:badgeColor,position:'absolute',left:0,padding:5,borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15}}>
+                    <View style = {{flexDirection:'row', backgroundColor:badgeColor,position:'absolute',left:0,padding:5,
+                                    borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15}}>
                         <Icon 
                                 name= 'back' type='antdesign'  size= {20} margin={5} marginLeft={20} color={'white'}
                                 onPress={() => props.navigation.navigate('BookContent')}

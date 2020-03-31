@@ -4,7 +4,7 @@ import {View, TextInput, Text, Button, ImageBackground, StyleSheet,
 import {Input} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Loader from './loader';
-import { withNavigation } from 'react-navigation';
+import { withNavigationFocus } from 'react-navigation';
 import Ip from './Ip' // A enlever en production !
 
 
@@ -14,57 +14,62 @@ function SignUp(props) {
   const [signUpEmail, setSignUpEmail] = useState('')
   const [signUpPassword, setSignUpPassword] = useState('')
   const [signUpPasswordMatch, setSignUpPasswordMatch] = useState('')
+  const [error,setError] = useState({})
   const [errorMatch, setErrorMatch] = useState('')
-  const [errorUserExistant, setErrorUserExistant] = useState('')
-  const [errorChampVide, setErrorChampVide] = useState('')
-  const [errorEmailInvalide, setErrorEmailInvalide] = useState('')
-  const [errorPassword, setErrorPassword] = useState('')
-  const [loader,setLoader]=useState(false);
-  const [tokenExists, setTokenExists]= useState(null)
-  const [prenomExists, setPrenomExists]= useState(null)
-  const [loading,setLoading]=useState(false);
+  // const [errorUserExistant, setErrorUserExistant] = useState('')
+  // const [errorChampVide, setErrorChampVide] = useState('')
+  // const [errorEmailInvalide, setErrorEmailInvalide] = useState('')
+  // const [errorPassword, setErrorPassword] = useState('')
+  // const [loader,setLoader]=useState(false);
+  
+  // const [prenomExists, setPrenomExists]= useState(null)
+  // const [loading,setLoading]=useState(false);
+
+  var tokenExists
 
   useEffect(() => {
-    AsyncStorage.getItem("token", function(error, data) {
-
-      console.log(data)
-      setTokenExists(data)
-      setLoading(true)
-    });
     AsyncStorage.getItem("prenom", function(error, data) {
-
-      console.log(data)
-      setPrenomExists(data)
-      setLoading(true)
+      if(data!=undefined)
+      props.addPrenom(data)
     });
 
-}, [props.token])
+    AsyncStorage.getItem("token", function(error, data) {
+      tokenExists = data
+      console.log("TOKEN??",data)
+      // setLoading(true)
+      if(tokenExists != undefined){
+        props.addToken(data)
+        props.navigation.navigate('Home')
+      }
+    });
+
+},[props.isFocused])
 
  
- var formSignUp;
- if(!tokenExists && loading){
+ var formSignUp
+console.log("TOKEN EXIST UP?",tokenExists)
   //<Loader bool={loader} text="Chargement"/>
  formSignUp = <View>
                 <View style={{marginBottom:20}}>
                   <Input
                   //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
                   placeholder=' Prénom'
-                  onChangeText={(val) => setSignUpFirstName(val)}
+                  onChangeText={(val) =>{setSignUpFirstName(val);setError({})}}
                   value={signUpFirstName}
                   />
-                { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
+                { error.emptyField && signUpFirstName==""? <Text style={{fontSize:12,color:'red'}}>{error.emptyField}</Text> : null }
                 </View>
 
                 <View style={{marginBottom:20}}>
                   <Input
                   //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
                   placeholder=' Email'
-                  onChangeText={(val) => {setSignUpEmail(val)}}
+                  onChangeText={(val) =>{setSignUpEmail(val);setError({})}}
                   value={signUpEmail}
                   />
-                  { errorUserExistant ? <Text style={{fontSize:12,color:'red'}}>{errorUserExistant}</Text> : null }
-                  { errorEmailInvalide ? <Text style={{fontSize:12,color:'red'}}>{errorEmailInvalide}</Text> : null}
-                  { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
+                  { error.userExistant ? <Text style={{fontSize:12,color:'red'}}>{error.userExistant}</Text> : null }
+                  { error.invalidMail ? <Text style={{fontSize:12,color:'red'}}>{error.invalidMail}</Text> : null}
+                  { error.emptyField && signUpEmail == "" ? <Text style={{fontSize:12,color:'red'}}>{error.emptyField}</Text> : null }
                 </View>
 
                 <View style={{marginBottom:20}}>
@@ -72,11 +77,11 @@ function SignUp(props) {
                   //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
                   placeholder=' Mot de passe'
                   secureTextEntry={true}
-                  onChangeText={(val) => setSignUpPassword(val)}
+                  onChangeText={(val) =>{setSignUpPassword(val);setError({})}}
                   value={signUpPassword}
                   />
-                  { errorPassword ? <Text style={{fontSize:12,color:'red'}}>{errorPassword}</Text> : null }
-                  { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
+                  { error.pwdError ? <Text style={{fontSize:12,color:'red'}}>{error.pwdError}</Text> : null }
+                  { error.emptyField && signUpPassword =="" ? <Text style={{fontSize:12,color:'red'}}>{error.emptyField}</Text> : null }
                 </View>
 
                 <View >
@@ -84,11 +89,11 @@ function SignUp(props) {
                   //style = {{borderWidth : 1.0, borderColor: 'white',  borderRadius: 5, backgroundColor: 'white'}}
                   secureTextEntry={true}
                   placeholder=' Confirmation de mot de passe '
-                  onChangeText={(val) => setSignUpPasswordMatch(val)}
+                  onChangeText={(val) =>{setSignUpPasswordMatch(val);setError({})}}
                   value={signUpPasswordMatch}
                   />
                   { errorMatch ? <Text style={{fontSize:12,color:'red'}}>{errorMatch}</Text> : null }
-              
+                  { error.emptyField && signUpPasswordMatch =="" ? <Text style={{fontSize:12,color:'red'}}>{error.emptyField}</Text> : null }
                   <TouchableOpacity onPress={() => props.navigation.navigate('SignIn')}>
                   <Text style={{fontSize: 11, marginBottom: 18, textAlign: "right", fontStyle: "italic"}}>J'ai déjà un compte</Text>
                 </TouchableOpacity>
@@ -101,30 +106,24 @@ function SignUp(props) {
                 onPress={() => clickSignUp(signUpFirstName, signUpEmail, signUpPassword, signUpPasswordMatch) }
                 />  
               </View>
-} else if(loading) {
-  formSignUp = 
-  <View style={{flexDirection:"row"}}>
-     <Button
-      title='Bienvenue !'
-      color='#FF473A'
-      onPress={() =>{props.navigation.navigate('Home')}}
-      />
-  </View>
+// } else{
+  // console.log("ELSE!!!",tokenExists)
+  // formSignUp = 
+  // <View style={{flexDirection:"row"}}>
+  //    <Button
+  //     title='Bienvenue !'
+  //     color='#FF473A'
+  //     onPress={() =>{props.navigation.navigate('Home')}}
+  //     />
+  // </View>
  
-  props.addToken(tokenExists)
-  props.addPrenom(prenomExists)
-  props.navigation.navigate('Home')
-}
+//   props.addToken(tokenExists)
+//   props.addPrenom(prenomExists)
+//   props.navigation.navigate('Home')
+// }
 
     var clickSignUp = async (a, b, c, d) => {
-
-      setSignUpFirstName('')
-      setSignUpEmail('')
-      setSignUpPassword('')
-      setSignUpPasswordMatch('')
-  
-      setLoader(true)
-  
+     
       if(signUpPassword !== signUpPasswordMatch){
         setErrorMatch("Les mots de passe ne sont pas identiques")
   
@@ -132,27 +131,31 @@ function SignUp(props) {
         const data = await fetch(`${Ip()}:3000/users/sign-up`, {
           method: 'POST',
           headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          body: `firstName=${signUpFirstName}&email=${signUpEmail.toLowerCase()}&password=${signUpPassword}`
+          body: `firstName=${signUpFirstName}&email=${signUpEmail}&password=${signUpPassword}`
         })
         const response = await data.json()
-        if(Object.keys(response).length != 0){
-          setErrorEmailInvalide(response.error.emailNotValid)
-          setErrorUserExistant(response.error.email)
-          setErrorChampVide(response.error.emptyField)
-          setErrorPassword(response.error.passwordNotValid)
-        }
-  
+         
         if(response.result == true){
           console.log("??????",response.result)
           AsyncStorage.setItem("token", response.token)
           AsyncStorage.setItem("prenom", response.prenom)
           props.addToken(response.token)
           props.addPrenom(response.prenom)
-          setLoader(false)
           props.navigation.navigate('Home')
+          setSignUpPassword('')
+          setSignUpPasswordMatch('')
+          setSignUpFirstName('')
+          setSignUpEmail('')
         } else {
-          console.log('pas de token')
+         var errorBack ={
+          invalidMail :response.error.emailNotValid,
+          userExistant : response.error.email,
+          emptyField : response.error.emptyField,
+          pwdError: response.error.passwordNotValid
+         }
+        setError(errorBack)
         }
+
       }
     }
 
@@ -202,6 +205,6 @@ function mapStateToProps(state) {
              token: state.reducerToken
      }
   }
-  export default withNavigation(connect(mapStateToProps, mapDispatchToProps)(SignUp))
+  export default withNavigationFocus(connect(mapStateToProps, mapDispatchToProps)(SignUp))
   
  

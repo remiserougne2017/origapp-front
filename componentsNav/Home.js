@@ -26,6 +26,7 @@ function Home(props) {
   
   //pour charger le store Redux avec la biblio du user
   useEffect(()=>{
+    console.log("HOM TOKEN?",props.token)
     const librairyToStore= ()=>{
       console.log("USE EFFECT LIBRAIRY TO STORE")
     var NewCatalist = cataList.map(e=>{
@@ -123,6 +124,7 @@ const fetchTag = async (tags)=>{
     headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},    
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token=${props.token}`});
     var resultatSearch = await responseFetch.json();
+    console.log("TAGSEARCH",resultatSearch)
     if(resultatSearch.result == 'ok'){
       setErrorMessage('')
       setCataList(resultatSearch.resultMin)

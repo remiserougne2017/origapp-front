@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import color from './color';
 import Ip from './Ip'; // A enlever en production;
 import {showMessage, hideMessage } from "react-native-flash-message";
-
+import { withNavigation } from 'react-navigation';
 
 function  Parameters(props) { 
   /// recup identité user du store
@@ -18,7 +18,7 @@ const [editableText, setEditableText] = useState(false)
 const [newName, setNewName]=useState(props.prenom)
 
 
-console.log("PRenom",username,props.prenom)
+console.log("PRenom",username,props.prenom,newName)
 //////////////////// CLICONTACT
 var clickContact = () => {
   setOContactVisible(!oContactVisible);
@@ -51,17 +51,11 @@ const sendNewName = async ()=>{
     icon:"auto",
     backgroundColor:"#8FB2C9"
   });
-  
 }
-
-var clickLogOut = () => {
-  AsyncStorage.removeItem("token")
-  AsyncStorage.removeItem("prenom")
-  console.log("func clickLogOUt")
-  props.deleteToken()
-  props.deletePrenom()
-  props.navigation.navigate('SignIn') }
-
+const clickLogOut = () => {
+  console.log('Je LOGOUT 5')
+  props.navigation.navigate('SignIn');
+   }
 //Fetch update PWD
 const updatePwd= async () =>{
   const dataUser = await fetch (`${Ip()}:3000/users/update/${props.token}`,
@@ -92,39 +86,36 @@ const updatePwd= async () =>{
 //Overlay update PWd
 
 const OverlayUpdatePwd = (bool)=>{
-console.log('Overlay updtae',bool)
   return(
     // <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
       <Overlay height={350} isVisible={bool} containerStyle={{justifyContent:"center", alignItems:"center"}}>
-        <View style={{flex:3,justifyContent:"flex-start",
-         alignItems:"center",marginTop:50}}>
-          <TextInput 
-          placeholder="Saisir un nouveau mot de passe"
-          onChangeText={(value)=>{setPwd1(value)}}
-          style={{padding:10,borderBottomColor: '#000000',
-          borderBottomWidth: 1}}
-          // Value=
-          />
-          <TextInput 
-          placeholder="Confirmation du mot de passe"
-          onChangeText={(value)=>{setPwd2(value)}}
-          style={{padding:10,marginTop:50,borderBottomColor: '#000000',
-          borderBottomWidth: 1,}}/>
-          </View>
-        <View style={{flex:1,flexDirection:"row", justifyContent:"space-around"}}>
-          <Button buttonStyle={{backgroundColor:color("blue")}}
-          title="Annuler" onPress={()=>{setIsVisible(false)}}></Button>
-          <Button buttonStyle={{backgroundColor:color("blue")}}
-           title="Envoyer" onPress={()=>{updatePwd()}}></Button>
-        </View>       
+        <View style={{flex:1}}>
+          <View style={{flex:3,justifyContent:"flex-start",
+          alignItems:"center",marginTop:50}}>
+            <TextInput 
+            placeholder="Saisir un nouveau mot de passe"
+            onChangeText={(value)=>{setPwd1(value)}}
+            style={{padding:10,borderBottomColor: '#000000',
+            borderBottomWidth: 1}}
+            // Value=
+            />
+            <TextInput 
+            placeholder="Confirmation du mot de passe"
+            onChangeText={(value)=>{setPwd2(value)}}
+            style={{padding:10,marginTop:50,borderBottomColor: '#000000',
+            borderBottomWidth: 1,}}/>
+            </View>
+          <View style={{flex:1,flexDirection:"row", justifyContent:"space-around"}}>
+            <Button buttonStyle={{backgroundColor:color("blue")}}
+            title="Annuler" onPress={()=>{setIsVisible(false)}}></Button>
+            <Button buttonStyle={{backgroundColor:color("blue")}}
+            title="Envoyer" onPress={()=>{updatePwd()}}></Button>
+          </View>  
+        </View>
       </Overlay>
     // </View>
   )
 }
-
-
-
-
 
 const OverlayContact = (bool)=>{
   console.log('Overlay contact bool',bool)
@@ -175,11 +166,18 @@ const OverlayContact = (bool)=>{
         <View style={{flex:1,flexDirection: 'row', justifyContent: 'flex-end', alignItems:"flex-start"}}>
           <Button    
             // titleStyle={{paddingHorizontal:10}}
-            title="  Se déconnecter"
+            title="Se déconnecter"
             type="clear"
             titleStyle={{paddingRight:10, color: "black"}}
             style={{marginRight: 5, marginLeft: "auto"}}
-            onPress={() => {clickLogOut()}}
+            onPress={() =>{ console.log('Je LOGOUT');
+              props.deleteToken();
+              console.log('Je LOGOUT 1')
+              props.deletePrenom();
+              console.log('Je LOGOUT 2&3')
+              AsyncStorage.clear()
+              console.log('Je LOGOUT 4')
+              clickLogOut()}}
             icon={   
               <Icon 
               name= "logout" type='antdesign'  color= "black" size= {20}
@@ -203,10 +201,11 @@ const OverlayContact = (bool)=>{
           <View style={{flexDirection:"row"}}>
             <TouchableOpacity  onPress={()=>{console.log("onPressEdit");setEditableText(true)}}>
             <TextInput 
+            // defaultValue={username}
             editable={editableText}
             style={{fontSize:20, fontWeight:"700", marginLeft:0,paddingHorizontal:10}}
             onChangeText={(value)=>{setNewName(value)}}
-            value={username}
+            value={newName}
             >
             </TextInput>
             </TouchableOpacity>
@@ -237,7 +236,7 @@ const OverlayContact = (bool)=>{
               buttonStyle={{backgroundColor:"transparent"}}
             />
        
-        <View style={{flexDirection:'row',justifyContent:"space-between"}}>
+        <View style={{flexDirection:'row',width:"100%",justifyContent:"space-evenly"}}>
           <Button
             icon={   
                 <Icon 
@@ -248,14 +247,14 @@ const OverlayContact = (bool)=>{
           } 
             
             title="Crédits"
-            type="transparent"
+            type="clear"
             titleStyle={{paddingLeft:5,color: "black"}}
             style={{marginRight: 0, marginLeft: "auto"}}
             
           /> 
           
           <Button
-          containerStyle={{marginRight:"auto"}}
+          containerStyle={{marginLeft:"auto"}}
             icon={   
                 <Icon 
                 iconRight
@@ -264,7 +263,7 @@ const OverlayContact = (bool)=>{
                 />
           } 
             title="Nous contacter"
-            type="transparent"
+            type="clear"
             titleStyle={{color: "black",paddingLeft:5}}   
             onPress={() => { clickContact() ; console.log("contact")}}
           />
@@ -299,4 +298,4 @@ const OverlayContact = (bool)=>{
   
 
 
-export default connect(mapStateToProps,mapDispatchToProps)(Parameters)
+export default withNavigation(connect(mapStateToProps,mapDispatchToProps)(Parameters))

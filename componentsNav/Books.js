@@ -20,6 +20,7 @@ const addLibrairy = async (id,bool) => {
     var resp = await responseFetch.json();
     console.log("retour route librairy",resp)
     if(resp){
+      console.log("OK addLibrairy")
       setIsCheck(bool)
       
       props.manageLibrairy(id,bool)

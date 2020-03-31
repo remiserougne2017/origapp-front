@@ -22,7 +22,6 @@ import FlashMessage from "react-native-flash-message";
 import storeLibrairy from './reducers/reducerLibrairy';
 import overlayData from './reducers/reducerOverlay';
 import contentMediaData from './reducers/reducerContent';
-
 import {Provider} from 'react-redux';
 import reducerToken from './reducers/reducerToken';
 import reducerPrenom from './reducers/reducerPrenom';
@@ -31,7 +30,7 @@ import * as Font from 'expo-font';
 import { AppLoading } from 'expo';
 
 
-const store = createStore(combineReducers({reducerToken,storeLibrairy, reducerPrenom, overlayData,contentMediaData}),window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = createStore(combineReducers({reducerToken,storeLibrairy, reducerPrenom, overlayData,contentMediaData}));
 
 console.disableYellowBox = true;
 
@@ -45,29 +44,22 @@ console.disableYellowBox = true;
 
 
 // Use the font with the fontFamily property
-
-
-
 var StackNavigatorLibrary = createStackNavigator(
   {
     Library:Library,
 }, { headerMode: 'none',});
-
 var StackNavigatorHome = createStackNavigator(
   {
     Home:Home,
-    // Book:Book, //Demander à Vincent ce que c'est
     BookContent:BookContent,
     contentMediaPage:contentMediaPage,
     Scan : Scan,
     RatingPage : Rating,
 }, {headerMode: 'none',});
-
  var StackNavigatorParameters = createStackNavigator(
   {
     Parameters:Parameters,
 }, {headerMode: 'none',});
-
 
 // comment Vincent : bottom navigator
 var BottomNavigator = createBottomTabNavigator(
@@ -88,12 +80,9 @@ var BottomNavigator = createBottomTabNavigator(
         } else if (navigation.state.routeName == 'Library') {
           imageIcon = <Image source={require('./assets/icons/books-stack-of-three.png')} />
           // <Icon name= "book" type='entypo' color={tintColor}  size= {40}/> 
-
-          
         } else if (navigation.state.routeName == 'Parameters') {
           imageIcon = <Image source={require('./assets/icons/cogwheel.png')} />
           // imageIcon = <Icon name= "setting" type='antdesign' color={tintColor}  size= {40}/> 
-
         }        
         return imageIcon;
       },
@@ -107,54 +96,34 @@ var BottomNavigator = createBottomTabNavigator(
     }     
   }
 );
-
 // comment Vincent : stack navigator global
   var StackNavigator = createStackNavigator({
     SignUp: SignUp,
     SignIn: SignIn,
     newPassword: newPassword,
-    // Home: Home,
     Bottom: BottomNavigator,
   }, {
     headerMode: 'none',
   });
 
-  // comment Vincent : return global de app
+  // return global de app
   var NavigationVariable = createAppContainer(StackNavigator)
 
   function App() {
 
   const [fontLoaded,setFontLoaded] = useState(false)
-  // useEffect(()=>{
   const loadingFont= async ()=>{
     await Font.loadAsync({
       Montserrat: require('./assets/fonts/montserrat.ttf')
     });
   };
-  // setFontLoaded(true);
-  // loadingFont();
-// },[])
-/* 
-// Gérer le token dans le Local storage
-
-const [tokenExists, setTokenExists] = useState('')
-AsyncStorage.getItem("token", function(error, data) {
-  console.log(data)
-  setTokenExists(data)
-})
-
-if(tokenExists){
-  props.navigation.navigate('Home')
-} */
-
+ 
 if(fontLoaded==true) {
     return (
-    
       <Provider store={store}>
         <NavigationVariable/>
         <FlashMessage position="top"/>
       </Provider>
-  
     );
   }
 

@@ -44,6 +44,7 @@ function BookContent(props) {
                 }   
         openBook();
       },[props.storeLibrairy,props.isFocused,overlayRatingVisible])
+      //overlayRatingVisible en ecoute pour afficher les comments en direct, 
 
     //Function appel route addLibrairy
     const addLibrairy = async (id,bool) => {
@@ -82,15 +83,15 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
             idContent:obj.idContent,
             color:badgeColor,
         });
+        //image de la card content ImageContent ou image de couv si inexistante
         let urlImageContent;
         if((obj.imageContent == null)||(obj.imageContent == undefined)) {
                 urlImageContent = arrayDataBook.coverImage
         } else { urlImageContent = obj.imageContent}
 
 
-////   COMMENTAIRES SUR L'OUVRAGE
-
         return (
+            //card contenu
     <TouchableOpacity
         onPress={() =>{props.storeContentInformation({idBook:arrayDataBook.idBook,dataContentFromBook:dataContentToMediaPage,position:i});props.navigation.navigate('contentMediaPage');}}
         key = {i}
@@ -126,39 +127,39 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                         {
                             obj.media.map((med, k) => {
                             let iconType;
-                            let library;
+                            let type;
                             switch (med.type) {
                                 case 'video': 
                                 iconType = 'video'
-                                library = 'entypo'
+                                type = 'entypo'
                                 break;
                             
                                 case 'audio': 
                                 iconType = 'headphones'
-                                library = 'feather'
+                                type = 'feather'
                                 break;
                             
                                 case 'image': 
                                 iconType = 'picture'
-                                library = 'antdesign'
+                                type = 'antdesign'
                                 break;
                             
                                 case 'text':
                                 iconType = 'text'
-                                library = 'entypo'
+                                type = 'entypo'
                                 break;
 
                                 case 'quote':
                                 iconType = 'quote'
-                                library = 'entypo'
+                                type = 'entypo'
                                 break;
 
                                 default:
                                 iconType = 'question'
-                                iconType = 'antdesign'
+                                type = 'antdesign'
                             }
                             return (
-                                <Icon name= {iconType} type={library}  size= {20} margin={5}/>
+                                <Icon key={k} name= {iconType} type={type}  size= {20} margin={5}/>
                         );
                     })
                 }
@@ -173,9 +174,9 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
     //Création d'une fonction parent pour gerer le booleen isVisible & overlayRating Visible 
     const parentRatingFunction = (bool)=>{
         setOverlayRatingVisible(bool)
-
     }
-// RETURN GLOBAL DE LA PAGE
+
+// RETURN GLOBAL DE LA PAGE - affichage de: Header cardDisplay et Comments
     return (
     <ScrollView stickyHeaderIndices={[1,3]} style ={{backgroundColor:"white"}}>     
         <View  style = {{ flex: 1, alignItems: 'center', justifyContent: 'center',paddingBottom:20,backgroundColor:"#d6d6d6"}}>

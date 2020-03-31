@@ -1,80 +1,71 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import {connect} from 'react-redux';
 import {Input} from 'react-native-elements';
 import Loader from './loader';
 import color from './color';
 import Ip from './Ip'; // a enlever en production !
+import { withNavigationFocus } from 'react-navigation';
 
 function SignIn(props) {
   
-  
   const [signInEmail, setSignInEmail] = useState('')
   const [signInPassword, setSignInPassword] = useState('')
-  const [errorChampVide, setErrorChampVide] = useState('')
+  const [emptyMail, setEmptyMail] = useState('');
+  const [emptyPwd, setEmptyPwd] = useState('');
   const [errorEmailInexistant, setErrorEmailInexistant] = useState('')
   const [errorPassword, setErrorPassword] = useState('')
   const [loader,setLoader]=useState(false);
-  const [tokenExists, setTokenExists]= useState('');
+  
+  var tokenExists
+  useEffect(()=>{
+    props.deleteToken();
+    AsyncStorage.getItem("token", function(error, data) {
+    console.log("localSTORE!2",data)
+    tokenExists = data
+   })
+ console.log("TokenExist",tokenExists)
+  },[])
 
-  AsyncStorage.getItem("token", function(error, data) {
-    //console.log(data)
-    setTokenExists(data)
-  })
+  //Function Sign-IN
+  const clickSignIn = async (a,b) => {
+    setSignInPassword('')
+    var data = await fetch(`${Ip()}:3000/users/sign-in`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: `email=${a}&password=${b}`
+    })
 
-  if(tokenExists){
-    props.addToken(tokenExists)
-    props.navigation.navigate('Home')
-  } else {
+    //console.log('envoyé')
+    var response = await data.json()
+    console.log("RESPONSE SIGNIN!!!!",response)
 
-    var clickSignIn = async (a, b) => {
-
-      //console.log("signin"+a,b)
-      setSignInEmail('')
+    if(response.result == true){
+      AsyncStorage.setItem("token", response.token)
+      AsyncStorage.setItem("prenom", response.prenom)
+      props.addToken(response.token)
+      props.addPrenom(response.prenom)
       setSignInPassword('')
-  
-      setLoader(true)
-      /* setTimeout(() => {
-       setLoader(false)
-     }, 2000 ); */
-  
-      const data = await fetch(`${Ip()}:3000/users/sign-in`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body: `email=${a}&password=${b}`
-      })
-  
-      //console.log('envoyé')
-      const response = await data.json()
-      console.log("RESPONSE",response)
-      if(Object.keys(response).length != 0){
+      //console.log(response.token)
+      setLoader(false)
+      props.navigation.navigate('Home')
+    } else{
         //Messages d'erreur depuis le Backend
         setErrorEmailInexistant(response.error.email)
-        setErrorChampVide(response.error.emptyField)
+        setEmptyMail(response.error.emptyFieldMail)
+        setEmptyPwd(response.error.emptyFieldPwd)
         setErrorPassword(response.error.password)
-        //console.log(response.error)
       }
-  
-      if(response.result == true){
-        AsyncStorage.setItem("token", response.token)
-        AsyncStorage.setItem("prenom", response.prenom)
-        props.addToken(response.token)
-        props.addPrenom(response.prenom)
-        setSignInPassword('')
-        //console.log(response.token)
-        setLoader(false)
-        props.navigation.navigate('Home')
-      } else {
-        //console.log('pas de token')
-      }
-    }
-
   }
 
-
-  
+  if(tokenExists != undefined){
+    console.log("TOKEN OK tu pars ",tokenExists)
+    props.addToken(tokenExists)
+    props.navigation.navigate('Home')
+  }else{
+    console.log("EXIST??? TU RESTES SUR SIGN",tokenExists)
     return(
-      <ImageBackground source={require('../assets/origami_background.jpg')} style={styles.container}>
+      <ImageBackground source={require('../assets/origami_background.jpg')} style={styles.container}>        
         <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
           <View>
             <View style={{ flexDirection:"row", marginBottom:50}}>
@@ -89,10 +80,10 @@ function SignIn(props) {
               <Input
               //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
               placeholder=' Email'
-              onChangeText={(val) => setSignInEmail(val.toLowerCase())}
+              onChangeText={(val) =>{setSignInEmail(val);setEmptyMail(""),setErrorEmailInexistant('')}}
               value={signInEmail}
               />
-              { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
+              { emptyMail ? <Text style={{fontSize:12,color:'red'}}>{emptyMail}</Text> : null }
               { errorEmailInexistant ? <Text style={{fontSize:12,color:'red'}}>{errorEmailInexistant}</Text> : null }
             </View>
 
@@ -101,23 +92,20 @@ function SignIn(props) {
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
               placeholder=' Mot de passe'
               secureTextEntry={true}
-              onChangeText={(val) => setSignInPassword(val)}
+              onChangeText={(val) => {setSignInPassword(val);setEmptyPwd('')}}
               value={signInPassword}
               />
-              { errorChampVide ? <Text style={{fontSize:12,color:'red'}}>{errorChampVide}</Text> : null }
+              { emptyPwd ? <Text style={{fontSize:12,color:'red'}}>{emptyPwd}</Text> : null }
               { errorPassword ? <Text style={{fontSize:12,color:'red'}}>{errorPassword}</Text> : null }
 
               <TouchableOpacity onPress={() => props.navigation.navigate('newPassword')}>
               <Text style={{fontSize: 11, marginBottom: 20, textAlign: "right", fontStyle: "italic"}}>Mot de passe oublié ?</Text>
             </TouchableOpacity>
             </View>
-
-            
-
             <Button
              title='Connexion'
              color={color('red')}
-             onPress={() => {clickSignIn(signInEmail, signInPassword)}}
+             onPress={() => {console.log("AI JE CLICK");clickSignIn(signInEmail, signInPassword)}}
             />
 
             <TouchableOpacity onPress={() => props.navigation.navigate('SignUp')}>
@@ -128,13 +116,12 @@ function SignIn(props) {
         </KeyboardAvoidingView> 
       </ImageBackground>
     )
-
+  }   
 }
-
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      resizeMode: 'cover',
+      // resizeMode: 'cover',
       alignItems: 'center',
       justifyContent: 'center',
     },
@@ -145,13 +132,13 @@ const styles = StyleSheet.create({
       addToken: function(token){
         dispatch({type: 'addToken', token: token})
       },
+      deleteToken: function(){
+        dispatch({type: 'deleteToken'})
+      },
       addPrenom: function(prenom){
         dispatch({type: 'addPrenom', prenom: prenom})
       }
     }
-  }
-  
-  export default connect(
-    null,
-    mapDispatchToProps
-  )(SignIn)
+  };
+
+  export default withNavigationFocus(connect(null,mapDispatchToProps)(SignIn));
