@@ -49,18 +49,18 @@ function Home(props) {
       setLoader(false)
     }, 3000);
     const catalogue = async() =>{
-      // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
-      var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
+      // await fetch('http://10.2.5.203/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
+      var responseFetch = await fetch(`${Ip()}/home/homePage/${props.token}`)
       var bookList = await responseFetch.json();
       setCataList(bookList.livreMin)
       
       // Chargement livres mieux notés
-      var responseBestRated = await fetch(`${Ip()}:3000/lists/bestRated`)
+      var responseBestRated = await fetch(`${Ip()}/lists/bestRated`)
       var bestRatedList = await responseBestRated.json();  
       setBestRated(bestRatedList)
 
       //recup tags
-      var tagFetch = await fetch(`${Ip()}:3000/home/homePage/tags`)
+      var tagFetch = await fetch(`${Ip()}/home/homePage/tags`)
       var tags = await tagFetch.json();
       var tagsColor = tags.map(e=>{
         e.color="grey"
@@ -76,7 +76,7 @@ function Home(props) {
 
    useEffect(()=>{
      const rechercheText = async()=>{
-       var responseFetch = await fetch(`${Ip()}:3000/home/searchtext/${props.token}`,{
+       var responseFetch = await fetch(`${Ip()}/home/searchtext/${props.token}`,{
         method: 'POST',
        headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},
        body: `textSearch=${textSearch}`
@@ -104,7 +104,7 @@ const fetchTag = async (tags)=>{
   var dataTag = JSON.stringify(tags)
 
 
-  var responseFetch = await fetch(`${Ip()}:3000/home/searchTag`,{
+  var responseFetch = await fetch(`${Ip()}/home/searchTag`,{
     method: 'POST',
     headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},    
     body: `textSearch=${textSearch}&tagsSearch=${dataTag}&token=${props.token}`});

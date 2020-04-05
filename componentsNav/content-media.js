@@ -29,7 +29,7 @@ let badgeColor = props.contentMediaData.dataContentFromBook[position].color
 // LOAD MEDIA CONTENT FROM DB
     useEffect( ()=> {
         async function openContent() {
-            var resContentData = await fetch(`${Ip()}:3000/books/open-content`, { 
+            var resContentData = await fetch(`${Ip()}/books/open-content`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
                     body: `idBook=${props.contentMediaData.idBook}&idContent=${arrayContent[position].idContent}`
@@ -182,20 +182,17 @@ var bulletBreadCrumb = props.contentMediaData.dataContentFromBook.map((obj, j) =
         config={config}
         style={{
             flex: 1,
+            backgroundColor:"white"
           }}
             onSwipeLeft={onSwipeLeft}
             onSwipeRight={onSwipeRight}
             >
-                <View style = {{
-                    flexDirection:"row",
-                    justifyContent:'center',
-                    alignItems:'center',
-                    marginTop:40}}>
-                     {bulletBreadCrumb}
-                </View>
-               <View style ={{marginTop:10, display:"flex", flexDirection:'row', alignItems:'center', height:15}}>
+        <View style={{marginTop:30}}>
+        <ScrollView stickyHeaderIndices={[0,4]} >   
+ 
+               <View style ={{marginTop:20, display:"flex", flexDirection:'row', alignItems:'center', height:37,backgroundColor:"white"}}>
                     <View style = {{flexDirection:'row', backgroundColor:badgeColor,position:'absolute',left:0,padding:5,
-                                    borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15}}>
+                                    borderTopRightRadius:10,borderBottomRightRadius:10,paddingRight:15,marginTop:5}}>
                         <Icon 
                                 name= 'back' type='antdesign'  size= {20} margin={5} marginLeft={20} color={'white'}
                                 onPress={() => props.navigation.navigate('BookContent')}
@@ -204,22 +201,35 @@ var bulletBreadCrumb = props.contentMediaData.dataContentFromBook.map((obj, j) =
                             {titleShort}
                         </Text>
                     </View>
-                    <Text style = {{backgroundColor:badgeColor,position:'absolute',right:0,padding:5,borderTopLeftRadius:10,borderBottomLeftRadius:10,color:'white'}}>
+                    <View 
+                    style = {{
+                    justifyContent:'center',alignItems:'center',marginTop:5}}
+                    >
+                     {bulletBreadCrumb}
+                    </View>
+                    <Text style = {{backgroundColor:badgeColor,position:'absolute',right:0,padding:5,borderTopLeftRadius:10,
+                    borderBottomLeftRadius:10,color:'white',marginTop:5}}>
                         page {dataContent.pageNum}
                     </Text>
                 </View>
+                
                 <View style = {{width:'100%'}}>
-                        <Text style={{
-                                padding:5,color:"black",marginBottom:10,fontSize:25,marginTop:20,marginLeft:10,marginRight:10,textAlign:'center',
-                                borderBottomColor:'#E7E5E5',borderBottomWidth:borderWidth,borderRadius:10, }}>
-                            {dataContent.content.title}
-                        </Text>
+                    <ScrollView>
+                            <Text style={{fontFamily:'Montserrat',padding:5,color:"black",marginBottom:10,fontSize:25,
+                            marginTop:20,marginLeft:10,marginRight:10,textAlign:'center',borderBottomColor:'#E7E5E5',
+                            borderBottomWidth:borderWidth,borderRadius:10}}>
+                                {dataContent.content.title}
+                            </Text>  
+                    </ScrollView>   
                 </View>
+               
                 <View style = {{flex:1}}>
                     <ScrollView>
                         {displayMedia}             
                     </ScrollView>    
-                </View>                                        
+                </View>    
+                </ScrollView>       
+            </View>                             
         </GestureRecognizer>
 
     );

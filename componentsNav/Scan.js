@@ -41,7 +41,7 @@ const sendPicture = async (path)=>{
     });
     //console.log("PATH DATA",data)
     //envoi au backend pour enregistrer sur cloudinary
-   var response = await fetch(`${Ip()}:3000/scan/`, {
+   var response = await fetch(`${Ip()}/scan/`, {
       method: 'POST',
       body: data
     });  

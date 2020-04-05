@@ -16,7 +16,7 @@ const [isCheck, setIsCheck] = useState(props.inLibrairy)
 //Function appel route addLibrairy
 const addLibrairy = async (id,bool) => {
   console.log("Fetch addlibrairy",bool)
-    var responseFetch = await fetch(`${Ip()}:3000/home/addLibrairy/${id}/${bool}/${props.token}`)
+    var responseFetch = await fetch(`${Ip()}/home/addLibrairy/${id}/${bool}/${props.token}`)
     var resp = await responseFetch.json();
     console.log("retour route librairy",resp)
     if(resp){

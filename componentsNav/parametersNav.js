@@ -28,7 +28,7 @@ console.log("WHO",props.prenom,props.token)
 //Function SendNEwName
 const sendNewName = async ()=>{
   setEditableText(false)
-  var response = await fetch(`${Ip()}:3000/users/updateUser/${props.token}`,{
+  var response = await fetch(`${Ip()}/users/updateUser/${props.token}`,{
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     body: `name=${newName}`
@@ -58,7 +58,7 @@ const clickLogOut = () => {
    }
 //Fetch update PWD
 const updatePwd= async () =>{
-  const dataUser = await fetch (`${Ip()}:3000/users/update/${props.token}`,
+  const dataUser = await fetch (`${Ip()}/users/update/${props.token}`,
   {
     method: 'POST',
     headers: {'Content-Type': 'application/x-www-form-urlencoded'},

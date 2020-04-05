@@ -31,7 +31,7 @@ function BookContent(props) {
     useEffect( ()=> {
         setIdBook(props.navigation.state.params.idBook)
         async function openBook() {
-            var bookData = await fetch(`${Ip()}:3000/books/open-book`, { 
+            var bookData = await fetch(`${Ip()}/books/open-book`, { 
                     method: 'POST',
                     headers: {'Content-Type':'application/x-www-form-urlencoded'},
                     body: `idBook=${props.navigation.state.params.idBook}&token=${token}`
@@ -50,7 +50,7 @@ function BookContent(props) {
     const addLibrairy = async (id,bool) => {
         console.log("STORE addLib!",props.storeLibrairy,"vs",props.navigation.state.params.idBook)
     
-      var responseFetch = await fetch(`${Ip()}:3000/home/addLibrairy/${id}/${bool}/${props.token}`)
+      var responseFetch = await fetch(`${Ip()}/home/addLibrairy/${id}/${bool}/${props.token}`)
       var resp = await responseFetch.json();
       if(resp){
         setIsChecked(bool);

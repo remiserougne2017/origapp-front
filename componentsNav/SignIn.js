@@ -30,7 +30,7 @@ function SignIn(props) {
   //Function Sign-IN
   const clickSignIn = async (a,b) => {
     setSignInPassword('')
-    var data = await fetch(`${Ip()}:3000/users/sign-in`, {
+    var data = await fetch(`${Ip()}/users/sign-in`, {
       method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `email=${a}&password=${b}`

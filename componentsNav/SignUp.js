@@ -128,7 +128,7 @@ console.log("TOKEN EXIST UP?",tokenExists)
         setErrorMatch("Les mots de passe ne sont pas identiques")
   
       } else {
-        const data = await fetch(`${Ip()}:3000/users/sign-up`, {
+        const data = await fetch(`${Ip()}/users/sign-up`, {
           method: 'POST',
           headers: {'Content-Type': 'application/x-www-form-urlencoded'},
           body: `firstName=${signUpFirstName}&email=${signUpEmail}&password=${signUpPassword}`

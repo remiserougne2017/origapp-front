@@ -21,7 +21,7 @@ const RatingPage = (props) => {
      
     const sendComments = async ()=>{
       console.log("envoyer comment",props.token,props.idBook,userRating)
-      var comment =  await fetch(`${Ip()}:3000/books/comments`, {
+      var comment =  await fetch(`${Ip()}/books/comments`, {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: `comment=${userComment}&token=${props.token}&idBook=${props.idBook}&rating=${userRating}`
