@@ -28,8 +28,8 @@ function Home(props) {
   useEffect(()=>{
     console.log("HOM TOKEN?",props.token)
     const librairyToStore= ()=>{
+      console.log("USE EFFECT LIBRAIRY TO STORE")
     var NewCatalist = cataList.map(e=>{
-      console.log("count True",e.inLibrairy)
        if(e.inLibrairy==true){
          props.manageLibrairy(e.id,true)
        }else{
@@ -38,7 +38,7 @@ function Home(props) {
      })
     };
     librairyToStore();
-  },[cataList,props.isFocused]) //cataList obligatoire!
+  },[props.isFocused])
  
   
    // Initialisation du composant
@@ -71,8 +71,19 @@ function Home(props) {
       setLoader(false)
     };
     catalogue();   
-  },[props.isFocused,props.storeLibrairy])//ou alors ? props.isFocused,props.storeLibrairy
+  },[props.isFocused,
+    props.storeLibrairy
+  ])//ou alors ? props.isFocused,props.storeLibrairy
 
+  // useEffect(()=>{
+  //   const catalogue = async() =>{
+  //     // await fetch('http://10.2.5.203:3000/books/bdd') ATTENTION A UTLISEER POUR CHARGER BDD
+  //     var responseFetch = await fetch(`${Ip()}:3000/home/homePage/${props.token}`)
+  //     var bookList = await responseFetch.json();
+  //     setCataList(bookList.livreMin)
+  //   };
+  //   catalogue();
+  // },[props.isFocused])
 
    useEffect(()=>{
      const rechercheText = async()=>{
@@ -102,6 +113,7 @@ function Home(props) {
 //RS fetch pour search tag
 const fetchTag = async (tags)=>{
   var dataTag = JSON.stringify(tags)
+  console.log("USE EFFECT TAG SEARCH")
 
 
   var responseFetch = await fetch(`${Ip()}/home/searchTag`,{
@@ -151,7 +163,7 @@ console.log('HOME isFOcused',props.isFocused)
   return (
     
      <View style={{ flex: 1, width:"100%", backgroundColor:'white'}}>
-     {props.isFocused && loader?<Loader bool={loader} text="Chargement en cours..."/>:null}
+     {props.isFocused&&loader?<Loader bool={loader} text="Chargement en cours..."/>:null}
        <View style={{ flexDirection:"row", marginTop:25}}>
        <Image
           style={{width: 40, height: 40, margin:5}}

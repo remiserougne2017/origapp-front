@@ -53,7 +53,9 @@ function BookContent(props) {
       var responseFetch = await fetch(`${Ip()}/home/addLibrairy/${id}/${bool}/${props.token}`)
       var resp = await responseFetch.json();
       if(resp){
-        setIsChecked(bool);
+        // setIsChecked(bool);
+        console.log("IS CHECKED IN ADD LIBRAIRY FUNCTION", bool)
+
         props.manageLibrairy(id,bool)
         showMessage({
             message: resp.mess,

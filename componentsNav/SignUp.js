@@ -64,7 +64,7 @@ console.log("TOKEN EXIST UP?",tokenExists)
                   <Input
                   //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
                   placeholder=' Email'
-                  onChangeText={(val) =>{setSignUpEmail(val.toLowerCase());setError({})}}
+                  onChangeText={(val) =>{setSignUpEmail(val);setError({})}}
                   value={signUpEmail}
                   />
                   { error.userExistant ? <Text style={{fontSize:12,color:'red'}}>{error.userExistant}</Text> : null }

@@ -169,7 +169,7 @@ var bulletBreadCrumb = props.contentMediaData.dataContentFromBook.map((obj, j) =
             bulletSize = 10
     }
     return (
-        <View style = {{height:bulletSize,width:bulletSize,backgroundColor:badgeColor,borderRadius:100,margin:15}}></View>
+        <View key = {j} style = {{height:bulletSize,width:bulletSize,backgroundColor:badgeColor,borderRadius:100,margin:15}}></View>
         )
 
     })

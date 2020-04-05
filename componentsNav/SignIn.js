@@ -80,7 +80,7 @@ function SignIn(props) {
               <Input
               //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
               placeholder=' Email'
-              onChangeText={(val) =>{setSignInEmail(val.toLowerCase());setEmptyMail(""),setErrorEmailInexistant('')}}
+              onChangeText={(val) =>{setSignInEmail(val);setEmptyMail(""),setErrorEmailInexistant('')}}
               value={signInEmail}
               />
               { emptyMail ? <Text style={{fontSize:12,color:'red'}}>{emptyMail}</Text> : null }
