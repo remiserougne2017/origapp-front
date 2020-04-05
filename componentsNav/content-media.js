@@ -209,7 +209,7 @@ var bulletBreadCrumb = props.contentMediaData.dataContentFromBook.map((obj, j) =
                     </View>
                     <Text style = {{backgroundColor:badgeColor,position:'absolute',right:0,padding:5,borderTopLeftRadius:10,
                     borderBottomLeftRadius:10,color:'white',marginTop:5}}>
-                        page {dataContent.pageNum}
+                        {dataContent.pageNum}
                     </Text>
                 </View>
                 
