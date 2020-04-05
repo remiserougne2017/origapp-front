@@ -199,7 +199,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                  />  
                 <Text style={{marginTop:10}}>{arrayDataBook.title}</Text>
                 <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.author}</Text>
-                <Text style ={{fontStyle:'italic',fontSize:12}}>{publisher.publisher}</Text>  
+                <Text style ={{fontStyle:'italic',fontSize:12}}>{arrayDataBook.publisher}</Text>  
                 <Text style={{marginBottom: 5,textAlign:'center',marginTop:10}}>{arrayDataBook.description}</Text> 
             </View> 
         </View>
