@@ -101,7 +101,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
         }}>
             <View style ={{width:'100%'}}>
                 <View style = {{backgroundColor:badgeColor, position:'absolute', top:20, width:60,zIndex:7,left:0,justifyContent:'center',alignItems:'center',height:30,borderBottomRightRadius:10,borderTopRightRadius:10}}>
-                    <Text style ={{color:'white'}}>page {obj.pageNum}</Text>
+                    <Text style ={{color:'white'}}>{obj.pageNum}</Text>
                 </View>
                 <View style ={{position: 'absolute',top:300,marginLeft:'auto',marginBottom:5}}>
                 </View>
