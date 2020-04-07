@@ -65,7 +65,7 @@ var displayMedia = dataContent.content.media.map((med, k) => {
             </View> 
             } else {
                 displayBlocMedia =
-                <View style = {{height:280,marginTop:10 ,marginBottom:10}}>
+                <View style = {{height:300,marginTop:10 ,marginBottom:10}}>
                         <WebView //module webview
                         style={ {margin: 20} }
                         source={{ uri: med.source }}
