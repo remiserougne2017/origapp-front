@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
+import {View, Text,ActivityIndicator, Button, ImageBackground, StyleSheet, TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import {connect} from 'react-redux';
 import {Input} from 'react-native-elements';
 import Loader from './loader';
@@ -16,7 +16,8 @@ function SignIn(props) {
   const [errorEmailInexistant, setErrorEmailInexistant] = useState('')
   const [errorPassword, setErrorPassword] = useState('')
   const [loader,setLoader]=useState(false);
-  
+  const [activity,setActivity]=useState(false)
+
   var tokenExists
   useEffect(()=>{
     props.deleteToken();
@@ -29,6 +30,7 @@ function SignIn(props) {
 
   //Function Sign-IN
   const clickSignIn = async (a,b) => {
+      setActivity(true)
     setSignInPassword('')
     var data = await fetch(`${Ip()}/users/sign-in`, {
       method: 'POST',
@@ -56,6 +58,7 @@ function SignIn(props) {
         setEmptyPwd(response.error.emptyFieldPwd)
         setErrorPassword(response.error.password)
       }
+      setActivity(false)
   }
 
   if(tokenExists != undefined){
@@ -86,7 +89,7 @@ function SignIn(props) {
               { emptyMail ? <Text style={{fontSize:12,color:'red'}}>{emptyMail}</Text> : null }
               { errorEmailInexistant ? <Text style={{fontSize:12,color:'red'}}>{errorEmailInexistant}</Text> : null }
             </View>
-
+            {activity?<ActivityIndicator size="large" color="#d6d6d6" style={{marginTop:10}} />:null }
             <View style={{marginBottom: 5}}>
               <Input
               style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, TextInput, Text, Button, ImageBackground, StyleSheet,
-   TouchableOpacity, Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
+   TouchableOpacity, ActivityIndicator,Image, KeyboardAvoidingView, AsyncStorage } from 'react-native';
 import {Input} from 'react-native-elements';
 import {connect} from 'react-redux';
 import Loader from './loader';
@@ -16,6 +16,7 @@ function SignUp(props) {
   const [signUpPasswordMatch, setSignUpPasswordMatch] = useState('')
   const [error,setError] = useState({})
   const [errorMatch, setErrorMatch] = useState('')
+  const [activity,setActivity]=useState(false)
   // const [errorUserExistant, setErrorUserExistant] = useState('')
   // const [errorChampVide, setErrorChampVide] = useState('')
   // const [errorEmailInvalide, setErrorEmailInvalide] = useState('')
@@ -50,6 +51,7 @@ function SignUp(props) {
 console.log("TOKEN EXIST UP?",tokenExists)
   //<Loader bool={loader} text="Chargement"/>
  formSignUp = <View>
+                {activity?<ActivityIndicator size="large" color="#d6d6d6"/>:null }
                 <View style={{marginBottom:20}}>
                   <Input
                   //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
@@ -71,7 +73,6 @@ console.log("TOKEN EXIST UP?",tokenExists)
                   { error.invalidMail ? <Text style={{fontSize:12,color:'red'}}>{error.invalidMail}</Text> : null}
                   { error.emptyField && signUpEmail == "" ? <Text style={{fontSize:12,color:'red'}}>{error.emptyField}</Text> : null }
                 </View>
-
                 <View style={{marginBottom:20}}>
                   <Input
                   //style = {{borderWidth : 1.0, borderColor: 'white', borderRadius: 5, backgroundColor: 'white'}}
@@ -128,6 +129,8 @@ console.log("TOKEN EXIST UP?",tokenExists)
         setErrorMatch("Les mots de passe ne sont pas identiques")
   
       } else {
+          
+          setActivity(true)
         const data = await fetch(`${Ip()}/users/sign-up`, {
           method: 'POST',
           headers: {'Content-Type': 'application/x-www-form-urlencoded'},
@@ -155,7 +158,7 @@ console.log("TOKEN EXIST UP?",tokenExists)
          }
         setError(errorBack)
         }
-
+setActivity(false)
       }
     }
 
@@ -171,10 +174,9 @@ console.log("TOKEN EXIST UP?",tokenExists)
                 />
               <Text style={{ marginTop:25,marginLeft:5, fontSize:32, fontWeight:"500"}} >OrigApp</Text>
             </View>
-
               {formSignUp}
-
             </View> 
+            
         </KeyboardAvoidingView>
       </ImageBackground>  
     )
