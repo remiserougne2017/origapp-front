@@ -26,7 +26,6 @@ function BookContent(props) {
     const [idBook,setIdBook]=useState(props.navigation.state.params.idBook)
 
 
- console.log("IDBOOK PARAM",idBook)
 // LOAD BOOK FROM DB
     useEffect( ()=> {
         setIdBook(props.navigation.state.params.idBook)
@@ -47,14 +46,11 @@ function BookContent(props) {
       //overlayRatingVisible en ecoute pour afficher les comments en direct, 
 
     //Function appel route addLibrairy
-    const addLibrairy = async (id,bool) => {
-        console.log("STORE addLib!",props.storeLibrairy,"vs",props.navigation.state.params.idBook)
-    
+    const addLibrairy = async (id,bool) => {    
       var responseFetch = await fetch(`${Ip()}/home/addLibrairy/${id}/${bool}/${props.token}`)
       var resp = await responseFetch.json();
       if(resp){
         // setIsChecked(bool);
-        console.log("IS CHECKED IN ADD LIBRAIRY FUNCTION", bool)
 
         props.manageLibrairy(id,bool)
         showMessage({
@@ -64,7 +60,7 @@ function BookContent(props) {
             backgroundColor:"#8FB2C9"
           });
       }
-      console.log("STORE!",props.storeLibrairy)
+
     }
 
   
@@ -120,8 +116,6 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
             <View style = {{display:"flex",flexDirection:'row', marginTop:10}}>
                 <Icon 
                     name= 'download' type='antdesign'  size= {20} margin={5} marginRight='auto'
-                    onPress={() => console.log('hello download content')}
-
                 />
                     <View  style={{display:"flex",flexDirection:'row', marginLeft:'auto'}}>
                         {
@@ -184,7 +178,7 @@ let cardDisplay = arrayDataBook.contents.sort(function(objA,objB) {return objA.p
                  <View style={{width:"100%",alignItems:"flex-start",justifyContent:"flex-start"}}>   
                 <Button
                     containerStyle={{marginLeft:10,margin:0}}
-                    onPress={() =>{console.log("PRESS BOUTON",isChecked);addLibrairy(props.navigation.state.params.idBook,!isChecked)}}
+                    onPress={() =>{addLibrairy(props.navigation.state.params.idBook,!isChecked)}}
                     buttonStyle={{backgroundColor:colorImport("red"), borderWidth:0,borderRadius:20,margin:0}}
                     titleStyle={{fontSize:10}}
                     title={!isChecked?"Ajouter à mes favoris":"Supprimer de mes favoris"}

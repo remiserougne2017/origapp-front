@@ -15,12 +15,12 @@ const [isCheck, setIsCheck] = useState(props.inLibrairy)
 
 //Function appel route addLibrairy
 const addLibrairy = async (id,bool) => {
-  console.log("Fetch addlibrairy",bool)
+
     var responseFetch = await fetch(`${Ip()}/home/addLibrairy/${id}/${bool}/${props.token}`)
     var resp = await responseFetch.json();
-    console.log("retour route librairy",resp)
+
     if(resp){
-      console.log("OK addLibrairy")
+
       setIsCheck(bool)
       
       props.manageLibrairy(id,bool)
@@ -38,7 +38,7 @@ return (
         containerStyle={{width:"45%",padding:2,backgroundColor:"white", marginLeft:"1%", marginRight:"1%"}}
         >
           <TouchableOpacity
-            onPress={() =>{props.navigation.navigate('BookContent',{idBook:props.id});console.log("BOOK",props.id)}}
+            onPress={() =>{props.navigation.navigate('BookContent',{idBook:props.id})}}
                               >
           <Image
               style={{width:"100%",height:250}}
@@ -47,8 +47,7 @@ return (
           />
           </TouchableOpacity>
           <CheckBox 
-              onPress={() =>{addLibrairy(props.id,!props.inLibrairy);
-                console.log("ONPRESS",props.inLibrairy,props.title)}}
+              onPress={() =>{addLibrairy(props.id,!props.inLibrairy)}}
               checked={props.inLibrairy}
               checkedColor="#F9603E"
               containerStyle={{position: "absolute",

@@ -49,7 +49,7 @@ var displayMedia = dataContent.content.media.map((med, k) => {
         var regExUrl = new RegExp("https?.*?\.mp4");
         if(regExUrl.test(med.source)==true) {
         displayBlocMedia = 
-            <View style={{marginTop:10,marginBottom:10}}>               
+            <View style={{flex:1,marginTop:10,marginBottom:10}}>               
                  <Video //module video AV
                     source={{uri: med.source}}
                     // source={require('../assets/testSample.mp4')}
@@ -57,9 +57,10 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                     rate={1.0}
                     volume={1.0}
                     isMuted={false}
-                    resizeMode="cover"
+                    resizeMode="contain"
                     isLooping
-                    style={{ width: '100%', height: 300 }}
+                    // style={{ width: '100%', height: 300 }}
+                    style={{ width: '100%' }}
                     />
                 <Text style = {{...style.mainParagraphText,marginLeft:15,fontStyle:'italic'}}>{med.title}</Text>
             </View> 
@@ -77,7 +78,7 @@ var displayMedia = dataContent.content.media.map((med, k) => {
             }
         break; 
         case 'audio':    
-        console.log("AUDIO CASE",med)
+
         displayBlocMedia = 
             <View style={{flexDirection:"row",alignItems:"flex-start"}}>
                 <Audio /*duration={med.duration}*/ title={med.title} source={med.source}/>

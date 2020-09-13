@@ -20,7 +20,6 @@ const AudioPlay = (props) =>{
   const loadSound = async () => {
     await playbackObject.loadAsync(source);
     var state =  await playbackObject.getStatusAsync()
-    console.log("loadSound?",state)
     setDuration(state.durationMillis)
   } 
   loadSound()
@@ -47,7 +46,7 @@ const AudioPlay = (props) =>{
     const unloadSound = async () => {
       await playbackObject.unloadAsync();
     var state =  await playbackObject.getStatusAsync()
-    console.log("unloadSound?",state)
+
     }
     unloadSound()
   }
@@ -55,7 +54,7 @@ const AudioPlay = (props) =>{
   // myVar  = setInterval(stateSound, 500);
   const playPauseSound = (bool)=>{
     progress=position/duration
-    console.log("PLAY ??",bool)
+
     if(bool){
       playbackObject.playAsync();
    

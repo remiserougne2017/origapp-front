@@ -36,7 +36,7 @@ function SignUp(props) {
 
     AsyncStorage.getItem("token", function(error, data) {
       tokenExists = data
-      console.log("TOKEN??",data)
+      
       // setLoading(true)
       if(tokenExists != undefined){
         props.addToken(data)
@@ -48,7 +48,6 @@ function SignUp(props) {
 
  
  var formSignUp
-console.log("TOKEN EXIST UP?",tokenExists)
   //<Loader bool={loader} text="Chargement"/>
  formSignUp = <View>
                 {activity?<ActivityIndicator size="large" color="#d6d6d6"/>:null }
@@ -139,7 +138,6 @@ console.log("TOKEN EXIST UP?",tokenExists)
         const response = await data.json()
          
         if(response.result == true){
-          console.log("??????",response.result)
           AsyncStorage.setItem("token", response.token)
           AsyncStorage.setItem("prenom", response.prenom)
           props.addToken(response.token)

@@ -22,10 +22,8 @@ function SignIn(props) {
   useEffect(()=>{
     props.deleteToken();
     AsyncStorage.getItem("token", function(error, data) {
-    console.log("localSTORE!2",data)
     tokenExists = data
    })
- console.log("TokenExist",tokenExists)
   },[])
 
   //Function Sign-IN
@@ -40,7 +38,6 @@ function SignIn(props) {
 
     //console.log('envoyé')
     var response = await data.json()
-    console.log("RESPONSE SIGNIN!!!!",response)
 
     if(response.result == true){
       AsyncStorage.setItem("token", response.token)
@@ -62,11 +59,9 @@ function SignIn(props) {
   }
 
   if(tokenExists != undefined){
-    console.log("TOKEN OK tu pars ",tokenExists)
     props.addToken(tokenExists)
     props.navigation.navigate('Home')
   }else{
-    console.log("EXIST??? TU RESTES SUR SIGN",tokenExists)
     return(
       <ImageBackground source={require('../assets/origami_background.jpg')} style={styles.container}>        
         <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
@@ -108,7 +103,7 @@ function SignIn(props) {
             <Button
              title='Connexion'
              color={color('red')}
-             onPress={() => {console.log("AI JE CLICK");clickSignIn(signInEmail, signInPassword)}}
+             onPress={() => {clickSignIn(signInEmail, signInPassword)}}
             />
 
             <TouchableOpacity onPress={() => props.navigation.navigate('SignUp')}>

@@ -24,7 +24,6 @@ const askPermission =async() => {
           setHasPermission(status === 'granted');
         };
 //console.log("type?",type)
-console.log("PERMISSION?",props.isFocused,hasPermission)
 //Fonction fetch pour poster photo au backend
 
 const sendPicture = async (path)=>{
@@ -46,16 +45,13 @@ const sendPicture = async (path)=>{
       body: data
     });  
      var responseAPI = await response.json()
-     console.log(responseAPI)
      if(responseAPI != null){
         setLoader(false)
         props.navigation.navigate('BookContent',{idBook: responseAPI})
      } else if (responseAPI == null){
         setLoader(false)
         setIsVisible(true)
-        console.log('12')
-        console.log(isVisible)
-        console.log('34')
+
         //alert('Livre inexistant')
      }
 }

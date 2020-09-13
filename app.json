@@ -13,7 +13,7 @@
     "orientation": "portrait",
     "icon": "./assets/logoOrigapp.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logoOrigapp-512-512.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

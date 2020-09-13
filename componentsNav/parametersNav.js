@@ -6,6 +6,7 @@ import color from './color';
 import Ip from './Ip'; // A enlever en production;
 import {showMessage, hideMessage } from "react-native-flash-message";
 import { withNavigation } from 'react-navigation';
+import { set } from 'react-native-reanimated';
 
 function  Parameters(props) { 
   /// recup identité user du store
@@ -18,13 +19,11 @@ const [editableText, setEditableText] = useState(false)
 const [newName, setNewName]=useState(props.prenom)
 
 
-console.log("PRenom",username,props.prenom,newName)
 //////////////////// CLICONTACT
 var clickContact = () => {
   setOContactVisible(!oContactVisible);
    }
 
-console.log("WHO",props.prenom,props.token)
 //Function SendNEwName
 const sendNewName = async ()=>{
   setEditableText(false)
@@ -34,7 +33,6 @@ const sendNewName = async ()=>{
     body: `name=${newName}`
   })
   var resp = await response.json()
-  console.log("HEHE",resp)
   if(resp.result=='ok'){
     //reducer
     props.addPrenom(newName)
@@ -43,7 +41,6 @@ const sendNewName = async ()=>{
     //MAJ localStorage
     AsyncStorage.setItem("prenom",newName)
   }else{
-    console.log("else")
   }
   showMessage({
     message: resp.mess,
@@ -53,7 +50,6 @@ const sendNewName = async ()=>{
   });
 }
 const clickLogOut = () => {
-  console.log('Je LOGOUT 5')
   props.navigation.navigate('SignIn');
    }
 //Fetch update PWD
@@ -65,7 +61,6 @@ const updatePwd= async () =>{
     body: `pwd1=${pwd1}&pwd2=${pwd2}`
   })
   let resp = await dataUser.json()
-  console.log("ResultUpdate",resp)
    if(resp.result=="ok"){
     showMessage({
       message: resp.mess,
@@ -82,6 +77,8 @@ const updatePwd= async () =>{
     });
    };
    setIsVisible(false)
+   props.addToken(resp.token)
+   AsyncStorage.setItem("token", resp.token)
 }
 //Overlay update PWd
 
@@ -118,7 +115,6 @@ const OverlayUpdatePwd = (bool)=>{
 }
 
 const OverlayContact = (bool)=>{
-  console.log('Overlay contact bool',bool)
   return(
     // <View style={{flex:1, justifyContent:"center", alignItems:"center"}}>
       <Overlay height={170} isVisible={bool} containerStyle={{justifyContent:"center", alignItems:"center"}}>
@@ -128,8 +124,7 @@ const OverlayContact = (bool)=>{
              Contact : remiserougne@gmail.com
            </Text>                                              
            <Button
-            onPress={() => { clickContact() ; 
-              console.log("bouton ok c'est noté, overlay set à not visble")}
+            onPress={() => { clickContact();}
           }
             
             title="  C'est noté!"
@@ -170,13 +165,9 @@ const OverlayContact = (bool)=>{
             type="clear"
             titleStyle={{paddingRight:10, color: "black"}}
             style={{marginRight: 5, marginLeft: "auto"}}
-            onPress={() =>{ console.log('Je LOGOUT');
-              props.deleteToken();
-              console.log('Je LOGOUT 1')
+            onPress={() =>{ props.deleteToken();
               props.deletePrenom();
-              console.log('Je LOGOUT 2&3')
-              AsyncStorage.clear()
-              console.log('Je LOGOUT 4')
+              AsyncStorage.clear();
               clickLogOut()}}
             icon={   
               <Icon 
@@ -199,7 +190,7 @@ const OverlayContact = (bool)=>{
         />
         <View style={{flexDirection: 'column', justifyContent: "center", marginTop:20}}>
           <View style={{flexDirection:"row"}}>
-            <TouchableOpacity  onPress={()=>{console.log("onPressEdit");setEditableText(true)}}>
+            <TouchableOpacity  onPress={()=>{setEditableText(true)}}>
             <TextInput 
             // defaultValue={username}
             editable={editableText}
@@ -211,7 +202,7 @@ const OverlayContact = (bool)=>{
             </TouchableOpacity>
             {editableText==true?<Icon name="rightcircleo" type="antdesign"
             containerStyle={{marginLeft:30}}
-            onPress={()=>{console.log('icon press');sendNewName()}}
+            onPress={()=>{sendNewName()}}
             />:null}
           </View>         
           <Text style={{marginLeft: 0, fontSize:12,marginTop:10}}
@@ -224,7 +215,7 @@ const OverlayContact = (bool)=>{
       <View style={{flex:3,flexDirection: 'column',width:"100%",height:"100%",flexWrap:"wrap",
        justifyContent:"flex-end",alignItems:"flex-start", marginTop: 100}}>     
         {/* <View style={{flexDirection:'row', justifyContent:"flex-start"}}> */}
-          <Button  onPress={() => console.log("demande d'aide")}
+          <Button 
             icon={   
                   <Icon name="help-circle" type='feather'
                   color= "black" size= {20}
@@ -242,7 +233,7 @@ const OverlayContact = (bool)=>{
                 <Icon 
                 name="group" type='fontawesome' 
                 color= "black" size= {20}
-                onPress={() => console.log("voir les credits")}
+                
                 />
           } 
             
@@ -265,7 +256,7 @@ const OverlayContact = (bool)=>{
             title="Nous contacter"
             type="clear"
             titleStyle={{color: "black",paddingLeft:5}}   
-            onPress={() => { clickContact() ; console.log("contact")}}
+            onPress={() => { clickContact()}}
           />
         </View>   
       </View>
@@ -287,6 +278,9 @@ const OverlayContact = (bool)=>{
     return {
           deleteToken: function(){
             dispatch({type: 'deleteToken'})
+          },
+          addToken: function(token){
+            dispatch({type: 'addToken', token: token})
           },
           deletePrenom: function(){
             dispatch({type: 'deletePrenom'})

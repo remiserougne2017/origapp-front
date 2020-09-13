@@ -9,23 +9,14 @@ import { withNavigationFocus } from 'react-navigation';
 
 function OverlayContent(props) { 
 
-    // console.log("PROPS OVERLAY",props.overlayData)
-
 // VARIABLES
 // const [arrayContent,setArrayContent] = useState([{pageNum:"",media:[]}]);
 const [isVisibleOverlay,setIsVisibleOverlay] = useState('');
-// console.log("isVIsible Overlay?",props.overlayData.toggle)
-// console.log("hello props overlaydata",props.overlayData)
+
 
 useEffect( ()=> {
-    console.log("hello useeffect close overlay",props.overlayData.toggle)
     setIsVisibleOverlay(props.overlayData.toggle);
-
-
   },[props.overlayData.toggle])
-//   console.log('PROPS OVERLAY DATA TOGGLE',props.overlayData);
-  console.log("focus",props.isFocused)
-  //   console.log("IS VISIBLE OVERLAY",isVisibleOverlay)
 
 // GENERE LES ELEMENTS DE LA LIST
 let displayContentCard = props.overlayData.content.map((obj,i) => {
@@ -40,8 +31,7 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
             <View style = {{display:"flex",flexDirection:'row'}}>
                 <Icon 
                     name= 'download' type='antdesign'  size= {30} margin={5} marginRight='auto'
-                    onPress={() => console.log('hello download content')}
-
+                    
                 />
                 <View  style={{display:"flex",flexDirection:'row', marginLeft:'auto'}}>
             {
@@ -106,7 +96,7 @@ let displayContentCard = props.overlayData.content.map((obj,i) => {
             <Icon 
                 containerStyle={{marginLeft:250}}
                 name= "closecircleo" type='antdesign'  size= {20}
-                onPress={() => {props.storeOverlayInformation(props.overlayData); console.log('PROP IN CLOSE',props.overlayData.toggle);props.navigation.navigate('BookContent');setIsVisibleOverlay(false)}}
+                onPress={() => {props.storeOverlayInformation(props.overlayData);props.navigation.navigate('BookContent');setIsVisibleOverlay(false)}}
             />
         </View>
         <View style ={{justifyContent:'center', marginTop:20}}>
