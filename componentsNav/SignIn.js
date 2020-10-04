@@ -28,6 +28,7 @@ function SignIn(props) {
 
   //Function Sign-IN
   const clickSignIn = async (a,b) => {
+      console.log('SIGNIN')
       setActivity(true)
     setSignInPassword('')
     var data = await fetch(`${Ip()}/users/sign-in`, {
@@ -35,9 +36,9 @@ function SignIn(props) {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       body: `email=${a}&password=${b}`
     })
-
-    //console.log('envoyé')
+    
     var response = await data.json()
+    console.log('envoyé', response)
 
     if(response.result == true){
       AsyncStorage.setItem("token", response.token)

@@ -3,7 +3,6 @@
     "name": "OrigApp",
     "slug": "origapp",
     "privacy": "public",
-    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
@@ -27,8 +26,8 @@
       "supportsTablet": true
     },
     "android": {
-        "package": "com.sabotrouge.origapp",
-        "versionCode": 1
-      }
+      "package": "com.sabotrouge.origapp",
+      "versionCode": 2
+    }
   }
 }

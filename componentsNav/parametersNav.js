@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react';
-import { StyleSheet, Text, View,TextInput, Image, ImageBackground,AsyncStorage,TouchableOpacity} from 'react-native';
+import { StyleSheet, Text, View,TextInput, Linking, ImageBackground,AsyncStorage,TouchableOpacity} from 'react-native';
 import { Button,Input, Avatar, Icon, Header,Overlay} from 'react-native-elements';
 import {connect} from 'react-redux';
 import color from './color';
@@ -136,6 +136,11 @@ const OverlayContact = (bool)=>{
       </Overlay>
 
   )}
+
+  const goToUrl= async ()=>{
+      console.log('GoTo privacy')
+      await Linking.openURL(`${Ip()}/regles-de-confidentialite`);
+  }
 // RETURN GLOBAL DE LA PAGE
 
     return (
@@ -159,6 +164,17 @@ const OverlayContact = (bool)=>{
           }}
         />  
         <View style={{flex:1,flexDirection: 'row', justifyContent: 'flex-end', alignItems:"flex-start"}}>
+        {/* <Button 
+            icon={   
+                  <Icon name="help-circle" type='feather'
+                  color= "black" size= {20}
+                  />
+            } 
+              title="Aide"
+              titleStyle={{color:"black",paddingLeft:5}}
+              style={{marginRight: 0,marginLeft: "auto"}}
+              buttonStyle={{backgroundColor:"transparent"}}
+            /> */}
           <Button    
             // titleStyle={{paddingHorizontal:10}}
             title="Se déconnecter"
@@ -177,6 +193,7 @@ const OverlayContact = (bool)=>{
             }
             iconRight
             />
+            
         </View>
        {OverlayUpdatePwd(isVisible)}                              
        {OverlayContact(oContactVisible)}
@@ -215,17 +232,19 @@ const OverlayContact = (bool)=>{
       <View style={{flex:3,flexDirection: 'column',width:"100%",height:"100%",flexWrap:"wrap",
        justifyContent:"flex-end",alignItems:"flex-start", marginTop: 100}}>     
         {/* <View style={{flexDirection:'row', justifyContent:"flex-start"}}> */}
-          <Button 
+        <Button 
             icon={   
-                  <Icon name="help-circle" type='feather'
+                  <Icon name="lock-outline" type='material'
                   color= "black" size= {20}
                   />
             } 
-              title="Aide"
+              title="Règles de confidentialité"
               titleStyle={{color:"black",paddingLeft:5}}
               style={{marginRight: 0,marginLeft: "auto"}}
               buttonStyle={{backgroundColor:"transparent"}}
+              onPress={() => { goToUrl()}}
             />
+         
        
         <View style={{flexDirection:'row',width:"100%",justifyContent:"space-evenly"}}>
           <Button
