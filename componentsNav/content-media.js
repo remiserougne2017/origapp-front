@@ -57,7 +57,7 @@ var displayMedia = dataContent.content.media.map((med, k) => {
                     rate={1.0}
                     volume={1.0}
                     isMuted={false}
-                    resizeMode="contain"
+                    resizeMode="cover"
                     isLooping
                     // style={{ width: '100%', height: 300 }}
                     style={{ width: '100%' }}
@@ -66,15 +66,14 @@ var displayMedia = dataContent.content.media.map((med, k) => {
             </View> 
             } else {
                 displayBlocMedia =
-                <View style = {{height:300,marginTop:10 ,marginBottom:10}}>
+                <View style = {{height:500,marginTop:10 ,marginBottom:10}}>
                         <WebView //module webview
-                        style={ {margin: 20} }
+                         style={{ marginTop: 20}}
                         source={{ uri: med.source }}
-                        javaScriptEnabled={true}
-                        domStorageEnabled={true}   
+                        allowsFullscreenVideo={true}
                         />
                     <Text style = {{...style.mainParagraphText,marginLeft:15,fontStyle:'italic'}}>{med.title}</Text>
-                </View>
+                </View>;
             }
         break; 
         case 'audio':    
@@ -203,12 +202,11 @@ var bulletBreadCrumb = props.contentMediaData.dataContentFromBook.map((obj, j) =
                         </Text>
                     </View>
                     <View 
-                    style = {{
-                    justifyContent:'center',alignItems:'center',marginTop:5}}
+                    style = {{display:'flex',flexDirection:'row',justifyContent:'center',alignItems:'center',marginTop:30}}
                     >
                      {bulletBreadCrumb}
                     </View>
-                    <Text style = {{backgroundColor:badgeColor,position:'absolute',right:0,padding:5,borderTopLeftRadius:10,
+                    <Text style = {{backgroundColor:badgeColor,position:'absolute',right:0,padding:5,paddingHorizontal:15,borderTopLeftRadius:10,
                     borderBottomLeftRadius:10,color:'white',marginTop:5}}>
                         {dataContent.pageNum}
                     </Text>
