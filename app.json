@@ -27,7 +27,7 @@
     },
     "android": {
       "package": "com.sabotrouge.origapp",
-      "versionCode": 3
+      "versionCode": 4
     }
   }
 }
