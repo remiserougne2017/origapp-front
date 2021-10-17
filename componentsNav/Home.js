@@ -86,7 +86,7 @@ function Home(props) {
   // },[props.isFocused])
 
    useEffect(()=>{
-     const rechercheText = async()=>{
+     const searchText = async()=>{
        var responseFetch = await fetch(`${Ip()}/home/searchtext/${props.token}`,{
         method: 'POST',
        headers: {'Content-Type':'application/x-www-form-urlencoded','Access-Control-Allow-Origin':`${Ip()}`},
@@ -96,7 +96,7 @@ function Home(props) {
       setCataList(resultatsearch.resultMin)
       
     };
-   rechercheText();
+   searchText();
    },[textSearch])
  
 
