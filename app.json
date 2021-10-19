@@ -11,11 +11,6 @@
     "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/logoOrigapp.png",
-    "splash": {
-      "image": "./assets/logoOrigapp-512-512.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -23,7 +18,9 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.sabotrouge.origapp",
+      "buildNumber": "1.0.0"
     },
     "android": {
       "package": "com.sabotrouge.origapp",
